@@ -14,11 +14,6 @@ jobs:
     - name: Check out the repository
       uses: actions/checkout@v4
 
-    - name: Update JavaScript version in index.html
-      run: |
-        sed -i 's/__WORKFLOW_RUN_NUMBER__/${{ github.run_number }}/g' ./dist/index.html
-        sed -i 's/__WORKFLOW_RUN_NUMBER__/${{ github.run_number }}/g' index.html
-
     - name: Login into docker
       uses: docker/login-action@v3.2.0
       with:
@@ -31,6 +26,9 @@ jobs:
         push: true
         tags:
           copapel/funil_vendas_frontend:latest
+        build-args: |
+          WORKFLOW_RUN_NUMBER=${{ github.run_number }}
+
 
 
   portainer-deploy:

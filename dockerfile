@@ -20,6 +20,11 @@ COPY . /funil_vendas
 # Build the Vite application
 RUN npm run build
 
+ARG WORKFLOW_RUN_NUMBER
+RUN sed -i 's/__WORKFLOW_RUN_NUMBER__/'"$WORKFLOW_RUN_NUMBER"'/g' ./dist/index.html
+RUN sed -i 's/__WORKFLOW_RUN_NUMBER__/'"$WORKFLOW_RUN_NUMBER"'/g' ./index.html
+
+
 # Stage 2: Serve the built files with NGINX
 FROM nginx:latest
 
