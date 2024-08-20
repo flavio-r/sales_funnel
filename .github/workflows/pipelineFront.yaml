@@ -16,6 +16,7 @@ jobs:
 
     - name: Update JavaScript version in index.html
       run: |
+        sed -i 's/__WORKFLOW_RUN_NUMBER__/${{ github.run_number }}/g' dist/index.html
         sed -i 's/__WORKFLOW_RUN_NUMBER__/${{ github.run_number }}/g' index.html
 
     - name: Login into docker
