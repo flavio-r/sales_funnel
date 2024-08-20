@@ -1,0 +1,8 @@
+version: 'latest'
+
+services:
+  server:
+    image: copapel/funil_vendas_frontend:latest
+    deploy:
+      update_config:
+        order: start-first

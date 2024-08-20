@@ -1,0 +1,534 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.4;
+  font-weight: 400;
+
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+.colocarBorda {
+  border: 1px solid #00000044 !important;
+}
+
+.scaleCustom:hover {
+  transition: ease-in-out;
+  transform: scale(1.03);
+  transition-duration: 300ms;
+}
+
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+.triangle-right {
+  width: 0;
+  height: 0;
+  border-top: 12px solid transparent;
+  border-bottom: 12px solid transparent;
+  border-left: 15px solid rgb(34 197 94);
+  border-radius: 2px;
+ 
+}
+
+
+.triangle-right-white {
+  width: 0;
+  height: 0;
+  border-top: 12px solid transparent;
+  border-bottom: 12px solid transparent;
+  border-left: 15px solid rgb(255, 255, 255);
+  border-radius: 2px;
+ 
+}
+
+.triangle-right-grey {
+  width: 0;
+  height: 0;
+  border-top: 12px solid transparent;
+  border-bottom: 12px solid transparent;
+  border-left: 15px solid rgb(240, 240, 240);
+  border-radius: 2px;
+ 
+}
+
+
+
+.triangle-right-white-board {
+  width: 0;
+  height: 0;
+  left: 0.1px;
+  border-top: 26px solid transparent;
+  border-bottom: 26px solid transparent;
+  border-left: 26px solid rgb(255, 255, 255);
+  border-radius: 2px;
+  top: 1px;
+}
+
+.triangle-right-grey-board {
+  width: 0;
+  height: 0;
+  border-top: 26px solid transparent;
+  border-bottom: 26px solid transparent;
+  border-left: 26px solid rgb(242, 242, 242);
+  border-radius: 2px;
+  top: 0.1px;
+  right: -1.6rem;
+  z-index: 1;
+}
+
+
+.triangle-right-title-grey {
+  width: 0;
+  height: 0;
+  border-top: 16px solid transparent;
+  border-bottom: 16px solid transparent;
+  border-left: 16px solid rgb(240, 240, 240);
+  border-radius: 2px;
+ 
+}
+
+.triangle-right-title-green {
+  width: 0;
+  height: 0;
+  border-top: 16px solid transparent;
+  border-bottom: 16px solid transparent;
+  border-left: 16px solid rgb(34, 197, 94);
+  border-radius: 2px;
+}
+
+.triangle-right-title-white {
+  width: 0;
+  height: 0;
+  border-top: 16px solid transparent;
+  border-bottom: 16px solid transparent;
+  border-left: 16px solid rgb(255, 255, 255);
+  border-radius: 2px;
+ 
+}
+
+
+
+
+.levantar {
+  margin-top: -0.3rem !important;
+}
+
+.inputCinza::placeholder {
+  opacity: 0.5; /* Altere para o valor de opacidade desejado */
+}
+
+
+.myQuill .ql-editor {
+  min-height: 38vh; /* Altere para a altura desejada */
+  border-radius: 15px;
+}
+.NewTicketQuill .ql-editor {
+  height: 20vh;
+  border-radius: 15px; 
+}
+
+.myQuillBig {
+  width: 100%;
+  height: 50vh;
+  box-shadow: #000;
+}
+
+.headerHeight {
+  height: 8vh;
+}
+
+.customGreenBorder {
+  border: 1.7px solid rgb(1, 189, 1) !important;
+  border-style: solid;
+}
+
+
+.pageHeight {
+  height: 92vh;
+}
+
+.myQuillBig .ql-editor {
+  font-size: 20px;
+}
+.ql-container {
+  height: 35vh;
+}
+.verticalRule {
+  border-left: 2px solid gray;
+}
+.horizontalRule {
+  border: none;
+  border-top: 0.1px solid #cccccc; 
+  margin-top: 10px;
+  width: calc(100% + 1rem);
+  margin-left: -0.5rem;
+  box-sizing: border-box;
+}
+.horizontalRuleFilter {
+  border: none;
+  border-top: 0.1px solid #cccccc; 
+  margin-top: 10px;
+  width: calc(100% + 2rem);
+  margin-left: -1rem;
+  box-sizing: border-box;
+}
+
+
+
+
+.fontePadrao {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif !important;
+
+}
+
+.borderCustom {
+  border-color: red !important;
+  border-width: 2px !important;
+}
+
+.scrollbar-container {
+  overflow-y: auto; /* Adiciona a barra de rolagem vertical somente quando necessário */
+  scrollbar-width: thin; /* Define a largura da barra de rolagem */
+}
+
+/* Estilo da barra de rolagem */
+.scrollbar-container::-webkit-scrollbar {
+  width: 8px; /* Largura da barra de rolagem */
+}
+
+/* Estilo do indicador da barra de rolagem */
+.scrollbar-container::-webkit-scrollbar-thumb {
+  background-color: #888; /* Cor do indicador */
+  border-radius: 4px; /* Borda arredondada */
+}
+
+/* Estilo do fundo da barra de rolagem */
+.scrollbar-container::-webkit-scrollbar-track {
+  background-color: #f1f1f1; /* Cor do fundo */
+}
+
+.customHeight {
+  height: 95vh;
+}
+
+.customTopBorder {
+  position: relative;
+}
+
+.customTopBorder::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  border-top: 3px solid #000;
+}
+
+@keyframes slideUp {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+.slide-up {
+  animation: slideUp 0.3s ease-out forwards;
+}
+
+.slide-down {
+  animation: slideDown 0.3s ease-out forwards;
+}
+
+.indexCustom {
+  z-index: 99999999 !important;
+}
+
+
+
+.myQuillBig .ql-container {
+  height: 42vh;
+}
+
+.ql-container{
+  height: 32vh;
+}
+
+.customBorder {
+  border: 0.1px solid #00000034 !important  
+}
+
+.customBorderDotted {
+  border: 3px dashed #00000034 !important  
+}
+
+.customBorderInput {
+  border: 0.1px solid #00000034 !important
+}
+.customBorderInput:hover {
+  border: 0.1px solid #000 !important;
+}
+.customBorderInput:focus {
+  border: 0.2px solid #000 !important;
+}
+
+input.corPlaceholder::placeholder {
+  color: #000 !important; /* Altere para a cor desejada */
+}
+
+.animacoesHover :hover {
+  transform: scale(1.1);
+}
+
+.blindarScale {
+  transform: scale(1) !important;
+}
+.modalAdd.enter {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.modalAdd.show {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.customListWidth {
+  width: 20vw;
+}
+
+
+.customRedBorder {
+  border: 1.6px solid red !important;
+  border-style: solid;
+}
+
+.rotate-up {
+  transform: rotate(180deg);
+  transition: transform 0.3s ease-in-out;
+}
+
+.rotate-down {
+  transform: rotate(0deg);
+  transition: transform 0.3s ease-in-out;
+}
+
+.aumento-pequeno {
+  --tw-scale-x: 1.05;
+    --tw-scale-y: 1.05;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.borderFocus {
+  border: 0.1px solid #000000 !important
+}
+
+.widthCustom {
+  width: 25vw !important;
+}
+.bordaSelecionado {
+  border: 1px solid rgb(0, 0, 0) !important;
+}
+
+.line {
+  width: 100%;
+  height: 1px;
+  margin-top: 1px; 
+  background-color: black; 
+}
+
+.myQuill2 .ql-container {
+  height: 36vh;
+}
+
+.myQuill .ql-container {
+  height: 38vh;
+}
+
+.customFormHeight {
+  height: 50vh;
+}
+
+.border-yellow {
+  border: 0.1px solid yellow !important;
+}
+
+.border-red {
+  border: 0.1px solid red !important;
+}
+
+.border-green {
+  border: 0.1px solid green !important;
+}
+
+.react-tooltip {
+  z-index: 50;
+}
+.envelopeTeste {
+  z-index: 9999
+}
+
+.corDestaque {
+  color: rgb(255, 166, 0)
+}
+
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 5vw;
+  height: 4vh;
+  cursor: pointer;
+}
+
+.toggle-switch input[type="checkbox"] {
+  display: none;
+}
+
+.toggle-switch-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #ddd;
+  border-radius: 20px;
+  box-shadow: inset 0 0 0 2px #ccc;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.toggle-switch-handle {
+  position: absolute;
+  top: 4px;
+  left: 5px;
+  width: 1.5vw;
+  height: 3vh;
+  background-color: #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease-in-out;
+}
+
+.toggle-switch::before {
+  content: "";
+  position: absolute;
+  top: -25px;
+  right: -35px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #aaa;
+  text-shadow: 1px 1px #fff;
+  transition: color 0.3s ease-in-out;
+}
+
+select:disabled option {
+  color: black !important; 
+  background-color: white !important;
+  opacity: 1 !important; 
+}
+
+.toggle-switch input[type="checkbox"]:checked + .toggle-switch-handle {
+  transform: translateX(45px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2), 0 0 0 3px #05c46b;
+}
+
+.toggle-switch input[type="checkbox"]:checked + .toggle-switch-background {
+  background-color: #05c46b;
+  box-shadow: inset 0 0 0 2px #04b360;
+}
+
+.toggle-switch input[type="checkbox"]:checked + .toggle-switch:before {
+  content: "On";
+  color: #05c46b;
+  right: -10vw;
+}
+
+.toggle-switch input[type="checkbox"]:checked + .toggle-switch-background .toggle-switch-handle {
+  transform: translateX(3vw);
+}
+
+/* The switch - the box around the slider */
+.switch {
+  font-size: 17px;
+  position: relative;
+  display: inline-block;
+  width: 3.5em;
+  height: 2em;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  border: 2px solid #414141;
+  border-radius: 50px;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 1.4em;
+  width: 1.4em;
+  left: 0.2em;
+  bottom: 0.2em;
+  background-color: black;
+  border-radius: inherit;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+}
+
+.switch input:checked + .slider {
+  background-color: black;
+}
+
+.switch input:checked + .slider:before {
+  background-color: white;
+  transform: translateX(1.5em); /* Mantém o movimento da bola */
+}
+
+.switch input:checked + .slider:before {
+  transform: translateX(1.5em);
+}
+
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
