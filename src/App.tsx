@@ -14,11 +14,13 @@ import { NotFound } from "./pages/notFound";
 import { Gestoria } from "./pages/gestoria/gestoria";
 import { GestoriaInterna } from "./pages/gestoria_interna/gestoriaInterna";
 import { SuperGestoriaInterna } from "./pages/super_gestoria_interna/superGestoriaInterna";
+import { Visualizadores } from "./pages/visualizador/visualizador";
+
 
 import { LayoutGestoria } from "./components/gestoria/layoutGestoria";
 import { LayoutGestoriaInterna } from "./components/gestoria_interna/layoutGestoriaInterna";
 import { LayoutSuperGestoriaInterna } from "./components/super_gestoria_interna/layoutSuperGestoriaInterna";
-
+import { LayoutVisualizadores } from "./components/visualizadores/layoutGestoria";
 
 
 
@@ -86,7 +88,16 @@ const router = createBrowserRouter([
         element: <Private><SuperGestoriaInterna/></Private>
       }
     ]
-    }
+  },
+  {
+    element: <LayoutVisualizadores/>,
+    children: [
+      {
+        path: "visualizador",
+        element: <Private><Visualizadores/></Private>
+      }
+    ]
+  }
   
 ])
 

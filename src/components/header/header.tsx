@@ -32,6 +32,7 @@ export function Header({ setSearch, setFilters, setGestor }: header) {
     const [isGerente, setIsGerente] = useState<boolean>(false);
     const [isInterno, setIsInterno] = useState<boolean>(false);
     const [isSupervisor, setIsSupervisor] = useState<boolean>(false);
+    const [isVisualizador, setIsVisualizador] = useState<boolean>(false);
 
     const navigate = useNavigate();
 
@@ -60,6 +61,8 @@ export function Header({ setSearch, setFilters, setGestor }: header) {
                 return navigate("/gestoriaInterna");
             } else if (origem == "superGestoriaInterna") {
                 return navigate("/supergestoria");
+            } else if (origem == "visualizador") {
+                return navigate("/visualizador");
             }
         }
         navigate('/');
@@ -114,31 +117,30 @@ export function Header({ setSearch, setFilters, setGestor }: header) {
         toast.error("Erro ao verificar se usuario é supervisor interno")
     }
 
+    const checaIsVisualizador = async () => {
+        const response = await ajax({ method: "GET", endpoint: "/visualizadores/isVisualizador", data: null });
+        if (response.status == "success") {
+            const isSupervisor = response.data.isVisualizador;
+            if (isSupervisor) {
+                setIsVisualizador(true);
+            }
+            return;
+        }
+        toast.error("Erro ao verificar se usuario é supervisor interno")
+    }
+
 
     const checkRoles = () => {
         checaIsInterno();
         checaIsGerente();
         checaIsSupervisoraInterna();
+        checaIsVisualizador();
     }
 
 
     useEffect(() => {
-        //if (pathname.includes("/autologin") || pathname.includes("/autoLogin")) {
-        //    return;
-        //} else {
-        //    console.log("checou aqui")
-        //    checkRoles();
-        //}
-
-    }, [])
-
-    useEffect(() => {
-//        if (signed && !pathname.includes("/autologin") && !pathname.includes("/autoLogin")) {
-//            console.log("checou la")
             checkRoles();
-//        }
     }, [signed])
-
 
 
     return (
@@ -163,7 +165,7 @@ export function Header({ setSearch, setFilters, setGestor }: header) {
                     <div >
 
                         <CgProfile size={33} onClick={() => handleProfile()} className="mr-8 mt-1.5 hover:scale-105 transition-all duration-500 cursor-pointer" />
-                        {mostrarProfile ? <ModalProfile isGerente={isGerente} isInterno={isInterno} isSupervisor={isSupervisor} /> : null}
+                        {mostrarProfile ? <ModalProfile isGerente={isGerente} isInterno={isInterno} isSupervisor={isSupervisor} isVisualizador={isVisualizador} /> : null}
                     </div>
                 </div>
 
