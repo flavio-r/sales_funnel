@@ -134,6 +134,19 @@ export function SelectDados({customCss, tipo, funcaoAoMudar, requiredDefault, pr
                     :
                     ""
                 }
+                {
+                    tipo == "heatLevels" ? (
+                        <>
+                            <option value=""></option>
+                            <option value="-1">Sem interesse</option>
+                            <option value="1">Baixo interesse</option>
+                            <option value="2">Médio interesse</option>
+                            <option value="3">Alto interesse</option>
+                            <option value="4">Extremo interesse</option>
+                        </>
+                    ) :
+                    ""
+                }
             </select>
         
             </div>

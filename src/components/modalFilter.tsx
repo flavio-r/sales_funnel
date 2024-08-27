@@ -32,17 +32,6 @@ export function Filter({ handleFilters, fecharFiltro, showFilters }: Filters) {
         handleFilters({});
     }
 
-    /*
-    export interface municipio {
-    AbsId: number;
-    Code: string;
-    Country: string;
-    State: string;
-    Name: string;
-}
-
-    */
-
     const loadMunicipiosForFilter = async () => {
         const response = await ajax({method: "GET", endpoint: "/municipios", data: null});
         if (response.status == "success") {
@@ -100,6 +89,9 @@ export function Filter({ handleFilters, fecharFiltro, showFilters }: Filters) {
 
             <div className="w-full flex flex-col  items-center mb-8">
                 <SelectDados customCss="w-full" tipo="municipios" municipios={municipios} placeholder="Município" name="municipio" register={register}  />
+            </div>
+            <div className="w-full flex flex-col  items-center mb-8">
+                <SelectDados customCss="w-full" tipo="heatLevels" municipios={municipios} placeholder="Interesse" name="interesse" register={register}  />
             </div>
             <div className=" flex flex-col  items-center mb-8">
                 <div className="self-start" >
