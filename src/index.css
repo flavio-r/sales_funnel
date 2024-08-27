@@ -334,8 +334,8 @@ input.corPlaceholder::placeholder {
 .circuloCalor {
   margin-left: 1px;
   height: 10px;
-  width: 18px; 
-  border-radius: 20px;
+  width: 16px; 
+  border-radius: 3px;
 
 }
 

@@ -29,8 +29,13 @@ export interface task {
     SalesOpportunitiesLines: any;
     ContactPerson: string;
     EmailAddress: string;
+    Criador: Criador;
     Phone1: string;
     BPAddress: any;
+}
+
+interface Criador {
+    nomeCriador: string;
 }
 
 
@@ -157,14 +162,7 @@ export function Opportunity() {
                         <FaRegNoteSticky size={30} />
                         <p className="text-xl">Notas</p>
                     </div>
-                    {
-                    /*
-                    <div onClick={() => setActiveTab(5)}className={`flex items-center gap-4 px-6 cursor-pointer ${ activeTab == 5 ? "bg-custom-dark-green customTopBorder" : "" }`}>
-                        <MdAttachment size={30} />
-                        <p className="text-xl">Anexos</p>
-                    </div>
-                    */
-                    }
+                    
                 </div>
                 
                 <div className=" p-4 max-w-full h-full pb-12 bg-white shadow-lg rounded-md ">
