@@ -24,6 +24,7 @@ interface task {
     firstName: string;
     lastName: string;
     DestacadoGerente: string;
+    IntRate: number;
 }
 
 interface taskMysql {

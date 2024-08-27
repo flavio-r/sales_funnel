@@ -20,6 +20,8 @@ interface task {
         StageId: number;
         PredDate: string;
         DestacadoGerente: string;
+        IntRate: number;
+
     }
 
     interface taskMysql {

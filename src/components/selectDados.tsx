@@ -19,12 +19,13 @@ interface input {
     disabled?: boolean;
     estados?: estado[];
     municipios?: municipio[];
+    customCss?: string;
 }
-export function SelectDados({tipo, funcaoAoMudar, requiredDefault, preValue, register, placeholder, name, icon, error, rules, itens, disabled = false, id, colaboradores, estados, municipios}: input) {
+export function SelectDados({customCss, tipo, funcaoAoMudar, requiredDefault, preValue, register, placeholder, name, icon, error, rules, itens, disabled = false, id, colaboradores, estados, municipios}: input) {
     console.log(tipo);
     console.log(estados);
     return (
-        <div className="relative mt-4 ">
+        <div className={`${customCss}  relative mt-4 `}>
             <p className="m-0 font-semibold text-sm">{placeholder}</p>
             <div className="absolute ml-2 mt-3 flex items-center justify-center">{icon}</div>
             <div className='flex items-center'>

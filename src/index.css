@@ -48,6 +48,10 @@ body {
  
 }
 
+.z-custom {
+  z-index: 100;
+}
+
 
 .triangle-right-white {
   width: 0;
@@ -325,6 +329,24 @@ input.corPlaceholder::placeholder {
 
 .customListWidth {
   width: 20vw;
+}
+
+.circuloCalor {
+  margin-left: 1px;
+  height: 10px;
+  width: 18px; 
+  border-radius: 20px;
+
+}
+
+.encaixarModalHeat {
+  top: 100%;
+}
+
+.circulo {
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
 }
 
 

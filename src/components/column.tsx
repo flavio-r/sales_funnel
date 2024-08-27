@@ -73,7 +73,7 @@ export function Column({tasks, title, id, leads}: colunaProps) {
             <Droppable droppableId={id}>
                 {(provided: any, snapshot: any) => {
                     return (
-                        <div className={` ${ title == 'Qualificação' ? "" : "h-full" } w-11/12 bg-custom-gray gap-3 items-center flex flex-col `} ref={provided.innerRef} {...provided.droppableProps} isdraggingover={snapshot.isDraggingOver.toString()}>
+                        <div className={` ${ title == 'Qualificação' ? "" : "h-full" } relative w-11/12 bg-custom-gray gap-3 items-center flex flex-col `} ref={provided.innerRef} {...provided.droppableProps} isdraggingover={snapshot.isDraggingOver.toString()}>
                             {tasks?.length == 0 ? <div className='flex flex-col items-center justify-center mb-12 ' ><FaBoxOpen size={60} /></div> : "" }
                             {tasks?.map((task: any, index: any) => <Task task={task} index={index} key={task.Id} />)}
                             {provided.placeholder}

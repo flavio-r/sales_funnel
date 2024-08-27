@@ -4,16 +4,23 @@ import { GrnBtn } from "./greenBtn";
 import { IoFilterSharp } from "react-icons/io5";
 import { WhiteBtn } from "./whiteBtn";
 import { IoIosCloseCircle } from "react-icons/io";
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
+import { SelectDados } from "./selectDados";
+import { ajax } from "../ajax/ajax";
+import toast from "react-hot-toast";
+import { municipio } from "../pages/leads";
 interface Filters {
+    showFilters: boolean;
     handleFilters: (filters: any) => void
     fecharFiltro: () => void
 }
 
-export function Filter({ handleFilters, fecharFiltro }: Filters) {
+
+
+export function Filter({ handleFilters, fecharFiltro, showFilters }: Filters) {
     const { register, handleSubmit } = useForm<any>({});
     const [switchHandler, setSwitchHandler] = useState<boolean>(false);
+    const [municipios, setMunicipios] = useState<municipio[]>([]);
 
     const onSubmit = (data: any) => {
         data.apenasDestacados = switchHandler;
@@ -25,10 +32,37 @@ export function Filter({ handleFilters, fecharFiltro }: Filters) {
         handleFilters({});
     }
 
+    /*
+    export interface municipio {
+    AbsId: number;
+    Code: string;
+    Country: string;
+    State: string;
+    Name: string;
+}
+
+    */
+
+    const loadMunicipiosForFilter = async () => {
+        const response = await ajax({method: "GET", endpoint: "/municipios", data: null});
+        if (response.status == "success") {
+            const municipios = response.data;
+            if (municipios) {
+                setMunicipios([{}, ...municipios]);
+            }
+            return;
+        }
+        toast.error("Erro ao carregar municípios do filtro.");
+    }
+
+    useEffect(() => {
+        loadMunicipiosForFilter();
+    }, [])
+
     const dataAtual = new Date().toLocaleDateString();
     const data1mesAtras = new Date(new Date().setMonth(new Date().getMonth() - 1)).toLocaleDateString();
     return (        
-        <form action="" id="filterOp" onSubmit={handleSubmit(onSubmit)} className="absolute flex p-4 bg-white rounded-md shadow-lg z-50 top-full right-40 flex-col w-auto transition-all duration-500 " >
+        <form action="" id="filterOp" onSubmit={handleSubmit(onSubmit)} className={` ${ showFilters ? "absolute" : "hidden" }  flex p-4 bg-white rounded-md shadow-lg z-50 top-full right-40 flex-col w-auto transition-all duration-500 `} >
             <div className="flex justify-between items-center" >
                 <div>
                    <p className="m-0 font-semibold text-lg" >Filtros</p>
@@ -64,18 +98,8 @@ export function Filter({ handleFilters, fecharFiltro }: Filters) {
                 </div>
             </div>
 
-            <div className=" flex flex-col  items-center mb-8">
-                <p className="m-0 self-start text-xl font-semibold mb-1" >Etapa da Oportunidade</p>
-                <div className="flex justify-between h-full w-full gap-4" >
-                    <div className=" flex flex-col gap-1 " >
-                        <div className="flex items-center mt-4"><input type="checkbox" { ...register("potencial") }  id="potencial" className="hover:scale-105 transition-all duration-300" ></input> <label htmlFor="potencial" className="m-0">Potencial</label> </div>
-                        <div className="flex items-center"><input type="checkbox" { ...register("leads") } id="leads"></input> <label htmlFor="leads" className="m-0" >Qualificação</label> </div>
-                        <div className="flex items-center"><input type="checkbox" { ...register("agendamento") } id="agendamento"></input> <label htmlFor="agendamento" className="m-0" >Agendamento / Reunião</label> </div>
-                        <div className="flex items-center"><input type="checkbox" { ...register("diagnostico") } id="diagnostico"></input> <label htmlFor="diagnostico" className="m-0" >Diagnóstico</label> </div>
-                        <div className="flex items-center"><input type="checkbox" { ...register("teste") } id="teste"></input> <label htmlFor="teste" className="m-0" >Teste</label> </div>
-                        <div className="flex items-center"><input type="checkbox" { ...register("propostaValor") } id="propostaValor"></input> <label htmlFor="propostaValor" className="m-0" >Proposta de Valor</label> </div>
-                    </div>  
-                </div>
+            <div className="w-full flex flex-col  items-center mb-8">
+                <SelectDados customCss="w-full" tipo="municipios" municipios={municipios} placeholder="Município" name="municipio" register={register}  />
             </div>
             <div className=" flex flex-col  items-center mb-8">
                 <div className="self-start" >

@@ -199,7 +199,7 @@ export function HeaderGestoria({ setSearch, setFilters, setGerenciadosContext, s
 
             <div className="justify-self-end flex items-center justify-center gap-8 mr-6 h-full">
                 {pathname.includes('/opportunity') ? null : <WhiteBtn onClick={() => handleFiltro()} nomeBtn="Filtros" icon={<FaFilter size={16}/>}></WhiteBtn>}
-                {mostrarFiltro? <Filter handleFilters={HandleSetFilters} fecharFiltro={handleFiltro} /> : null} 
+                <Filter showFilters={mostrarFiltro} handleFilters={HandleSetFilters} fecharFiltro={handleFiltro} />
                 <div >
                     <CgProfile size={33} onClick={() => handleProfile()} className="mr-8 mt-1.5 hover:scale-105 transition-all duration-500 cursor-pointer"/>  
                     {mostrarProfile ? <ModalProfile/> : null }
