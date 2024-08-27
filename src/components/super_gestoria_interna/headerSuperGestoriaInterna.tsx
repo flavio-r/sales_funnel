@@ -208,19 +208,19 @@ export function HeaderSuperGestoriaInterna({ setSearch, setFilters, setExternosC
                     {pathname.includes('/opportunity') || pathname.includes('/leads') ? <WhiteBtn nomeBtn="Quadro" icon={<FaHouseChimney />} onClick={() => handleGoHome()}></WhiteBtn> : <GrnBtn nomeBtn="Oportunidade" onClick={() => handleMostrarModal()} icon={<IoMdAddCircle size={18} />}></GrnBtn>}
                     <div className="flex gap-4 mr-4 ml-4">
                         <div className="flex flex-col items-center justify-center" >
-                            <p className="m-0 text-xs font-semibold text-green-500 " >Ganhos</p>
+                            <p className="m-0 text-xs font-semibold text-green-500 " >Ganhos (30 dias)</p>
                             <button className=" hover:scale-105 h-9 w-24 customGreenBorder outline-none bg-white rounded-md font-semibold text-green-500 cursor-pointer hover:bg-green-500 hover:text-white transition-all duration-300 ">
                                 {indicadores.ganhos || <ImSpinner8 className="animate-spin mt-1" />}
                             </button>
                         </div>
                         <div className="flex flex-col items-center justify-center">
-                            <p className="m-0 text-xs font-semibold text-red-500" >Perdidos</p>
+                            <p className="m-0 text-xs font-semibold text-red-500" >Perdidos (30 dias)</p>
                             <button className=" hover:scale-105 h-9 w-24 customRedBorder outline-none bg-white rounded-md font-semibold text-red-500 cursor-pointer hover:bg-red-500 hover:text-white transition-all duration-300 ">
                                 {indicadores.perdidos || <ImSpinner8 className="animate-spin mt-1" />}
                             </button>
                         </div>
                         <div className="flex flex-col items-center justify-center" >
-                            <p className="m-0 text-xs font-semibold text-black" >Valor Total</p>
+                            <p className="m-0 text-xs font-semibold text-black" >Valor Total aberto</p>
                             <button className=" hover:scale-105 h-9 flex items-center justify-center customBorder outline-none bg-white rounded-md font-semibold text-black cursor-pointer hover:bg-black hover:text-white transition-all duration-300 ">
                                 {indicadores.valorTotal ? new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(indicadores.valorTotal) : <ImSpinner8 className="animate-spin" />}
                             </button>
