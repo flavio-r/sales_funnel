@@ -56,6 +56,7 @@ export function AddOportunity({atualizaEstadoModal, mostrarModal, isGestor = fal
     const [clientes, setClientes] = useState<Array<cliente>>([]);
     const [loadingSearch, setLoadingSearch] = useState<boolean>(false);
     const [colaboradoresData,  setColaboradoresData] = useState<colaborador[]>([]);
+    const [warn, setWarn] = useState<boolean>(false);
 
     const abortControllerRef = useRef<AbortController | null>(null);
 
@@ -285,13 +286,31 @@ export function AddOportunity({atualizaEstadoModal, mostrarModal, isGestor = fal
 
 
     const handleClickFoundClient = (CardCode: string) => {
-        //This is is kinda "Cheating" but the fastest / easiest way to do it"
         const inputCodigoCliente = document.getElementById("codigoCliente") as HTMLInputElement;
         if (inputCodigoCliente) {
             inputCodigoCliente.value = CardCode
             inputCodigoCliente.innerHTML = CardCode;
         }
+        warnIfClientAlreadyHasOportunity(CardCode);
         setClientes([]);
+    }
+
+    const warnIfClientAlreadyHasOportunity = async (CardCode: string) => {
+        console.log(CardCode);
+        const response = await ajax({method: "POST", endpoint: "/tasks/clientTasks", data: {CardCode: CardCode}})
+        console.log(response);
+        if (response.status == "error") {
+            setWarn(false);
+            toast.error("Erro inesperado");
+            return;
+        }
+        if (response.status == "success") {
+            if (response.data.length > 0) {
+                setWarn(true);
+            } else {
+                setWarn(false);
+            }
+        }
     }
 
     
@@ -312,6 +331,7 @@ export function AddOportunity({atualizaEstadoModal, mostrarModal, isGestor = fal
                         <div>
 
                         <Input id="codigoCliente" valueHandler={(e) => handleCodigoCliente(e)} insidePlaceholder="C000000 ou Nome do cliente" placeholder="Código do cliente" icon={<BsPersonBoundingBox />} name="codCliente" error={ errors.codCliente?.message } register={register}></Input>
+                        {warn ? <span className="text-yellow-500 text-sm">Cliente já possui uma oportunidade em andamento! (Apenas informativo) </span> : ""}
                         <div className="relative z-40 " >
                             <div className={` box-border absolute z-50 w-80 flex flex-col bg-white shadow-md ${ clientes.length > 0 ? "customBorder" : "" } mt-1 rounded-md`} >
                             {

@@ -15,12 +15,17 @@ interface Filters {
     fecharFiltro: () => void
 }
 
+export interface regiao {
+    Code: string;
+}
+
 
 
 export function Filter({ handleFilters, fecharFiltro, showFilters }: Filters) {
     const { register, handleSubmit } = useForm<any>({});
     const [switchHandler, setSwitchHandler] = useState<boolean>(false);
     const [municipios, setMunicipios] = useState<municipio[]>([]);
+    const [regioes, setRegioes] = useState<regiao[]>([]);
 
     const onSubmit = (data: any) => {
         data.apenasDestacados = switchHandler;
@@ -44,7 +49,19 @@ export function Filter({ handleFilters, fecharFiltro, showFilters }: Filters) {
         toast.error("Erro ao carregar municípios do filtro.");
     }
 
+    const loadRegioesForFilter = async () => {
+        const response = await ajax({method: "GET", endpoint: "/regioesUsuario", data: null});
+        if (response.status == "success") {
+            const regioes = response.data;
+            if (regioes) {
+                setRegioes([{}, ...regioes]);
+            }
+            return;
+        }
+        toast.error("Erro ao carregar regiões do filtro.");
+    }
     useEffect(() => {
+        loadRegioesForFilter();
         loadMunicipiosForFilter();
     }, [])
 
@@ -57,11 +74,11 @@ export function Filter({ handleFilters, fecharFiltro, showFilters }: Filters) {
                    <p className="m-0 font-semibold text-lg" >Filtros</p>
                 </div>
                 <div>
-                    <WhiteBtn nomeBtn="Fechar" onClick={fecharFiltro} icon={<IoIosCloseCircle />} />
+                    <WhiteBtn type="button" nomeBtn="Fechar" onClick={fecharFiltro} icon={<IoIosCloseCircle />} />
                 </div>
             </div>
             <div className="horizontalRuleFilter"></div>
-            <div className="flex flex-col items-center mb-8 mt-4">
+            <div className="flex flex-col items-center mb-6 mt-4">
                 <p className="m-0 self-start text-xl font-semibold mb-1" >Data prevista de avanço de etapa</p>
                 <div className="flex justify-between gap-4 w-full  h-full" >
                     <div className="w-52" >
@@ -74,7 +91,7 @@ export function Filter({ handleFilters, fecharFiltro, showFilters }: Filters) {
                 </div>
             </div>
             
-            <div className=" flex flex-col  items-center mb-8">
+            <div className=" flex flex-col  items-center mb-6">
                 <p className="m-0 self-start text-xl font-semibold mb-1" >Valor Estimado </p>
                 <div className="flex justify-between h-full w-full gap-4" >
                     <div className=" w-52 " >
@@ -87,12 +104,16 @@ export function Filter({ handleFilters, fecharFiltro, showFilters }: Filters) {
                 </div>
             </div>
 
-            <div className="w-full flex flex-col  items-center mb-8">
+            <div className="w-full flex flex-col  items-center mb-4">
+                <SelectDados customCss="w-full" tipo="regioes" regioes={regioes} placeholder="Região" name="regiao" register={register}  />
+            </div>
+            <div className="w-full flex flex-col  items-center mb-4">
                 <SelectDados customCss="w-full" tipo="municipios" municipios={municipios} placeholder="Município" name="municipio" register={register}  />
             </div>
-            <div className="w-full flex flex-col  items-center mb-8">
+            <div className="w-full flex flex-col  items-center mb-4">
                 <SelectDados customCss="w-full" tipo="heatLevels" municipios={municipios} placeholder="Interesse" name="interesse" register={register}  />
             </div>
+
             <div className=" flex flex-col  items-center mb-8">
                 <div className="self-start" >
                     <p className=" m-0 mb-2 bg-white font-semibold text-xl " >Apenas Destacados</p>

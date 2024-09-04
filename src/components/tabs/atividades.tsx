@@ -204,19 +204,21 @@ export function Atividades({task}: {task?: task}) {
         { showNewTicket ?  <ModalNovoTicket CardCode={task?.CardCode} onClose={() => handleCloseNewTicketModal()} /> : "" }
         { showEndTicket ? <EndTicket  onClose={() => handleCloseEndTicketModal()} ticketData={closingTicketData} /> : "" }
         <div>
-            <div className="flex flex-col customBorder shadow-md p-2 rounded-md hidden " >
+            <div className="flex flex-col customBorder shadow-md p-2 rounded-md   " >
                 <div className="flex items-center gap-4" >
                     <h1 className="m-0 ml-2">
                         Ações Rápidas
                     </h1>
                    <FaCircleInfo data-tooltip-id="tooltip-6" data-tooltip-content="As ações rápidas são requisições/informações repassados para internos através da agenda!" />
                 </div>
-                <div className=" flex justify-between mt-4 px-12 py-4 gap-2  ">
-                    <BtnRapidas nome="Pedir Visita" icon={<IoIosChatbubbles size={25} />} onClick={() => handlePedirAcao("Agendar Visita", "data", "77")} />
-                    <BtnRapidas bgColor="red-500" nome="Requisitar Pedido" icon={<GiMoneyStack size={30} />} onClick={() =>handlePedirAcao("Requisitar Pedido", "nada", "78")} />
-                    <BtnRapidas bgColor="amber-500" nome="Realizei Visita" icon={<MdConnectWithoutContact  size={30} />} onClick={() => handlePedirAcao("Realizei Visita", "conteudo", "72")} />
-                    <BtnRapidas bgColor="blue-500" nome="Realizei Reunião" icon={<FaHandshake  size={30} />} onClick={() => handlePedirAcao("Realizei Reunião", "conteudo", "73")} />
-                    <BtnRapidas bgColor="slate-500" nome="Tirar cliente da agenda" icon={<IoIosRemoveCircle   size={30} />} onClick={() => handlePedirAcao("Retirar Cliente", "nada", "0")} />
+                <div className=" flex justify-between w-2/3  mt-4 px-12 py-4 self-center   ">
+                    <div data-tooltip-id="tooltip-6" data-tooltip-content="Solicitar ao cac que agende uma visita para o cliente" ><BtnRapidas nome="Solicitar Visita com o cliente" icon={<IoIosChatbubbles size={25} />} onClick={() => handlePedirAcao("Agendar Visita", "data", "77")} /></div>
+                    <div data-tooltip-id="tooltip-6" data-tooltip-content="Solicitar ao cac que agende uma reunião para o cliente" ><BtnRapidas bgColor="red-500" nome="Solicitar reunião com o cliente" icon={<GiMoneyStack size={30} />} onClick={() =>handlePedirAcao("Agendar reunião", "data", "77")} /></div>
+                    <div className="hidden" >
+                        <BtnRapidas bgColor="amber-500" nome="Realizei Visita" icon={<MdConnectWithoutContact  size={30} />} onClick={() => handlePedirAcao("Realizei Visita", "conteudo", "72")} />
+                        <BtnRapidas bgColor="blue-500" nome="Realizei Reunião" icon={<FaHandshake  size={30} />} onClick={() => handlePedirAcao("Realizei Reunião", "conteudo", "73")} />
+                        <BtnRapidas bgColor="slate-500" nome="Tirar cliente da agenda" icon={<IoIosRemoveCircle   size={30} />} onClick={() => handlePedirAcao("Retirar Cliente", "nada", "0")} />
+                    </div>
                 </div>
             </div>
             <div className="  box-border" >

@@ -21,7 +21,10 @@ import toast from "react-hot-toast";
 import { ImSpinner8 } from "react-icons/im";
 import SearchContextGestoria from "./layoutSuperGestoriaInterna";
 import { IoIosArrowDropupCircle } from "react-icons/io";
-
+import { AuthContext } from "../../context/authProvider";
+import { BiSelectMultiple } from "react-icons/bi";
+import { IoIosRemoveCircle } from "react-icons/io";
+import { IoIosHappy } from "react-icons/io";
 
 interface header {
     setSearch: (search: string) => void;
@@ -52,6 +55,8 @@ export function HeaderSuperGestoriaInterna({ setSearch, setFilters, setExternosC
     const [firstRender, setFirstRender] = useState<boolean>(true);
     const [indicadores, setIndicadores] = useState<any>({});
     const [openedDropdowns, setOpenedDropdowns] = useState<number[]>([]);
+
+    const { user } = useContext(AuthContext);
 
 
 
@@ -167,6 +172,38 @@ export function HeaderSuperGestoriaInterna({ setSearch, setFilters, setExternosC
         setExternosContext(externosSelecionados);
     }
 
+    const myOpportunities = () => {
+        const externo: externoSupervisionado = {
+            CodigoExterno: user.id,
+            NomeExterno: user.name,
+            Selecionado: true
+        }
+        setExternosContext([externo]);
+
+    }
+
+    const selectAll = () => {
+        setSupervisionados(prevState =>
+            prevState.map(interna => ({
+                ...interna,
+                Selecionada: true,
+                externos: interna.externos.map(ext => ({ ...ext, Selecionado: true }))
+            }))
+        );
+    }
+
+    const deSelectAll = () => {
+        console.log("deSelectAll");
+        setSupervisionados(prevState =>
+            prevState.map(interna => ({
+                ...interna,
+                Selecionada: false,
+                externos: interna.externos.map(ext => ({ ...ext, Selecionado: false }))
+            }))
+        );
+    }
+    
+
 
 
     useEffect(() => {
@@ -210,13 +247,13 @@ export function HeaderSuperGestoriaInterna({ setSearch, setFilters, setExternosC
                         <div className="flex flex-col items-center justify-center" >
                             <p className="m-0 text-xs font-semibold text-green-500 " >Ganhos (30 dias)</p>
                             <button className=" hover:scale-105 h-9 w-24 customGreenBorder outline-none bg-white rounded-md font-semibold text-green-500 cursor-pointer hover:bg-green-500 hover:text-white transition-all duration-300 ">
-                                {indicadores.ganhos || <ImSpinner8 className="animate-spin mt-1" />}
+                                {(indicadores.ganhos || indicadores.ganhos == 0) || <ImSpinner8 className="animate-spin mt-1" />}
                             </button>
                         </div>
                         <div className="flex flex-col items-center justify-center">
                             <p className="m-0 text-xs font-semibold text-red-500" >Perdidos (30 dias)</p>
                             <button className=" hover:scale-105 h-9 w-24 customRedBorder outline-none bg-white rounded-md font-semibold text-red-500 cursor-pointer hover:bg-red-500 hover:text-white transition-all duration-300 ">
-                                {indicadores.perdidos || <ImSpinner8 className="animate-spin mt-1" />}
+                                {(indicadores.perdidos || indicadores.perdidos == 0) || <ImSpinner8 className="animate-spin mt-1" />}
                             </button>
                         </div>
                         <div className="flex flex-col items-center justify-center" >
@@ -268,7 +305,17 @@ export function HeaderSuperGestoriaInterna({ setSearch, setFilters, setExternosC
                                 :
                                 <p>Carregando...</p>
                         }
-                        <GrnBtn onClick={() => atualizaExternosContext()} customCss="mt-2 mb-2 w-11/12 self-center" nomeBtn="Aplicar Gerenciados" type="submit" icon={<IoFilterSharp />} />
+                        <div className="w-full flex items-center gap-2 justify-center px-2 py-1 box-border" >
+                            <GrnBtn onClick={() => atualizaExternosContext()} customCss="mt-2 mb-2 w-full self-center" nomeBtn="Aplicar Supervisionados" type="submit" icon={<IoFilterSharp size={20} />} />
+                        </div>
+                        <div className="w-full flex items-center gap-2 justify-center px-2 py-1 box-border" >
+                            <GrnBtn onClick={() => myOpportunities()} customCss="mt-2 mb-2 w-full self-center bg-green-700 " nomeBtn="Minhas oportunidades" type="submit" icon={<IoIosHappy size={20} />} />
+
+                        </div>
+                        <div className="w-full flex items-center gap-2 justify-center p-2 box-border"  >
+                            <GrnBtn customCss="w-6/12 whitespace-nowrap" onClick={() => selectAll()} nomeBtn="Selecionar todos" icon={<BiSelectMultiple />}  />
+                            <GrnBtn customCss="w-6/12 whitespace-nowrap bg-red-500 hover:bg-red-600" onClick={() => deSelectAll()} nomeBtn="Remover todos" icon={<IoIosRemoveCircle />}  />
+                        </div>
                     </div>
                 </div>
 

@@ -1,6 +1,7 @@
 import {RegisterOptions, UseFormRegister} from 'react-hook-form';
 import { colaborador } from './modalAddOportunity';
 import { estado, municipio } from '../pages/leads';
+import { regiao } from './modalFilter';
 interface input {
     placeholder: string;
     name: string;
@@ -19,11 +20,12 @@ interface input {
     disabled?: boolean;
     estados?: estado[];
     municipios?: municipio[];
+    regioes?: regiao[];
     customCss?: string;
 }
-export function SelectDados({customCss, tipo, funcaoAoMudar, requiredDefault, preValue, register, placeholder, name, icon, error, rules, itens, disabled = false, id, colaboradores, estados, municipios}: input) {
+export function SelectDados({customCss, tipo, funcaoAoMudar, requiredDefault, preValue, register, placeholder, name, icon, error, rules, itens, disabled = false, id, colaboradores, estados, municipios, regioes}: input) {
     console.log(tipo);
-    console.log(estados);
+    console.log(regioes);
     return (
         <div className={`${customCss}  relative mt-4 `}>
             <p className="m-0 font-semibold text-sm">{placeholder}</p>
@@ -129,7 +131,7 @@ export function SelectDados({customCss, tipo, funcaoAoMudar, requiredDefault, pr
                 {
                     tipo == "municipios" ?
                     municipios?.map((municipio: municipio) => {
-                        return <option selected={municipio.AbsId == preValue} value={municipio.AbsId}>{municipio.Name}</option>
+                        return <option selected={municipio.AbsId == preValue} value={municipio.AbsId ? municipio.AbsId : ''}>{municipio.Name ? municipio.Name : 'Sem filtro'}</option>
                     })
                     :
                     ""
@@ -137,7 +139,7 @@ export function SelectDados({customCss, tipo, funcaoAoMudar, requiredDefault, pr
                 {
                     tipo == "heatLevels" ? (
                         <>
-                            <option value=""></option>
+                            <option value="">Sem filtro</option>
                             <option value="-1">Sem interesse</option>
                             <option value="1">Baixo interesse</option>
                             <option value="2">Médio interesse</option>
@@ -145,6 +147,14 @@ export function SelectDados({customCss, tipo, funcaoAoMudar, requiredDefault, pr
                             <option value="4">Extremo interesse</option>
                         </>
                     ) :
+                    ""
+                }
+                {
+                    tipo == "regioes" ?
+                    regioes?.map((regiao: regiao) => {
+                        return <option selected={regiao.Code == preValue} value={regiao.Code ? regiao.Code : ''}>{regiao.Code ? regiao.Code : 'Sem filtro'}</option>
+                    })
+                    :
                     ""
                 }
             </select>
