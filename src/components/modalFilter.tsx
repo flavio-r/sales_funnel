@@ -22,7 +22,7 @@ export interface regiao {
 
 
 export function Filter({ handleFilters, fecharFiltro, showFilters }: Filters) {
-    const { register, handleSubmit } = useForm<any>({});
+    const { register, handleSubmit, reset } = useForm<any>({});
     const [switchHandler, setSwitchHandler] = useState<boolean>(false);
     const [municipios, setMunicipios] = useState<municipio[]>([]);
     const [regioes, setRegioes] = useState<regiao[]>([]);
@@ -35,6 +35,7 @@ export function Filter({ handleFilters, fecharFiltro, showFilters }: Filters) {
 
     const handleClearFilters = () => {
         handleFilters({});
+        reset();
     }
 
     const loadMunicipiosForFilter = async () => {
@@ -65,8 +66,8 @@ export function Filter({ handleFilters, fecharFiltro, showFilters }: Filters) {
         loadMunicipiosForFilter();
     }, [])
 
-    const dataAtual = new Date().toLocaleDateString();
-    const data1mesAtras = new Date(new Date().setMonth(new Date().getMonth() - 1)).toLocaleDateString();
+    //const dataAtual = new Date().toLocaleDateString();
+    //const data1mesAtras = new Date(new Date().setMonth(new Date().getMonth() - 1)).toLocaleDateString();
     return (        
         <form action="" id="filterOp" onSubmit={handleSubmit(onSubmit)} className={` ${ showFilters ? "absolute" : "hidden" }  flex p-4 bg-white rounded-md shadow-lg z-50 top-full right-40 flex-col w-auto transition-all duration-500 `} >
             <div className="flex justify-between items-center" >
@@ -82,11 +83,11 @@ export function Filter({ handleFilters, fecharFiltro, showFilters }: Filters) {
                 <p className="m-0 self-start text-xl font-semibold mb-1" >Data prevista de avanço de etapa</p>
                 <div className="flex justify-between gap-4 w-full  h-full" >
                     <div className="w-52" >
-                        <InputDados tirarTopo={true} editable={true} preValue={data1mesAtras} placeholder="Data Início" name="dataInicio" type="date" register={register} />
+                        <InputDados tirarTopo={true} editable={true} placeholder="Data Início" name="dataInicio" type="date" register={register} />
                     </div>
                     <p className="mt-7" >Até</p>
                     <div className="w-52" >
-                        <InputDados tirarTopo={true} editable={true} preValue={dataAtual} placeholder="Data Final" name="dataFim" type="date" register={register} />
+                        <InputDados tirarTopo={true} editable={true} placeholder="Data Final" name="dataFim" type="date" register={register} />
                     </div>
                 </div>
             </div>
@@ -95,11 +96,11 @@ export function Filter({ handleFilters, fecharFiltro, showFilters }: Filters) {
                 <p className="m-0 self-start text-xl font-semibold mb-1" >Valor Estimado </p>
                 <div className="flex justify-between h-full w-full gap-4" >
                     <div className=" w-52 " >
-                        <InputDados tirarTopo={true}  editable={true} preValue={"0"} placeholder="Valor Mínimo" name="valorMinimo" type="number" register={register} />
+                        <InputDados tirarTopo={true}  editable={true} placeholder="Valor Mínimo" name="valorMinimo" type="number" register={register} />
                     </div>
                     <p className="mt-7" >Até</p>
                     <div className="w-52" >
-                        <InputDados tirarTopo={true} editable={true} preValue={"5000"} placeholder="Valor Máximo" name="valorMaximo" type="number" register={register} />
+                        <InputDados tirarTopo={true} editable={true}  placeholder="Valor Máximo" name="valorMaximo" type="number" register={register} />
                     </div>
                 </div>
             </div>
