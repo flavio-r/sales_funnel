@@ -37,10 +37,6 @@ const router = createBrowserRouter([
         element: <Private><Home/></Private>
       },
       {
-        path: "/autologin",
-        element: <AutoLogin/>
-      },
-      {
         path: "/opportunity/:id",
         element: <Private><Opportunity/></Private>
       },
@@ -61,6 +57,10 @@ const router = createBrowserRouter([
   {
     element: <Login/>,
     path: "/login"
+  },
+  {
+    element: <AutoLogin/>,
+    path: "/autologin"
   },
   {
   element: <LayoutGestoria/>,
