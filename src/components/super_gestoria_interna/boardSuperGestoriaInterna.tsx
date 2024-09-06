@@ -251,7 +251,7 @@ export function BoardSuperGestoriaInterna() {
                     toast.success("Potencial desativado com sucesso");
                 }
             }
-            toast.error("Transforme o Potencial em Qualificação!")
+            toast.error("Transforme o Potencial em Cliente!")
             return;
         }
 

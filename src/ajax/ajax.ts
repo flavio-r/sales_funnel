@@ -1,6 +1,5 @@
 const env = import.meta.env.VITE_ENV_NAME;
 
-
 interface Request {
     method: string;
     endpoint: string;
@@ -43,7 +42,6 @@ export async function ajax({ method, endpoint, data, signal }: Request) {
         if (data) {
             options.body = JSON.stringify(data);
         }
-
         const response: any = await fetch(url, options);
         const responseJson = await response.json();
 
@@ -58,7 +56,6 @@ export async function ajax({ method, endpoint, data, signal }: Request) {
             
            return window.location.href = 'https://hub.copapel.com.br/';
         }
-
         return responseJson;
     } catch(err: any) {
         // Verificar se a falha ocorreu devido ao cancelamento da requisição

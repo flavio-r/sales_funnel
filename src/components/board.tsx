@@ -249,7 +249,7 @@ export function Board() {
                     return;
                 }
             }
-            toast.error("Transforme o Potencial em Qualificação!")
+            toast.error("Transforme o Potencial em Cliente!")
             return;
         }
 

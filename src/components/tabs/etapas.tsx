@@ -24,9 +24,9 @@ export function Etapas({task}: {task?: task}) {
             const closingDate: Date = addDays(new Date(etapa.ClosingDate), 1);
             const diffMilliseconds: number = closingDate.getTime() - startDate.getTime();
             var diasNaEtapa: number = Math.floor(diffMilliseconds / (1000 * 60 * 60 * 24));
-            const startDateFormatted: string = `${startDate.getDate()}/${startDate.getMonth() + 1}/${startDate.getFullYear()}`;
-            const finishDateFormatted: string = `${closingDate.getDate()}/${closingDate.getMonth() + 1}/${closingDate.getFullYear()}`;
-            if (diasNaEtapa == 0) { diasNaEtapa = 1 }
+            const startDateFormatted: string = `${startDate.getDate().toString().padStart(2, '0')}/${(startDate.getMonth() + 1).toString().padStart(2, '0')}/${startDate.getFullYear()}`;
+            const finishDateFormatted: string = `${closingDate.getDate().toString().padStart(2, '0')}/${(closingDate.getMonth() + 1).toString().padStart(2, '0')}/${closingDate.getFullYear()}`;
+                    if (diasNaEtapa == 0) { diasNaEtapa = 1 }
             var objToAdd = {
                 nomeEtapa: nomeEtapa,
                 diasNaEtapa: diasNaEtapa,
