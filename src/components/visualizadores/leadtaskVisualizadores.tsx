@@ -25,7 +25,7 @@ export function LeadTaskVisualizadores({task, index}: taskProps) {
     const { selectedTasks } = useContext(TaskContextGestoria);
 
     function handleOpenTask(task: taskProps["task"]) {
-        navigate(`/leads/${task.id_card}`)
+        navigate(`/leads/${task.id_card}?origem=visualizador`)
     }
 
 

@@ -63,7 +63,7 @@ export function Header({ setSearch, setFilters, setGestor }: header) {
                 return navigate("/supergestoria");
             } else if (origem == "visualizador") {
                 return navigate("/visualizador");
-            }
+            } 
         }
         navigate('/');
     }

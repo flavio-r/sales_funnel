@@ -28,7 +28,7 @@ export function LeadTaskSuperGestoriaInterna({task, index}: taskProps) {
     const firstName = task.vendedor.split(" ")[0];
 
     function handleOpenTask(task: taskProps["task"]) {
-        navigate(`/leads/${task.id_card}`)
+        navigate(`/leads/${task.id_card}?origem=superGestoriaInterna`)
     }
 
 
