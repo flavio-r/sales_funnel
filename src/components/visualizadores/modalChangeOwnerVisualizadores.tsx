@@ -7,10 +7,12 @@ import { SelectDadosVisualizadores } from "./selectDadosVisualizadores";
 import SearchContext from './layoutGestoria';
 import { ajax } from "../../ajax/ajax";
 import toast from "react-hot-toast";
+import { gerenciado } from "./layoutGestoria"; // Update this import
+
 export function ChangeOwnerVisualizadores({atualizaEstadoModal, mostrarModal, idTask, currentOwner} : {atualizaEstadoModal: () => void, mostrarModal: boolean, idTask: number, currentOwner: string}) {
     const [isOpen, setIsOpen] = useState<boolean>(mostrarModal);
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
-    const { allGerenciados } = useContext(SearchContext);
+    const { allGerenciados } = useContext(SearchContext) as { allGerenciados: gerenciado[] };
 
     const { register, handleSubmit} = useForm({
         mode: "onSubmit"

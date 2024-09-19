@@ -13,10 +13,11 @@ interface headerContextData {
     alteraIndicadores: any;
 }
 
-interface gerenciado {
+export interface gerenciado {
     CodigoVendedor: string;
     VendedorExterno: string;
     Selecionado: boolean;
+    SlpName: string;
 }
 
 const SearchContextGestoria = React.createContext({} as headerContextData);

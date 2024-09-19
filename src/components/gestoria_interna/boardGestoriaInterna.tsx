@@ -58,7 +58,7 @@ export function BoardGestoriaInterna() {
     const [selectedLeadId, setSelectedLeadId] = useState<number>(0);
     const [currentOwner, setCurrentOwner] = useState<string>("");
     const [isExploding, setIsExploding] = useState(false);
-    const [currentLeadOwner, setCurrentLeadOwner] = useState<string>("");
+    const [currentLeadOwner] = useState<string>("");
     const confettiProps = {
         force: 0.6,
         duration: 3000,
