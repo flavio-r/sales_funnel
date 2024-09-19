@@ -1,9 +1,11 @@
 import {RegisterOptions, UseFormRegister} from 'react-hook-form';
 import { externo } from './headerGestoriaInterna';
+import { vendor } from './layoutGestoriaInterna';
 interface input {
     placeholder: string;
     name: string;
-    externos: externo[];
+    externos?: externo[];
+    vendors?: vendor[];
     icon?: any;
     error?: string;
     rules?: RegisterOptions;
@@ -15,7 +17,9 @@ interface input {
     funcaoAoMudar?: (e: any) => void;
     preOwner: string;
 }
-export function SelectDadosGestoriaInterna({tipo, funcaoAoMudar, requiredDefault, register, placeholder, name, icon, error, rules, externos, preOwner}: input) {
+
+export function SelectDadosGestoriaInterna({tipo, funcaoAoMudar, requiredDefault, register, placeholder, name, icon, error, rules, externos, preOwner, vendors}: input) {
+    console.log(vendors);
     return (
         <div className=" w-full relative mt-4 ">
             <p className="m-0 font-semibold text-sm">{placeholder}</p>
@@ -25,7 +29,7 @@ export function SelectDadosGestoriaInterna({tipo, funcaoAoMudar, requiredDefault
                 {
                     tipo == "owner" ?
                     <>
-                        {externos.map((externo: externo) => {
+                        {externos?.map((externo: externo) => {
                             const cleanName = externo.NomeExterno;
                             return <option selected={ cleanName == preOwner ? true : false } value={externo.CodigoExterno}>{cleanName}</option>
                         })}                
@@ -33,6 +37,18 @@ export function SelectDadosGestoriaInterna({tipo, funcaoAoMudar, requiredDefault
                     :
                     ""
                 }
+                {
+                    tipo == "leadOwner" ?
+                    <>
+                        {vendors?.map((externo: vendor) => {
+                            const cleanName = externo.NomeCompletoVendedor;
+                            return <option selected={ cleanName == preOwner ? true : false } value={externo.NomeCompletoVendedor}>{cleanName}</option>
+                        })}                
+                    </>
+                    :
+                    ""
+                }
+                
             </select>
         
             </div>

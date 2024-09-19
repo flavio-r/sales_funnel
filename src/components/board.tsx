@@ -32,6 +32,7 @@ interface task {
         pessoa_contato: string;
         data_criacao: string;
         data_prevista: string;
+        origem_rd: "N" | "S";
     }
 
 
@@ -324,7 +325,8 @@ export function Board() {
                 valor_estimado: task.valor_estimado,
                 pessoa_contato: task.pessoa_contato,
                 data_criacao: task.data_criacao,
-                data_prevista: task.data_prevista
+                data_prevista: task.data_prevista,
+                origem_rd: task.origem_rd
             }
             tasks.push(taskObj);
         })

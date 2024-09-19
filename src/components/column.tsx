@@ -29,6 +29,7 @@ interface colunaProps {
         pessoa_contato: string;
         data_criacao: string;
         data_prevista: string;
+        origem_rd: "N" | "S";
     }[]
 }
 
@@ -40,6 +41,7 @@ interface lead {
         pessoa_contato: string;
         data_criacao: string;
         data_prevista: string;
+        origem_rd: "N" | "S";
 }
 
 

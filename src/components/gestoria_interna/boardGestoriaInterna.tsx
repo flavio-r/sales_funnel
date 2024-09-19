@@ -8,7 +8,7 @@ import SearchContext from './layoutGestoriaInterna';
 import { GanhouPerdeu } from '../modalWinLoss';
 import { ChangeOwnerInterna } from './modalChangeOwnerInterna';
 import { Tooltip } from 'react-tooltip';
-
+import { ModalChangeLeadOwner } from './modalChangeLeadOwner';
 import ConfettiExplosion from 'react-confetti-explosion';
 
 export const TaskContextGestoria = React.createContext({} as any);
@@ -53,10 +53,12 @@ export function BoardGestoriaInterna() {
     const [showWinLoss, setShowWinLoss] = useState<boolean>(false);
     const [isFirstLoadSearch, setIsFirstLoadSearch] = useState(true);
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [isLeadOpen, setIsLeadOpen] = useState<boolean>(false);
     const [selectedTaskId, setSelectedTaskId] = useState<number>(0);
+    const [selectedLeadId, setSelectedLeadId] = useState<number>(0);
     const [currentOwner, setCurrentOwner] = useState<string>("");
     const [isExploding, setIsExploding] = useState(false);
-
+    const [currentLeadOwner, setCurrentLeadOwner] = useState<string>("");
     const confettiProps = {
         force: 0.6,
         duration: 3000,
@@ -395,6 +397,11 @@ export function BoardGestoriaInterna() {
         setIsOpen(!isOpen);
     }
 
+    const handleLeadModalState = () => {
+        setIsLeadOpen(!isLeadOpen);
+    }
+
+
     useEffect(() => {
         carregaTasks();  
     }, [filters, gerenciados]);
@@ -402,13 +409,13 @@ export function BoardGestoriaInterna() {
     return (
         <>
         <Tooltip id="tooltip-gestoria-interna" />
-        <TaskContextGestoria.Provider value={{selectedTasks: selectedTasks, alterModalState: handleChangeModalState, alterSelectedTask: setSelectedTaskId, alterCurrentOwner: setCurrentOwner}} >
+        <TaskContextGestoria.Provider value={{selectedTasks: selectedTasks, alterModalState: handleChangeModalState, alterLeadModalState: handleLeadModalState, alterSelectedTask: setSelectedTaskId, alterSelectedLead: setSelectedLeadId, alterCurrentOwner: setCurrentOwner}} >
         <>{isExploding && <ConfettiExplosion {...confettiProps} />}</>
 
         <DragDropContext useDrag={handleGanhouPerdeu} onDragEnd={handleDragEnd} onDragStart={handleDragStart}>
             <div className='flex mt-6 bg-white box-border max-w-full h-auto' >
             { <ChangeOwnerInterna mostrarModal={isOpen} atualizaEstadoModal={handleChangeModalState} idTask={selectedTaskId} currentOwner={currentOwner} /> }
-
+            { <ModalChangeLeadOwner mostrarModal={isLeadOpen} atualizaEstadoModal={handleLeadModalState} idLead={selectedLeadId.toString()} currentOwner={currentLeadOwner} /> }
             <ColumnGestoriaInterna title="Qualificação" tasks={lead} leads={leadMysql} id="1"/>
             <ColumnGestoriaInterna title="Agendamento / Reunião" tasks={contato} id="2"/>
             <ColumnGestoriaInterna title="Diagnóstico" tasks={diagnostico} id="3"/>

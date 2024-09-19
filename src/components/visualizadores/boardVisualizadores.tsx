@@ -303,7 +303,7 @@ export function BoardVisualizadores() {
     }
 
     const carregaLeads = async (filter:string = "") => {
-        const response = await ajax({method: "POST", endpoint: "/gestoria/leads", data: {filter: filter, filtros: filters, gerenciados: gerenciados}});    
+        const response = await ajax({method: "POST", endpoint: "/visualizadores/leads", data: {filter: filter, filtros: filters, gerenciados: gerenciados}});    
         if (!response) {
             setLeadMysql([]);
             return false;

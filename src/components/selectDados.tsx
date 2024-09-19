@@ -70,6 +70,7 @@ export function SelectDados({customCss, tipo, funcaoAoMudar, requiredDefault, pr
                 
                 { tipo == 'segmento' ? 
                 <>
+                <option value=""></option>
                 <option selected={preValue == "102"} value="102">Academia</option>
                 <option selected={preValue == "103"}value="103">Aliementos e Bebidas</option>
                 <option selected={preValue == "104"}value="104">Condomínio</option>

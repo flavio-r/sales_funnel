@@ -20,11 +20,13 @@ import { IoFilterSharp } from "react-icons/io5";
 import toast from "react-hot-toast";
 import { ImSpinner8 } from "react-icons/im";
 import SearchContextGestoria from "./layoutGestoriaInterna";
+import { vendor } from "./layoutGestoriaInterna";
 interface header {
     setSearch: (search: string) => void;
     setFilters: (filters: any) => void;
     setExternosContext: (gestores: externo[]) => void;
     setAllGerenciadosContext: (gestores: externo[]) => void;
+    setAllVendorsContext: (vendors: vendor[]) => void;
 }
 export interface externo {
     CodigoExterno: string;
@@ -32,7 +34,7 @@ export interface externo {
     Selecionado: boolean;
 }
 
-export function HeaderGestoriaInterna({ setSearch, setFilters, setExternosContext, setAllGerenciadosContext }: header) {
+export function HeaderGestoriaInterna({ setSearch, setFilters, setExternosContext, setAllGerenciadosContext, setAllVendorsContext }: header) {
     const [mostrarProfile, setMostrarProfile] = useState<boolean>(false);
     const [mostrarAdicionar, setMostrarAdicionar] = useState<boolean>(false);
     const [mostrarFiltro, setMostrarFiltro] = useState<boolean>(false);
@@ -41,6 +43,7 @@ export function HeaderGestoriaInterna({ setSearch, setFilters, setExternosContex
     const [externos, setExternos] = useState<externo[]>([]);
     const [firstRender, setFirstRender] = useState<boolean>(true);
     const [indicadores, setIndicadores] = useState<any>({});
+
     
     const { indicadoresContext } = useContext(SearchContextGestoria);
 
@@ -120,6 +123,22 @@ export function HeaderGestoriaInterna({ setSearch, setFilters, setExternosContex
         }
     }
 
+    const carregaAllVendors = async () => {
+        const response = await ajax({method: "GET", endpoint: "/vendedores/todos", data: null })
+        if (response.status == "error") {   
+            toast.error("Erro ao carregar os vendedores")
+            return;
+        }
+        if (response.status == "success") {
+            setAllVendorsContext(response.data);
+        }
+    }
+
+
+    useEffect(() => {
+        carregaAllVendors();
+    }, [])
+
     useEffect(() => {
         if (externos.length > 0) {
             if (firstRender) {
@@ -160,19 +179,19 @@ export function HeaderGestoriaInterna({ setSearch, setFilters, setExternosContex
                     <div className="flex flex-col items-center justify-center" >
                         <p className="m-0 text-xs font-semibold text-green-500 " >Ganhos (30 dias)</p>
                         <button className=" hover:scale-105 h-9 w-24 customGreenBorder outline-none bg-white rounded-md font-semibold text-green-500 cursor-pointer hover:bg-green-500 hover:text-white transition-all duration-300 ">
-                           { indicadores.ganhos || <ImSpinner8 className="animate-spin mt-1" />  }
+                           { indicadores.ganhos == null || indicadores.ganhos == undefined ? <ImSpinner8 className="animate-spin mt-1" />  : indicadores.ganhos  }
                         </button>
                     </div>
                     <div className="flex flex-col items-center justify-center">
                         <p className="m-0 text-xs font-semibold text-red-500" >Perdidos (30 dias)</p>
                         <button className=" hover:scale-105 h-9 w-24 customRedBorder outline-none bg-white rounded-md font-semibold text-red-500 cursor-pointer hover:bg-red-500 hover:text-white transition-all duration-300 ">
-                            { indicadores.perdidos || <ImSpinner8 className="animate-spin mt-1"/>  }
+                            { indicadores.perdidos == null || indicadores.perdidos == undefined ? <ImSpinner8 className="animate-spin mt-1" />  : indicadores.perdidos }
                         </button>
                     </div>
                     <div className="flex flex-col items-center justify-center" >
                         <p className="m-0 text-xs font-semibold text-black" >Valor Total aberto</p>
                         <button className=" hover:scale-105 h-9 flex items-center justify-center customBorder outline-none bg-white rounded-md font-semibold text-black cursor-pointer hover:bg-black hover:text-white transition-all duration-300 ">
-                            { indicadores.valorTotal ? new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(indicadores.valorTotal) : <ImSpinner8 className="animate-spin"/> }
+                                { indicadores.valorTotal == null || indicadores.valorTotal == undefined ? <ImSpinner8 className="animate-spin"/> : new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(indicadores.valorTotal) }
                         </button>
                     </div>
                 </div>    

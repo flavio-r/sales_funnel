@@ -15,6 +15,7 @@ interface taskProps {
         data_criacao: string;
         data_prevista: string;
         empresa: string;
+        origem_rd: "N" | "S";
     }
     index: string;
 }
