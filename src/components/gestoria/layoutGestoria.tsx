@@ -4,7 +4,7 @@ import React from 'react';
 import { useState } from "react";
 
 
-interface headerContextData {
+export interface headerContextData {
     searchValue: string;
     filters: any;
     gerenciados: any;
@@ -17,6 +17,7 @@ interface gerenciado {
     CodigoVendedor: string;
     VendedorExterno: string;
     Selecionado: boolean;
+    SlpName: string;
 }
 
 const SearchContextGestoria = React.createContext({} as headerContextData);

@@ -10,6 +10,8 @@ import toast from "react-hot-toast";
 export function ChangeOwner({atualizaEstadoModal, mostrarModal, idTask, currentOwner} : {atualizaEstadoModal: () => void, mostrarModal: boolean, idTask: number, currentOwner: string}) {
     const [isOpen, setIsOpen] = useState<boolean>(mostrarModal);
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
+
+
     const { allGerenciados } = useContext(SearchContext);
 
     const { register, handleSubmit} = useForm({
