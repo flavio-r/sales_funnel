@@ -54,6 +54,7 @@ export interface task {
         tipoCliente?: string;
         numero: string;
         municipio: string | null;
+        CardCode: string | null;
     }[];
 }
 
@@ -82,7 +83,7 @@ export function Leads() {
     const [validationAllFields, setValidationAllFields] = useState<boolean>(false);
     const [validatedFields, setValidatedFields] = useState<any>();
     const [isValidated, setIsValidated] = useState<boolean>(false);
-    const [estados, setEstados] = useState<estado[]>([])
+    const [estados, /*setEstados*/] = useState<estado[]>([])
     const [municipios, setMunicipios] = useState<municipio[]>([])
 
     //Só pra ele não apitar not used
@@ -104,7 +105,8 @@ export function Leads() {
 
     const alertNotAllFields = () => {
         console.log(validatedFields);
-        toast.error("Há campos a serem preenchidos!");
+        //toast.error("Há campos a serem preenchidos!");
+        toast.error("Código do cliente não encontrado!");
         if (validatedFields.data_prevista || validatedFields.titulo || validatedFields.valor_estimado) {
             setActiveTab(1);
             return;
@@ -118,8 +120,6 @@ export function Leads() {
         setErrors({});
         toast.dismiss();
         toast.loading("Cadastrando Cliente SAP");
-
-
 
         const response = await ajax({ method: "POST", endpoint: "/leads/registerLead", data: { id_card: id } });
 
@@ -162,6 +162,7 @@ export function Leads() {
             return;
         }
     }
+    /*
     const carregaEstados = async () => {
         const estados = await ajax({ method: "GET", endpoint: "/leads/estados", data: null });
 
@@ -174,12 +175,13 @@ export function Leads() {
             return;
         }
     }
+        */
     const checkFields = async () => {
         setValidationAllFields(true);
         setValidatedFields({})
         var response;
         try {
-            response = await ajax({ method: "POST", endpoint: "/leads/checkAllFields", data: { id_card: id } });
+            response = await ajax({ method: "POST", endpoint: "/leads/checkCardCode", data: { id_card: id } });
         }
         catch (err) {
             setValidationAllFields(false);
@@ -192,7 +194,7 @@ export function Leads() {
         if (response.status == 'error') {
             setValidatedFields(response.message);
             setValidationAllFields(false);
-            return;
+            return; 
         }
         if (response.status == 'success') {
             setValidationAllFields(false);
@@ -225,8 +227,8 @@ export function Leads() {
     useEffect(() => {
         carregaTask();
         checkFields();
-        carregaEstados();
-        carregaMunicipios()
+        //carregaEstados();
+        //carregaMunicipios()
     }, []);
 
 

@@ -30,6 +30,7 @@ export interface gerenciado {
     CodigoVendedor: string;
     VendedorExterno: string;
     Selecionado: boolean;
+    SlpName: string;
 }
 
 export function HeaderGestoria({ setSearch, setFilters, setGerenciadosContext, setAllGerenciadosContext }: header) {
@@ -184,10 +185,10 @@ export function HeaderGestoria({ setSearch, setFilters, setGerenciadosContext, s
                     <WhiteBtn nomeBtn="Vendedores" icon={<FcBusinessman  />} onClick={() => setShowVendors(!showVendors)} />
                     <div className={` ${showVendors ? "" : "hidden"} customBorder mt-14  customListWidth rounded-md box-border absolute z-50 bg-white flex flex-col `} >
                     {
-                        gerenciados.map((gerenciado: { VendedorExterno: string, CodigoVendedor: string, Selecionado: boolean }) =>  {
+                        gerenciados.map((gerenciado: { VendedorExterno: string, CodigoVendedor: string, Selecionado: boolean, SlpName: string }) =>  {
                             return (
                                 <label onClick={(e) => e.stopPropagation()}  className=" flex px-4 py-3 w-full box-border justify-between transition-all duration-300 hover:bg-black hover:bg-opacity-10 cursor-pointer " >
-                                    {gerenciado.VendedorExterno}
+                                    {gerenciado.SlpName}
                                     <input checked={ gerenciado.Selecionado } onClick={() => handleGerenciados(gerenciado)}  type="checkbox" className=" w-8 transition-all duration-300 hover:scale-105 " />
                                 </label>
                             )

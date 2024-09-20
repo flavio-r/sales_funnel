@@ -2,7 +2,7 @@ import {task} from "../../pages/leads"
 import { useState } from "react"
 import { FindCompany } from "../modalFindCompany";
 import { InputDados } from "../inputDados";
-import { SelectDados } from "../selectDados";
+//import { SelectDados } from "../selectDados";
 import { GrnBtn } from "../greenBtn";
 import { IoIosSave } from "react-icons/io";
 import {useForm} from 'react-hook-form';
@@ -20,7 +20,7 @@ interface propsDadosClientes {
     selecionaEstado: (CodEstado: string) => void;
 }
 
-export function DadosCliente({task, errorsRegister, estados, municipios, selecionaEstado}: propsDadosClientes) {   
+export function DadosCliente({task, errorsRegister, /*estados, municipios, selecionaEstado*/}: propsDadosClientes) {   
     const [open, setOpen] = useState<boolean>(false);
     const [selectedData, setSelectedData] = useState<any>({});
     const [errors, setErrors] = useState<any>(errorsRegister);
@@ -54,6 +54,49 @@ export function DadosCliente({task, errorsRegister, estados, municipios, selecio
         setErrors({})
         toast.dismiss()
         toast.loading("Salvando potencial")
+
+
+        const CardCode = data.CardCode.toUpperCase();
+        const dataObj = {
+            CardCode: CardCode,
+            id_card: id
+        }
+
+        try {
+            response = await ajax({method: "PATCH", endpoint: "/leads/atualizar", data: dataObj});
+        } catch (error) {
+            toast.dismiss();
+            toast.error("Erro ao salvar potencial")
+            return;
+        }
+
+
+        if (!response) {
+            toast.dismiss();
+            toast.error("Erro ao salvar potencial");
+            return;
+        }
+
+        if (response.status == 'error') {
+            toast.dismiss();
+            toast.error("Erro ao salvar potencial");
+            return;
+        }
+       
+        if (response.status === 'success') {
+            toast.dismiss();
+            toast.success("Potencial salvo com sucesso");
+            setTimeout( () => {
+                window.location.reload();    
+            } , 500 ) 
+            return;
+        }
+
+        toast.dismiss();
+        toast.error("Erro Inesperado");
+
+
+        return;
         var response;
         data.id = id;
         
@@ -104,9 +147,9 @@ export function DadosCliente({task, errorsRegister, estados, municipios, selecio
 
     };
 
-    const handleFieldChanged = (nome: string) => {
-        setClientType(nome)
-    }
+    //const handleFieldChanged = (nome: string) => {
+    //    setClientType(nome)
+    //}
 
 
     const handlePreValue = () => {
@@ -126,6 +169,10 @@ export function DadosCliente({task, errorsRegister, estados, municipios, selecio
         <form id="addLead" action="" onSubmit={handleSubmit(onSubmit)}  >
         <div className="m-0 w-full h-full p-4 box-border flex gap-12 items-center">
             <div className="w-4/6 flex flex-col gap-2">
+                <div className="flex w-full gap-4">
+                    <div className="w-1/2" ><InputDados editable={true} register={register } preValue={  Object.keys(selectedData).length === 0 ? task?.informacoes[0].CardCode : selectedData.CardCode     }  name="CardCode" error={errors.CardCode}  placeholder="Código do cliente" /></div>
+                </div>  
+                {/*
                 <div className="flex w-full gap-4">
                     <div className="w-1/2" ><SelectDados preValue={task?.informacoes[0].municipio ? task?.informacoes[0].municipio : "" } register={register} name="municipio" error={ errors.municipio }  placeholder="Município" tipo="municipios" municipios={municipios} /></div>
                     <div className="w-1/2" ><InputDados editable={true} register={register} preValue={ Object.keys(selectedData).length === 0 ?    task?.informacoes[0].bairro : selectedData.Bairro} name="bairro" error={ errors.bairro }  placeholder="Bairro" /></div>
@@ -161,13 +208,14 @@ export function DadosCliente({task, errorsRegister, estados, municipios, selecio
                     <div className="w-1/2" ><InputDados editable={true} register={ register } preValue={  Object.keys(selectedData).length === 0 ?  task?.informacoes[0].telefone : selectedData.telefone} name="telefone" error={ errors.telefone }  placeholder="Telefone" /></div>
                     <div className="w-1/2" ><InputDados editable={true} register={ register } preValue={ Object.keys(selectedData).length === 0 ? task?.informacoes[0].email:selectedData.email   }  name="email" error={errors.email}  placeholder="Email" /></div>                                
                 </div>
+                */}
             </div>
             <div className="w-1/2 ">
-                <div className="flex flex-col w-full items-center">
-                    <div className="mt-40" ><GrnBtn form="addLead" type="submit" big={true} nomeBtn="Salvar Dados Cliente" icon={<IoIosSave size={30} />} onClick={handleSubmit(onSubmitSavePotential)}  /></div>
+                <div className="flex flex-col w-full items-center justify-center h-full">
+                    <div className="" ><GrnBtn form="addLead" type="submit" big={false} nomeBtn="Salvar Código do Cliente" icon={<IoIosSave size={30} />} onClick={handleSubmit(onSubmitSavePotential)}  /></div>
                 </div>
             </div>
-            
+                    
           { true ? "" : <button onClick={() => setOpen(!open)} className="py-2 px-4 rounded-md border-none bg-blue-500 text-white font-semibold cursor-pointer hover:shadow-lg transition-all duration-500">Buscar empresa</button>}     
         </div>
         <Tooltip id="tooltip-4" />
