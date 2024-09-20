@@ -8,9 +8,19 @@ import SearchContext from './layoutGestoria';
 import { GanhouPerdeu } from '../modalWinLoss';
 import { ChangeOwner } from './modalChangeOwner';
 import ConfettiExplosion from 'react-confetti-explosion';
+import { ModalChangeLeadOwner } from './modalChangeLeadOwner';
 
 
-export const TaskContextGestoria = React.createContext({} as any);
+interface taskContextGestoriaProps {
+    selectedTasks: string[];
+    alterModalState: () => void;
+    alterSelectedTask: (value: string) => void;
+    alterCurrentOwner: (owner: string) => void;
+    alterLeadModalState: () => void;
+    alterSelectedLead: (value: string) => void;
+}
+
+export const TaskContextGestoria = React.createContext({} as taskContextGestoriaProps);
 interface task {
     Id: number;
     CardCode: string;
@@ -32,6 +42,7 @@ interface taskMysql {
     pessoa_contato: string;
     data_criacao: string;
     data_prevista: string;
+    vendedor: string;
 }
 
 
@@ -50,9 +61,11 @@ export function BoardGestoria() {
     const [showWinLoss, setShowWinLoss] = useState<boolean>(false);
     const [isFirstLoadSearch, setIsFirstLoadSearch] = useState(true);
     const [isOpen, setIsOpen] = useState<boolean>(false);
-    const [selectedTaskId, setSelectedTaskId] = useState<number>(0);
+    const [selectedTaskId, setSelectedTaskId] = useState<string>("");
     const [currentOwner, setCurrentOwner] = useState<string>("");
     const [isExploding, setIsExploding] = useState(false);
+    const [selectedLeadId, setSelectedLeadId] = useState<string>("");
+    const [isLeadOpen, setIsLeadOpen] = useState<boolean>(false);
 
     const confettiProps = {
         force: 0.6,
@@ -325,7 +338,8 @@ export function BoardGestoria() {
                 valor_estimado: task.valor_estimado,
                 pessoa_contato: task.pessoa_contato,
                 data_criacao: task.data_criacao,
-                data_prevista: task.data_prevista
+                data_prevista: task.data_prevista,
+                vendedor: task.vendedor
             }
             tasks.push(taskObj);
         })
@@ -399,6 +413,9 @@ export function BoardGestoria() {
         carregaTasks();  
     }, [filters, gerenciados]);
 
+    const handleLeadModalState = () => {
+        setIsLeadOpen(!isLeadOpen);
+    }
 
     /*
    useEffect(() => {
@@ -407,12 +424,13 @@ export function BoardGestoria() {
    */
 
     return (
-        <TaskContextGestoria.Provider value={{selectedTasks: selectedTasks, alterModalState: handleChangeModalState, alterSelectedTask: setSelectedTaskId, alterCurrentOwner: setCurrentOwner}} >
+        <TaskContextGestoria.Provider value={{selectedTasks: selectedTasks, alterLeadModalState: handleLeadModalState, alterSelectedLead: setSelectedLeadId, alterModalState: handleChangeModalState, alterSelectedTask: setSelectedTaskId, alterCurrentOwner: setCurrentOwner}} >
         <>{isExploding && <ConfettiExplosion {...confettiProps} />}</>
 
         <DragDropContext useDrag={handleGanhouPerdeu} onDragEnd={handleDragEnd} onDragStart={handleDragStart}>
             <div className='flex mt-6 bg-white box-border max-w-full h-auto' >
             { <ChangeOwner mostrarModal={isOpen} atualizaEstadoModal={handleChangeModalState} idTask={selectedTaskId} currentOwner={currentOwner} /> }
+            { <ModalChangeLeadOwner mostrarModal={isLeadOpen} atualizaEstadoModal={handleLeadModalState} idLead={selectedLeadId.toString()} currentOwner={""} /> }
 
             <ColumnGestoria title="Qualificação" tasks={lead} leads={leadMysql} id="1"/>
             <ColumnGestoria title="Agendamento / Reunião" tasks={contato} id="2"/>

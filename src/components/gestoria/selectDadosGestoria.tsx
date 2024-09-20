@@ -33,6 +33,17 @@ export function SelectDadosGestoria({tipo, funcaoAoMudar, requiredDefault, regis
                     :
                     ""
                 }
+                {
+                    tipo == "leadOwner" ?
+                    <>
+                        {gerenciados.map((gerenciado: gerenciado) => {
+                            const cleanName = gerenciado.VendedorExterno.replace(".", " ");
+                            return <option value={gerenciado.SlpName}>{cleanName}</option>
+                        })}                 
+                    </>
+                    :
+                    ""
+                }
             </select>
         
             </div>

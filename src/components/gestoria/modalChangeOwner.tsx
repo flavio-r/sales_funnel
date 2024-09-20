@@ -7,7 +7,7 @@ import { SelectDadosGestoria } from "./selectDadosGestoria";
 import SearchContext from './layoutGestoria';
 import { ajax } from "../../ajax/ajax";
 import toast from "react-hot-toast";
-export function ChangeOwner({atualizaEstadoModal, mostrarModal, idTask, currentOwner} : {atualizaEstadoModal: () => void, mostrarModal: boolean, idTask: number, currentOwner: string}) {
+export function ChangeOwner({atualizaEstadoModal, mostrarModal, idTask, currentOwner} : {atualizaEstadoModal: () => void, mostrarModal: boolean, idTask: string, currentOwner: string}) {
     const [isOpen, setIsOpen] = useState<boolean>(mostrarModal);
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
 

@@ -22,8 +22,6 @@ interface taskProps {
 
 
 export function LeadTaskGestoriaInterna({task, index}: taskProps) {
-
-    
     const navigate = useNavigate();
     const { selectedTasks, alterLeadModalState, alterSelectedLead } = useContext(TaskContextGestoria);
 

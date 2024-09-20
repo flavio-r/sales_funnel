@@ -14,6 +14,7 @@ interface taskProps {
         pessoa_contato: string;
         data_criacao: string;
         data_prevista: string;
+        vendedor: string;
     }
     index: string;
 }
@@ -22,7 +23,16 @@ interface taskProps {
 
 export function LeadTaskGestoria({task, index}: taskProps) {
     const navigate = useNavigate();
-    const { selectedTasks } = useContext(TaskContextGestoria);
+    const { selectedTasks, alterLeadModalState, alterSelectedLead } = useContext(TaskContextGestoria);
+
+    const firstName = task.vendedor.split(" ")[0];
+
+    const handleChangeLeadOwner = () => {
+        console.log("Uga duga")
+        alterLeadModalState();
+        alterSelectedLead(task.id_card);
+    }
+
 
     function handleOpenTask(task: taskProps["task"]) {
         navigate(`/leads/${task.id_card}?origem=gestoria`)
@@ -45,7 +55,9 @@ export function LeadTaskGestoria({task, index}: taskProps) {
                     <div className='w-11/12'>
                     <h3 className='p-0 m-0'>{task.titulo}</h3>
                     <p className='m-0 mr-2 text-sm'>{task.pessoa_contato}</p>  
-                    <p className='m-0 text-xs font-semibold mt-3 flex gap-2 items-center'> <CgProfile /> R$ {formatedPrice} <LuDot /> {formatedDate}</p>
+                    <p onClick={() => handleChangeLeadOwner()} className=' cursor-pointer m-0 text-xs font-semibold mt-3 flex gap-2 items-center'> <div className=' gap-1 whitespace-nowrap flex items-center customBorder rounded-md px-1 transition-all duration-300 hover:scale-105 hover:shadow-sm' >
+                        <CgProfile  /><p className='m-0' > {firstName} </p>
+                        </div> R$ {formatedPrice} <LuDot /> {formatedDate}</p>
                     </div>
                     <FaCirclePlus onClick={() => handleOpenTask(task)} size={20} className='cursor-pointer transition-all duration-300 hover:scale-125 hover:rotate-90 p-1' />
                 </div>

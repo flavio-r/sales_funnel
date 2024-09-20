@@ -29,6 +29,7 @@ interface colunaProps {
         pessoa_contato: string;
         data_criacao: string;
         data_prevista: string;
+        vendedor: string;
     }[]
 }
 
