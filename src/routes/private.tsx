@@ -27,7 +27,7 @@ export function Private({children}: PrivateProps): any {
     }
     if (!loading && !signed) {
         console.log("Detectou mano não logado!");
-        return window.location.href = 'https://hub.copapel.com.br/';
+      //  return window.location.href = 'https://hub.copapel.com.br/';
     }
 
     return children;

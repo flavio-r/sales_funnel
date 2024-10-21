@@ -9,6 +9,7 @@ import { SelectDados } from "./selectDados";
 import { ajax } from "../ajax/ajax";
 import toast from "react-hot-toast";
 import { municipio } from "../pages/leads";
+
 interface Filters {
     showFilters: boolean;
     handleFilters: (filters: any) => void
@@ -24,11 +25,13 @@ export interface regiao {
 export function Filter({ handleFilters, fecharFiltro, showFilters }: Filters) {
     const { register, handleSubmit, reset } = useForm<any>({});
     const [switchHandler, setSwitchHandler] = useState<boolean>(false);
+    const [switch2Handler, setSwitch2Handler] = useState<boolean>(false);
     const [municipios, setMunicipios] = useState<municipio[]>([]);
     const [regioes, setRegioes] = useState<regiao[]>([]);
 
     const onSubmit = (data: any) => {
         data.apenasDestacados = switchHandler;
+        data.apenasClientesComAtividadeMarcada = switch2Handler;
         console.log(data);
         handleFilters(data);
     }
@@ -126,6 +129,19 @@ export function Filter({ handleFilters, fecharFiltro, showFilters }: Filters) {
                     </label>
                 </div>
             </div>
+
+            <div className=" flex flex-col  items-center mb-8">
+                <div className="self-start" >
+                    <p className=" m-0 mb-2 bg-white font-semibold text-xl " >Oportunidades com tickets para mim</p>
+                    <label className="toggle-switch">
+                        <input type="checkbox" onClick={() => setSwitch2Handler(!switch2Handler)} />
+                        <div className="toggle-switch-background">
+                            <div className="toggle-switch-handle"></div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+            
             <div className="horizontalRuleFilter" ></div>
             <div className="flex items-center justify-between" >
                 <button type="button" onClick={() => handleClearFilters()} className=" hover:scale-105 h-10 w-28 customRedBorder outline-none bg-white rounded-md font-semibold text-red-500 cursor-pointer hover:bg-red-500 hover:text-white transition-all duration-300 mt-4 ">Limpar Filtros</button>

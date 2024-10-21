@@ -21,7 +21,7 @@ const deleteAllCookies = () => {
 export async function ajax({ method, endpoint, data, signal }: Request) {
     var url;
     if (env == "dev") {
-        url = 'http://192.168.23.9:8006/requests'+ endpoint;
+        url = 'http://localhost:8006/requests'+ endpoint;
     } else if (env == "prd") {
         url = 'https://funilapi.copapel.com.br/requests' + endpoint;
     } else {
@@ -54,7 +54,7 @@ export async function ajax({ method, endpoint, data, signal }: Request) {
             localStorage.clear();
             sessionStorage.clear();
             
-           return window.location.href = 'https://hub.copapel.com.br/';
+          // return window.location.href = 'https://hub.copapel.com.br/';
         }
         return responseJson;
     } catch(err: any) {

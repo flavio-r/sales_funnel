@@ -204,7 +204,7 @@ export function Atividades({task}: {task?: task}) {
         { showNewTicket ?  <ModalNovoTicket CardCode={task?.CardCode} onClose={() => handleCloseNewTicketModal()} /> : "" }
         { showEndTicket ? <EndTicket  onClose={() => handleCloseEndTicketModal()} ticketData={closingTicketData} /> : "" }
         <div>
-            <div className="flex flex-col customBorder shadow-md p-2 rounded-md   " >
+            <div className=" hidden flex flex-col customBorder shadow-md p-2 rounded-md   " >
                 <div className="flex items-center gap-4" >
                     <h1 className="m-0 ml-2">
                         Ações Rápidas
