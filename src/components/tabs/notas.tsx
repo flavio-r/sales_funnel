@@ -19,7 +19,8 @@ export function Notes({task}: {task?: task}) {
         }
         if (response.status == 'error') {
             toast.dismiss();
-            toast.error(response.message)
+            const sapError = response.message.error.message.value;
+            toast.error(typeof response.message == "string" ? response.message : (sapError ? sapError : "Erro ao salvar notas"));
             return;
         }
 
