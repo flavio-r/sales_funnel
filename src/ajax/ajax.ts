@@ -54,7 +54,7 @@ export async function ajax({ method, endpoint, data, signal }: Request) {
             localStorage.clear();
             sessionStorage.clear();
             
-          // return window.location.href = 'https://hub.copapel.com.br/';
+           return window.location.href = 'https://hub.copapel.com.br/';
         }
         return responseJson;
     } catch(err: any) {
