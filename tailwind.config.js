@@ -20,6 +20,15 @@ export default {
       }
     },
   },
+  safelist: [
+    'action-wrapper',
+    'actions-button',
+    'actions-menu',
+    'action-item',
+    'text-red-600',
+    'hover:bg-red-50',
+  ],
+
   plugins: [],
   corePlugins: {
     preflight: false,

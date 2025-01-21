@@ -15,7 +15,8 @@ import { Notes } from "../components/tabs/notas.tsx";
 import { LoadingModal } from "../components/modalLoading.tsx";
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
-
+import { FaMoneyBillWave } from "react-icons/fa";
+import { Cotacoes } from "../components/tabs/cotacoes.tsx";
 export interface task {
     SequentialNo: number;
     CardCode: string;
@@ -155,10 +156,14 @@ export function Opportunity() {
                         <p className="text-xl ">Atividades</p>
                     </div>
                     <div onClick={() => setActiveTab(3)}className={`flex items-center gap-4 px-6 cursor-pointer ${ activeTab == 3 ? "bg-custom-dark-green customTopBorder" : "" }`}>
+                        <FaMoneyBillWave size={30} />
+                        <p className="text-xl">Cotações</p>
+                    </div>
+                    <div onClick={() => setActiveTab(4)}className={`flex items-center gap-4 px-6 cursor-pointer ${ activeTab == 4 ? "bg-custom-dark-green customTopBorder" : "" }`}>
                         <GrSteps size={30} />
                         <p className="text-xl">Etapas</p>
                     </div>
-                    <div onClick={() => setActiveTab(4)}className={`flex items-center gap-4 px-6 cursor-pointer ${ activeTab == 4 ? "bg-custom-dark-green customTopBorder" : "" }`}>
+                    <div onClick={() => setActiveTab(5)}className={`flex items-center gap-4 px-6 cursor-pointer ${ activeTab == 5 ? "bg-custom-dark-green customTopBorder" : "" }`}>
                         <FaRegNoteSticky size={30} />
                         <p className="text-xl">Notas</p>
                     </div>
@@ -170,9 +175,10 @@ export function Opportunity() {
                         !loadingOp ? 
                         activeTab == 1 ? <Geral task={task} /> : 
                         activeTab == 2 ? <Atividades task={task} /> : 
-                        activeTab == 3 ? <Etapas task={task} />: 
-                        activeTab == 4 ? <Notes task={task}/> : 
-                        activeTab == 5 ? <h1>Anexos</h1> : <h1>Erro</h1>
+                        activeTab == 3 ? <Cotacoes task={task} /> : 
+                        activeTab == 4 ? <Etapas task={task} />: 
+                        activeTab == 5 ? <Notes task={task}/> : 
+                        activeTab == 6 ? <h1>Anexos</h1> : <h1>Erro</h1>
                         :
                         <LoadingModal/>
                     }
