@@ -31,30 +31,6 @@ jobs:
 
 
 
-  portainer-deploy:
-    needs: dockerhub-push
-    runs-on: ubuntu-latest
-    steps:      
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '14'
-
-      - name: Install dependencies
-        run: npm install axios https dotenv
-
-      - name: Run Portainer deploy script
-        run: node ./portainer-deploy-script.js
-        env:
-          USERNAME: ${{ secrets.USERNAME }}
-          PASSWORD: ${{ secrets.PASSWORD }}
-          DOCKER_AUTH: ${{ secrets.DOCKER_AUTH }}
-          PORTAINER_URL: ${{ secrets.PORTAINER_URL }}
-          NOME_IMAGEM: ${{ secrets.NOME_IMAGEM }}
-
 
 
 

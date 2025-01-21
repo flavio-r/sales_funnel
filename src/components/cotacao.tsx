@@ -2,14 +2,10 @@ import { cotacao } from "./tabs/cotacoes";
 import { ActionButtons } from "./actionButtons";
 import { useState } from "react";
 import { Modal, Box, Typography } from '@mui/material';
-import { useContext } from "react";
-import { AuthContext } from "../context/authProvider";
 import Swal from 'sweetalert2';
 
 import toast from "react-hot-toast";
-export function Cotacao({ index, cotacao }: { index: number, cotacao: cotacao }) {
-  const { user } = useContext(AuthContext);
-  
+export function Cotacao({ index, cotacao }: { index: number, cotacao: cotacao }) {  
   const [open, setOpen] = useState(false);
   const [modalContent, setModalContent] = useState('');
 
@@ -367,7 +363,7 @@ export function Cotacao({ index, cotacao }: { index: number, cotacao: cotacao })
                 return response;
             })
             .catch((err: any) => {
-                throw new Error('Erro ao buscar motivos');
+                throw new Error(`Erro ao buscar motivos ${err.message}`);
             });
           motivos = response;
 
