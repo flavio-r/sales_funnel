@@ -17,6 +17,7 @@ interface taskProps {
     task: {
         Id: number;
         CardCode: string;
+        ClienteAtivo: string;
         CustomerName: string;
         StartDate: string;
         OpportunityName: string;
@@ -139,18 +140,17 @@ export function Task({ task, index }: taskProps) {
 
     return (
         <>
-            <Tooltip id="tooltip-12" />
             <Draggable draggableId={task.Id.toString()} key={task.Id} index={index} >
                 {(provided: any, snapshot: any) => {
                     return (
-                        <div className={` z-40 hover:z-50 w-full relative h-auto px-2 scaleCustom py-2 rounded-md ${isInDrag ? "bg-slate-200" : "bg-white"} items-center flex flex-row border border-black shadow-custom-shadow`} {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef} isdragging={snapshot.isdragging}>
+                    <div data-tooltip-id={`${task.ClienteAtivo != "Y" ? "tooltip-1" : "" }`} data-tooltip-content="cliente inativo" className={`${task.ClienteAtivo != "Y" ? "opacity-40" : ""} z-40 hover:z-50 w-full relative h-auto px-2 scaleCustom py-2 rounded-md ${isInDrag ? "bg-slate-200" : "bg-white"} items-center flex flex-row border border-black shadow-custom-shadow`} {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef} isdragging={snapshot.isdragging}>
                             <div className='w-11/12'>
                                 <h3 className='p-0 m-0'>{task.OpportunityName}</h3>
                                 <p className='m-0 mr-2 text-sm'>{task.CustomerName}</p>
                                 <p className='m-0 text-xs font-semibold mt-3 flex gap-2 items-center'> <CgProfile /> R$ {formatedPrice} <LuDot /> <span className={dateColor} > {formatedDate} </span> </p>
                             </div>
-                            <div className={`flex flex-col h-full items-center justify-between`} >
-                                <BsExclamationCircleFill data-tooltip-id="tooltip-12" data-tooltip-content="Essa oportunidade foi destacada pelo seu gestor!" size={22} className={` ${!isHighlighted ? "opacity-0 fixed h-0 w-0 " : "opacity-100 scale-105"} z-50 corDestaque transition-all duration-300 p-1 `} />
+                            <div className={`${task.ClienteAtivo != "Y" ? "opacity-40" : ""} flex flex-col h-full items-center justify-between`} >
+                                <BsExclamationCircleFill data-tooltip-id="tooltip-1" data-tooltip-content="Essa oportunidade foi destacada pelo seu gestor!" size={22} className={` ${!isHighlighted ? "opacity-0 fixed h-0 w-0 " : "opacity-100 scale-105"} z-50 corDestaque transition-all duration-300 p-1 `} />
                                 {isInDrag ? <ImSpinner8 className='animate-spin' size={20} /> : <FaCirclePlus onClick={() => handleOpenTask(task)} size={22} className=' hover:rotate-90 cursor-pointer transition-all duration-300 hover:scale-125 p-1  ' />}
                                 <div className='p-1 py-2 border flex items-center justify-center cursor-pointer' onClick={() => handleHeatLevel()} >
                                     {heatColor === "fireIcon" ? (
