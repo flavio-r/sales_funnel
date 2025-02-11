@@ -7,7 +7,6 @@ import { useContext, useEffect, useState } from 'react';
 import { TaskContext } from './board';
 import { ImSpinner8 } from "react-icons/im";
 import { BsExclamationCircleFill } from "react-icons/bs";
-import { Tooltip } from 'react-tooltip'
 import { FaFireAlt } from "react-icons/fa";
 import { ajax } from '../ajax/ajax';
 import toast from 'react-hot-toast';
