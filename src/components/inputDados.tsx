@@ -23,14 +23,19 @@ export function InputDados({ tirarTopo = false, editable = false, isChanged, was
     let formattedPreValue = preValue;
     
     
-    if (type === "date" && preValue) {
+    if (type === "date" && preValue && preValue.includes("/")) {
         const [day, month, year] = preValue.split("/");
         formattedPreValue = `${year}-${month}-${day}`;
-    }else if (type === "time" && preValue) {
+    } else if (type == "date" && preValue && preValue.includes("-")) {
+        const [year, month, day] = preValue.split("-");
+        formattedPreValue = `${year}-${month}-${day}`;
+    } else if (type === "time" && preValue) {
         formattedPreValue = preValue;
     } else if (type == "numero" && preValue) {
         formattedPreValue = preValue.replace(/[^0-9]/g, "");
     }
+
+    console.log(formattedPreValue);
 
     const handleInputChange = (event: any) => {
         if (wasChanged) wasChanged(name); 

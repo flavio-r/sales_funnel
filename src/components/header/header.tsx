@@ -18,13 +18,16 @@ import logo from '../../../public/assets/images/logo_funil_fundoBranco.png'
 import toast from "react-hot-toast";
 import { useContext } from "react";
 import { AuthContext } from "../../context/authProvider";
+import { filter_fields } from "../modalFilter";
+
 interface header {
     setSearch: (search: string) => void;
     setFilters: (filters: any) => void;
     setGestor: (isGestor: boolean) => void;
+    Filters: filter_fields;
 }
 
-export function Header({ setSearch, setFilters, setGestor }: header) {
+export function Header({ setSearch, setFilters, setGestor, Filters }: header) {
     const [mostrarProfile, setMostrarProfile] = useState<boolean>(false);
     const [mostrarAdicionar, setMostrarAdicionar] = useState<boolean>(false);
     const [mostrarFiltro, setMostrarFiltro] = useState<boolean>(false);
@@ -161,7 +164,7 @@ export function Header({ setSearch, setFilters, setGestor }: header) {
                 <div className="justify-self-end flex items-center justify-center gap-8 mr-6 h-full">
 
                     {pathname.includes('/opportunity') ? null : <WhiteBtn onClick={() => handleFiltro()} nomeBtn="Filtros" icon={<FaFilter size={16} />}></WhiteBtn>}
-                    <Filter showFilters={mostrarFiltro} handleFilters={HandleSetFilters} fecharFiltro={handleFiltro} />
+                    <Filter baseFilters={Filters} showFilters={mostrarFiltro} handleFilters={HandleSetFilters} fecharFiltro={handleFiltro} />
                     <div >
 
                         <CgProfile size={33} onClick={() => handleProfile()} className="mr-8 mt-1.5 hover:scale-105 transition-all duration-500 cursor-pointer" />

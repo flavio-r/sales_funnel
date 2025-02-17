@@ -12,8 +12,21 @@ import { municipio } from "../pages/leads";
 
 interface Filters {
     showFilters: boolean;
+    baseFilters: filter_fields;
     handleFilters: (filters: any) => void
     fecharFiltro: () => void
+}
+
+export interface filter_fields {
+    "dataInicio": string
+    "dataFim": string,
+    "valorMinimo": string,
+    "valorMaximo": string,
+    "regiao": string,
+    "municipio": string,
+    "interesse": string,
+    "apenasDestacados": boolean,
+    "apenasClientesComAtividadeMarcada": boolean
 }
 
 export interface regiao {
@@ -22,10 +35,11 @@ export interface regiao {
 
 
 
-export function Filter({ handleFilters, fecharFiltro, showFilters }: Filters) {
+export function Filter({ handleFilters, fecharFiltro, showFilters, baseFilters }: Filters) {
+    console.log(baseFilters.dataInicio);
     const { register, handleSubmit, reset } = useForm<any>({});
-    const [switchHandler, setSwitchHandler] = useState<boolean>(false);
-    const [switch2Handler, setSwitch2Handler] = useState<boolean>(false);
+    const [switchHandler, setSwitchHandler] = useState<boolean>(baseFilters.apenasDestacados);
+    const [switch2Handler, setSwitch2Handler] = useState<boolean>(baseFilters.apenasClientesComAtividadeMarcada);
     const [municipios, setMunicipios] = useState<municipio[]>([]);
     const [regioes, setRegioes] = useState<regiao[]>([]);
 
@@ -86,11 +100,11 @@ export function Filter({ handleFilters, fecharFiltro, showFilters }: Filters) {
                 <p className="m-0 self-start text-xl font-semibold mb-1" >Data prevista de avanço de etapa</p>
                 <div className="flex justify-between gap-4 w-full  h-full" >
                     <div className="w-52" >
-                        <InputDados tirarTopo={true} editable={true} placeholder="Data Início" name="dataInicio" type="date" register={register} />
+                        <InputDados preValue={baseFilters.dataInicio} tirarTopo={true} editable={true} placeholder="Data Início" name="dataInicio" type="date" register={register} />
                     </div>
                     <p className="mt-7" >Até</p>
                     <div className="w-52" >
-                        <InputDados tirarTopo={true} editable={true} placeholder="Data Final" name="dataFim" type="date" register={register} />
+                        <InputDados preValue={baseFilters.dataFim} tirarTopo={true} editable={true} placeholder="Data Final" name="dataFim" type="date" register={register} />
                     </div>
                 </div>
             </div>
@@ -99,23 +113,23 @@ export function Filter({ handleFilters, fecharFiltro, showFilters }: Filters) {
                 <p className="m-0 self-start text-xl font-semibold mb-1" >Valor Estimado </p>
                 <div className="flex justify-between h-full w-full gap-4" >
                     <div className=" w-52 " >
-                        <InputDados tirarTopo={true}  editable={true} placeholder="Valor Mínimo" name="valorMinimo" type="number" register={register} />
+                        <InputDados tirarTopo={true} preValue={baseFilters.valorMinimo} editable={true} placeholder="Valor Mínimo" name="valorMinimo" type="number" register={register} />
                     </div>
                     <p className="mt-7" >Até</p>
                     <div className="w-52" >
-                        <InputDados tirarTopo={true} editable={true}  placeholder="Valor Máximo" name="valorMaximo" type="number" register={register} />
+                        <InputDados tirarTopo={true} preValue={baseFilters.valorMaximo} editable={true}  placeholder="Valor Máximo" name="valorMaximo" type="number" register={register} />
                     </div>
                 </div>
             </div>
 
             <div className="w-full flex flex-col  items-center mb-4">
-                <SelectDados customCss="w-full" tipo="regioes" regioes={regioes} placeholder="Região" name="regiao" register={register}  />
+                <SelectDados customCss="w-full" tipo="regioes" preValue={baseFilters.regiao} regioes={regioes} placeholder="Região" name="regiao" register={register}  />
             </div>
             <div className="w-full flex flex-col  items-center mb-4">
-                <SelectDados customCss="w-full" tipo="municipios" municipios={municipios} placeholder="Município" name="municipio" register={register}  />
+                <SelectDados customCss="w-full" tipo="municipios" preValue={baseFilters.municipio} municipios={municipios} placeholder="Município" name="municipio" register={register}  />
             </div>
             <div className="w-full flex flex-col  items-center mb-4">
-                <SelectDados customCss="w-full" tipo="heatLevels" municipios={municipios} placeholder="Interesse" name="interesse" register={register}  />
+                <SelectDados customCss="w-full" tipo="heatLevels" preValue={baseFilters.interesse} municipios={municipios} placeholder="Interesse" name="interesse" register={register}  />
             </div>
 
             <div className=" flex flex-col  items-center mb-8">
