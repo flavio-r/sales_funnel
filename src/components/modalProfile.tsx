@@ -36,7 +36,7 @@ export function ModalProfile({isGerente, isInterno, isSupervisor, isVisualizador
         localStorage.clear();
         sessionStorage.clear();
         deleteAllCookies();
-        const response = await ajax({method: "GET", endpoint: "/logout", data: null});
+        await ajax({method: "GET", endpoint: "/logout", data: null});
         //replaced cons log
     }
     

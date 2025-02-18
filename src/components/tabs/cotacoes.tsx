@@ -45,7 +45,7 @@ export function Cotacoes({ task }: { task?: task }) {
         })
         .catch((error) => {
             //replaced cons log
-            toast.error("Erro ao criar proposta!");
+            toast.error("Erro ao criar proposta!: " + error.message);
         })
     }
 

@@ -79,8 +79,8 @@ export function Leads() {
     const [activeTab, setActiveTab] = useState(1);
     const [task, setTask] = useState<task>();
     const [loadingLead, setLoadingLead] = useState<boolean>(true);
-    const [errors, setErrors] = useState<any>({});
-    const [validationAllFields, setValidationAllFields] = useState<boolean>(false);
+    //const [errors, setErrors] = useState<any>({});
+    //const [validationAllFields,  useState<boolean>(false);
     const [validatedFields, setValidatedFields] = useState<any>();
     const [isValidated, setIsValidated] = useState<boolean>(false);
     const [estados, /*setEstados*/] = useState<estado[]>([])
@@ -117,7 +117,7 @@ export function Leads() {
 
 
     const onSubmitRegisterLead = async () => {
-        setErrors({});
+        
         toast.dismiss();
         toast.loading("Cadastrando Cliente SAP");
 
@@ -130,7 +130,9 @@ export function Leads() {
             if (Array.isArray(response.message)) {
                 const errorMsgs = response.message;
                 errorMsgs.forEach((msg: any) => {
-                    setErrors((prevErrors: any) => ({ ...prevErrors, [msg.path]: msg.msg }));
+                    if (typeof msg == "string") {
+                        toast.error(msg);
+                    }
                 });
                 return;
             }
@@ -177,31 +179,31 @@ export function Leads() {
     }
         */
     const checkFields = async () => {
-        setValidationAllFields(true);
+        
         setValidatedFields({})
         var response;
         try {
             response = await ajax({ method: "POST", endpoint: "/leads/checkCardCode", data: { id_card: id } });
         }
         catch (err) {
-            setValidationAllFields(false);
+            
         }
 
         if (!response) {
-            setValidationAllFields(false);
+            
             return;
         }
         if (response.status == 'error') {
             setValidatedFields(response.message);
-            setValidationAllFields(false);
+            
             return; 
         }
         if (response.status == 'success') {
-            setValidationAllFields(false);
+            
             setIsValidated(true);
             return;
         }
-        setValidationAllFields(false);
+        
     }
 
 
