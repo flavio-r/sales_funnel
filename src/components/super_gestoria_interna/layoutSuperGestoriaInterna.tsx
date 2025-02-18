@@ -25,7 +25,6 @@ export default SearchContextGestoria;
 
 export function LayoutSuperGestoriaInterna() {
     const [search, setSearch] = useState<string>('');
-    const [externos, setExternos] = useState<externoSupervisionado[]>([]);
     const [allGerenciados, setAllGerenciados] = useState<externoSupervisionado[]>([]);
     const [indicadores, setIndicadores] = useState<any>({});
 

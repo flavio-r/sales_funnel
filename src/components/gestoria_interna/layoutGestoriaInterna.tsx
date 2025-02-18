@@ -4,7 +4,7 @@ import React from 'react';
 import { externo } from "./headerGestoriaInterna";
 import { useState } from "react";
 import { AuthContext } from '../../context/authProvider';
-import { useContext, useCallback } from "react";
+import { useContext } from "react";
 import { ajax } from "../../ajax/ajax";
 
 interface headerContextData {

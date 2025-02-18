@@ -44,7 +44,6 @@ export function HeaderGestoriaInterna({ setSearch, setFilters, setExternosContex
     const [localSearch, setLocalSearch] = useState<string>('');
     const [showVendors, setShowVendors] = useState<boolean>(false);
     const [externos, setExternos] = useState<externo[]>([]);
-    const [firstRender, setFirstRender] = useState<boolean>(true);
     const [indicadores, setIndicadores] = useState<any>({});
 
 
@@ -105,7 +104,7 @@ export function HeaderGestoriaInterna({ setSearch, setFilters, setExternosContex
                 }
             })
         })
-        
+
         setExternos(gerenciadosComSelecionado);
     }
 
@@ -150,10 +149,10 @@ export function HeaderGestoriaInterna({ setSearch, setFilters, setExternosContex
 
     useEffect(() => {
         if (externos.length > 0) {
-            if (firstRender) {
+            //if (firstRender) {
                 // atualizaGerenciadosContext(true);
                 // setFirstRender(false);
-            }
+            //}
         }
 
 

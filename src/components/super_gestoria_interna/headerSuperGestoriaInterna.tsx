@@ -32,7 +32,7 @@ interface header {
     setExternosContext: (gestores: externoSupervisionado[]) => void;
     setAllExternosContext: (gestores: externoSupervisionado[]) => void;
     Filters: filter_fields;
-    Supervisionados: supervisionado[];
+    Supervisionados: externoSupervisionado[];
 }
 export interface supervisionado {
     NomeInterna: string;
@@ -54,7 +54,6 @@ export function HeaderSuperGestoriaInterna({ setSearch, setFilters, setExternosC
     const [localSearch, setLocalSearch] = useState<string>('');
     const [showVendors, setShowVendors] = useState<boolean>(false);
     const [supervisionados, setSupervisionados] = useState<supervisionado[]>([]);
-    const [firstRender, setFirstRender] = useState<boolean>(true);
     const [indicadores, setIndicadores] = useState<any>({});
     const [openedDropdowns, setOpenedDropdowns] = useState<number[]>([]);
 
@@ -215,10 +214,10 @@ export function HeaderSuperGestoriaInterna({ setSearch, setFilters, setExternosC
 
     useEffect(() => {
         if (supervisionados.length > 0) {
-            if (firstRender) {
+           // if (firstRender) {
             //    atualizaExternosContext();
             //    setFirstRender(false);
-            }
+            //}
         }
 
 
