@@ -10,7 +10,7 @@ import { useLocation } from "react-router-dom";
 import { FaHouseChimney } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import { AddOportunity } from "../modalAddOportunity";
-import { Filter } from "../modalFilter";
+import { Filter, filter_fields } from "../modalFilter";
 import { IoClose } from "react-icons/io5";
 import logo from '../../../public/assets/images/logo_funil_fundoBranco.png'
 import { WhiteBtn } from "../whiteBtn";
@@ -31,6 +31,8 @@ interface header {
     setFilters: (filters: any) => void;
     setExternosContext: (gestores: externoSupervisionado[]) => void;
     setAllExternosContext: (gestores: externoSupervisionado[]) => void;
+    Filters: filter_fields;
+    Supervisionados: supervisionado[];
 }
 export interface supervisionado {
     NomeInterna: string;
@@ -45,7 +47,7 @@ export interface externoSupervisionado {
     Selecionado: boolean;
 }
 
-export function HeaderSuperGestoriaInterna({ setSearch, setFilters, setExternosContext, setAllExternosContext }: header) {
+export function HeaderSuperGestoriaInterna({ setSearch, setFilters, setExternosContext, setAllExternosContext, Filters, Supervisionados }: header) {
     const [mostrarProfile, setMostrarProfile] = useState<boolean>(false);
     const [mostrarAdicionar, setMostrarAdicionar] = useState<boolean>(false);
     const [mostrarFiltro, setMostrarFiltro] = useState<boolean>(false);
@@ -92,9 +94,9 @@ export function HeaderSuperGestoriaInterna({ setSearch, setFilters, setExternosC
     }
 
     const carregaSupervisionados = async () => {
-        console.log("carregou gerenciados")
+        //replaced cons log
         const response = await ajax({ method: "GET", endpoint: "/superGestoriaInterna/supervisionados", data: null })
-        console.log(response);
+        //replaced cons log
         if (response.status == "error") {
             toast.error(response.message);
             setTimeout(() => {
@@ -104,19 +106,24 @@ export function HeaderSuperGestoriaInterna({ setSearch, setFilters, setExternosC
         }
         if (response.status == "success") {
             const data: supervisionado[] = response.data;
-            const supervisio = formatSetExternosAndInternasAllSelectedByDefault(data);
+            const supervisio = formatSetExternosAndInternasAllSelectedByDefault(data, Supervisionados);
             setSupervisionados(supervisio);
             const allExternos = getExternosFromSupervisionados(data);
             setAllExternosContext(allExternos);
         }
     }
 
-    const formatSetExternosAndInternasAllSelectedByDefault = (supervisionados: supervisionado[]): supervisionado[] => {
+    const formatSetExternosAndInternasAllSelectedByDefault = (supervisionados: supervisionado[], SupervisionadosSessao: externoSupervisionado[]): supervisionado[] => {
         const newSupervisionados: supervisionado[] = supervisionados;
         newSupervisionados.map((interna) => {
             interna.Selecionada = true;
             interna.externos.map((externo: externoSupervisionado) => {
-                externo.Selecionado = true;
+                const externoSelecionado = SupervisionadosSessao.find((ext) => ext.CodigoExterno == externo.CodigoExterno);
+                if (externoSelecionado?.Selecionado) {
+                    externo.Selecionado = true;
+                } else {
+                    interna.Selecionada = false;
+                }
             })
         })
         return newSupervisionados;
@@ -193,7 +200,7 @@ export function HeaderSuperGestoriaInterna({ setSearch, setFilters, setExternosC
     }
 
     const deSelectAll = () => {
-        console.log("deSelectAll");
+        //replaced cons log
         setSupervisionados(prevState =>
             prevState.map(interna => ({
                 ...interna,
@@ -209,8 +216,8 @@ export function HeaderSuperGestoriaInterna({ setSearch, setFilters, setExternosC
     useEffect(() => {
         if (supervisionados.length > 0) {
             if (firstRender) {
-                atualizaExternosContext();
-                setFirstRender(false);
+            //    atualizaExternosContext();
+            //    setFirstRender(false);
             }
         }
 
@@ -269,7 +276,7 @@ export function HeaderSuperGestoriaInterna({ setSearch, setFilters, setExternosC
 
                 <div className=" relative flex justify-center mr-2 "  >
                     <WhiteBtn nomeBtn="Internos" icon={<FcBusinessman />} onClick={() => setShowVendors(!showVendors)} />
-                    <div className={` ${showVendors ? "" : "hidden"} customBorder mt-14  customListWidth rounded-md box-border absolute z-50 bg-white flex flex-col `} >
+                    <div className={` ${showVendors ? "" : "hidden"} customBorder mt-14  rounded-md box-border absolute z-50 bg-white flex flex-col `} >
                         {
                             supervisionados ?
                                 supervisionados.map((interna: supervisionado, index) => {
@@ -321,7 +328,7 @@ export function HeaderSuperGestoriaInterna({ setSearch, setFilters, setExternosC
 
                 <div className="justify-self-end flex items-center justify-center gap-8 mr-6 h-full">
                     {pathname.includes('/opportunity') ? null : <WhiteBtn onClick={() => handleFiltro()} nomeBtn="Filtros" icon={<FaFilter size={16} />}></WhiteBtn>}
-                    <Filter showFilters={mostrarFiltro} handleFilters={HandleSetFilters} fecharFiltro={handleFiltro} />
+                    <Filter baseFilters={Filters} showFilters={mostrarFiltro} handleFilters={HandleSetFilters} fecharFiltro={handleFiltro} />
                     <div >
                         <CgProfile size={33} onClick={() => handleProfile()} className="mr-8 mt-1.5 hover:scale-105 transition-all duration-500 cursor-pointer" />
                         {mostrarProfile ? <ModalProfile /> : null}

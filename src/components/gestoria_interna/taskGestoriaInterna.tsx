@@ -99,7 +99,7 @@ export function TaskGestoriaInterna({task, index}: taskProps) {
     const formatedPrice = task.MaxLocalTotal.toLocaleString('pt-BR');
 
     const getHeatColor = (HeatLevel: number) => {
-        console.log(HeatLevel)
+        //replaced cons log
         if (HeatLevel == 1) {
             return "bg-blue-500";
         } else if (HeatLevel == 2) {
@@ -117,7 +117,7 @@ export function TaskGestoriaInterna({task, index}: taskProps) {
         const intRate = task.IntRate;
         const color = getHeatColor(intRate);
         if (!color) {
-            console.log("Cor do nível de calor não encontrada.");
+            //replaced cons log
             return;
         }
         setHeatColor(color);

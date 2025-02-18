@@ -42,7 +42,7 @@ export function ChangeOwnerInterna({atualizaEstadoModal, mostrarModal, idTask, c
 
 
     useEffect(() => {
-        console.log("estado do modal: " + isOpen);
+        //replaced cons log
         if (isOpen) {
             document.body.style.overflow = 'hidden';
         } else {

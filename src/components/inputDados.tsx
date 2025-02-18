@@ -21,7 +21,7 @@ interface InputProps {
 
 export function InputDados({ tirarTopo = false, editable = false, isChanged, wasChanged, requiredDefault, register, preValue, type, placeholder, name, icon, error, insidePlaceholder, customCss }: InputProps) {
     let formattedPreValue = preValue;
-    
+
     
     if (type === "date" && preValue && preValue.includes("/")) {
         const [day, month, year] = preValue.split("/");
@@ -35,7 +35,7 @@ export function InputDados({ tirarTopo = false, editable = false, isChanged, was
         formattedPreValue = preValue.replace(/[^0-9]/g, "");
     }
 
-    console.log(formattedPreValue);
+    //replaced cons log
 
     const handleInputChange = (event: any) => {
         if (wasChanged) wasChanged(name); 

@@ -14,13 +14,13 @@ export function Etapas({task}: {task?: task}) {
     function handeleEtapas() {
         var etapas = task?.SalesOpportunitiesLines
         var etapasArray: any = [];
-        console.log(etapas);
+        //replaced cons log
         etapas.forEach((etapa: any) => {
             
             const nomeEtapa = acertaEtapaSapReverso(etapa.StageKey);
             const startDate: Date = addDays(new Date(etapa.StartDate), 1);
-            console.log(etapa.StartDate);
-            console.log(startDate);
+            //replaced cons log
+            //replaced cons log
             const closingDate: Date = addDays(new Date(etapa.ClosingDate), 1);
             const diffMilliseconds: number = closingDate.getTime() - startDate.getTime();
             var diasNaEtapa: number = Math.floor(diffMilliseconds / (1000 * 60 * 60 * 24));
@@ -33,7 +33,7 @@ export function Etapas({task}: {task?: task}) {
                 startDateFormatted: startDateFormatted,
                 finishDateFormatted: finishDateFormatted
             }
-            console.log(objToAdd);
+            //replaced cons log
             etapasArray.push(objToAdd);
         });
         setCounter(etapas.length - 1);

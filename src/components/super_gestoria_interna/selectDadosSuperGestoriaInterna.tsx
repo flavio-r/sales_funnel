@@ -16,8 +16,8 @@ interface input {
     preOwner: string;
 }
 export function SelectDadosSuperGestoriaInterna({tipo, funcaoAoMudar, requiredDefault, register, placeholder, name, icon, error, rules, externos, preOwner}: input) {
-    console.log("fora do map: ");
-    console.log(preOwner);
+    //replaced cons log
+    //replaced cons log
     return (
         <div className=" w-full relative mt-4 ">
             <p className="m-0 font-semibold text-sm">{placeholder}</p>
@@ -29,9 +29,9 @@ export function SelectDadosSuperGestoriaInterna({tipo, funcaoAoMudar, requiredDe
                     <>
                         {externos.map((externo: externoSupervisionado) => {
                             const cleanName = externo.NomeExterno.trim().split(/\s+/).join(' ');;
-                            console.log("dentro do map: ");
-                            console.log(cleanName);
-                            console.log(preOwner);
+                            //replaced cons log
+                            //replaced cons log
+                            //replaced cons log
                             return <option selected={ cleanName == preOwner ? true : false } value={externo.CodigoExterno}>{cleanName}</option>
                         })}                
                     </>

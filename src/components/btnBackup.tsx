@@ -18,7 +18,6 @@ export function GrnBtn({hardDisabled, disabled = false, big = false, customCss, 
     const [temporaryDisable, setTemporaryDisable] = useState(false);
 
     const handleOnClick = () => {
-        console.log("chegou na funcao do click")
         if (temporaryDisable) {
             return;
         }
@@ -28,7 +27,6 @@ export function GrnBtn({hardDisabled, disabled = false, big = false, customCss, 
         }, 500);
 
         if (onClick) {
-            console.log("clicou no greenBtn");
             onClick();
         }
     }

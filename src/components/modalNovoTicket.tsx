@@ -130,7 +130,7 @@ export function ModalNovoTicket( {onClose, CardCode}: novoTicketProps ) {
 
     useEffect(() => {
         carregaAtribuidos();
-        console.log(user);
+        //replaced cons log
     }, []);
 
     

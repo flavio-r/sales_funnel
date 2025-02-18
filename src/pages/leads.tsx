@@ -87,8 +87,8 @@ export function Leads() {
     const [municipios, setMunicipios] = useState<municipio[]>([])
 
     //Só pra ele não apitar not used
-    console.log(errors)
-    console.log(validationAllFields)
+    //replaced cons log
+    //replaced cons log
 
     var currentDate: Date = new Date();
     var startDate: Date | undefined | null = task?.card[0].data_criacao ? new Date(task?.card[0].data_criacao) : null;
@@ -104,7 +104,7 @@ export function Leads() {
     const { id } = useParams<string>();
 
     const alertNotAllFields = () => {
-        console.log(validatedFields);
+        //replaced cons log
         //toast.error("Há campos a serem preenchidos!");
         toast.error("Código do cliente não encontrado!");
         if (validatedFields.data_prevista || validatedFields.titulo || validatedFields.valor_estimado) {

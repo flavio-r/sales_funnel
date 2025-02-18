@@ -93,7 +93,7 @@ export function Login() {
     }
 
     useEffect(() => {
-        console.log(user);
+        //replaced cons log
         if (user) {
             navigate("/");
         }

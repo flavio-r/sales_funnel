@@ -1,5 +1,16 @@
 import { ReactNode, createContext, useState } from "react";
 import { ajax } from "../ajax/ajax";
+import { filter_fields } from "../components/modalFilter";
+
+export interface user {
+    id: number,
+    name: string,
+    id_sap: number,
+    empId: number,
+    user_code: string,
+    senha: string,
+    filtros: filter_fields
+}
 
 interface AuthContextData {
     signed: boolean;
@@ -11,17 +22,17 @@ interface AuthContextData {
 export const AuthContext = createContext({} as AuthContextData);
 
 function AuthProvider({ children }: { children: ReactNode }) {
-    const [user, setUser] = useState<any>(() => {
+    const [user, setUser] = useState<user | null>(() => {
         const userFromStorage = localStorage.getItem('user');
         return userFromStorage ? JSON.parse(userFromStorage) : null;
     });
     const [loadingAuth, setLoadingAuth] = useState<boolean>(false);
 
-
+    // Toda vez que a func eh chamada ela re-renderiza pois é um componente pai (provider) alterando estado
     const attAuthStatus = async () => {
             setLoadingAuth(true);
             try {
-                console.log("Chamou a att")
+                //replaced cons log
                 const response = await ajax({method: "GET", endpoint: "/authStatus", data: null})
                 if (!response) {
                     setUser(null);
@@ -30,13 +41,13 @@ function AuthProvider({ children }: { children: ReactNode }) {
                     return;
                 }
                 if (response.status == "success") {
-                    console.log("atualizou o user no authProvider")
+                    //replaced cons log
                     setUser(response.user);
                     localStorage.setItem('user', JSON.stringify(response.user));
 
                 }
                 if (response.status == "error") {
-                    console.log("O cara está deslogado");
+                    //replaced cons log
                     localStorage.removeItem('user');
                     setUser(null);  
                 }

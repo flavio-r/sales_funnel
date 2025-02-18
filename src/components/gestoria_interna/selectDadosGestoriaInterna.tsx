@@ -19,7 +19,7 @@ interface input {
 }
 
 export function SelectDadosGestoriaInterna({tipo, funcaoAoMudar, requiredDefault, register, placeholder, name, icon, error, rules, externos, preOwner, vendors}: input) {
-    console.log(vendors);
+    //replaced cons log
     return (
         <div className=" w-full relative mt-4 ">
             <p className="m-0 font-semibold text-sm">{placeholder}</p>

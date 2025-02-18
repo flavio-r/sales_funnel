@@ -24,8 +24,8 @@ interface input {
     customCss?: string;
 }
 export function SelectDados({customCss, tipo, funcaoAoMudar, requiredDefault, preValue, register, placeholder, name, icon, error, rules, itens, disabled = false, id, colaboradores, estados, municipios, regioes}: input) {
-    console.log(tipo);
-    console.log(regioes);
+    //replaced cons log
+    //replaced cons log
     return (
         <div className={`${customCss}  relative mt-4 `}>
             <p className="m-0 font-semibold text-sm">{placeholder}</p>

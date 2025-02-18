@@ -368,7 +368,7 @@ export function Cotacao({ index, cotacao }: { index: number, cotacao: cotacao })
           motivos = response;
 
 
-            console.log(motivos);
+            //replaced cons log
         const motivosOrdenados = motivos!
             .filter((motivo: any) => motivo.FldValue !== "0")
             .sort((a: any, b: any) => parseInt(a.FldValue) - parseInt(b.FldValue));
@@ -1058,7 +1058,7 @@ export function Cotacao({ index, cotacao }: { index: number, cotacao: cotacao })
 
 
   const handleActionClick = (action: string, docEntry: string, docNum: string) => {
-    console.log(action)
+    //replaced cons log
     switch (action) {
       case 'visualizarPDF':
         visualizarPDF(docEntry);

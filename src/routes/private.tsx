@@ -9,12 +9,12 @@ interface PrivateProps {
 }
 
 export function Private({children}: PrivateProps): any {
-    const { signed, loading, attAuthStatus } = useContext(AuthContext);
+    const { user, signed, loading, attAuthStatus } = useContext(AuthContext);
     const [authStatusChecked, setAuthStatusChecked] = useState(false);
 
     
     useEffect(() => {
-        if (!signed) {
+        if (!signed || !user) {
             attAuthStatus();
         }
         setAuthStatusChecked(true);
@@ -26,7 +26,7 @@ export function Private({children}: PrivateProps): any {
         )
     }
     if (!loading && !signed) {
-        console.log("Detectou mano não logado!");
+        //replaced cons log
         return window.location.href = 'https://hub.copapel.com.br/';
     }
 

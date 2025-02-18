@@ -32,7 +32,7 @@ export function LeadTaskGestoriaInterna({task, index}: taskProps) {
     }
 
     const handleChangeLeadOwner = () => {
-        console.log("Change Lead Owner")
+        //replaced cons log
         alterLeadModalState();
         alterSelectedLead(task.id_card.toString());
     }

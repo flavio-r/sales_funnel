@@ -10,7 +10,7 @@ import { useLocation } from "react-router-dom";
 import { FaHouseChimney } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import { AddOportunity } from "../modalAddOportunity";
-import { Filter } from "../modalFilter";
+import { Filter, filter_fields } from "../modalFilter";
 import { IoClose } from "react-icons/io5";
 import logo from '../../../public/assets/images/logo_funil_fundoBranco.png'
 import { WhiteBtn } from "../whiteBtn";
@@ -28,6 +28,7 @@ interface header {
     setFilters: (filters: any) => void;
     setGerenciadosContext: (gestores: gerenciado[]) => void;
     setAllGerenciadosContext: (gestores: gerenciado[]) => void;
+    Filters: filter_fields;
 }
 export interface gerenciado {
     CodigoVendedor: string;
@@ -36,7 +37,7 @@ export interface gerenciado {
     SlpName: string;
 }
 
-export function HeaderVisualizadores({ setSearch, setFilters, setGerenciadosContext, setAllGerenciadosContext }: header) {
+export function HeaderVisualizadores({ setSearch, setFilters, setGerenciadosContext, setAllGerenciadosContext, Filters }: header) {
     const [mostrarProfile, setMostrarProfile] = useState<boolean>(false);
     const [mostrarAdicionar, setMostrarAdicionar] = useState<boolean>(false);
     const [mostrarFiltro, setMostrarFiltro] = useState<boolean>(false);
@@ -78,7 +79,7 @@ export function HeaderVisualizadores({ setSearch, setFilters, setGerenciadosCont
     }
 
     const carregaGerenciados = async () => {
-        console.log("carregou gerenciados")
+        //replaced cons log
         const response = await ajax({method: "GET", endpoint: "/visualizadores/gerenciados", data: null })
         if (response.status == "error") {
             toast.error("Erro ao carregar os gerenciados")
@@ -224,7 +225,7 @@ export function HeaderVisualizadores({ setSearch, setFilters, setGerenciadosCont
 
             <div className="justify-self-end flex items-center justify-center gap-8 mr-6 h-full">
                 {pathname.includes('/opportunity') ? null : <WhiteBtn onClick={() => handleFiltro()} nomeBtn="Filtros" icon={<FaFilter size={16}/>}></WhiteBtn>}
-                <Filter showFilters={mostrarFiltro} handleFilters={HandleSetFilters} fecharFiltro={handleFiltro} />
+                <Filter baseFilters={Filters} showFilters={mostrarFiltro} handleFilters={HandleSetFilters} fecharFiltro={handleFiltro} />
                 <div >
                     <CgProfile size={33} onClick={() => handleProfile()} className="mr-8 mt-1.5 hover:scale-105 transition-all duration-500 cursor-pointer"/>  
                     {mostrarProfile ? <ModalProfile/> : null }

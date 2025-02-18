@@ -236,7 +236,7 @@ export function AddOportunity({atualizaEstadoModal, mostrarModal, isGestor = fal
             }
         } catch (error: any) {
             if (error.name === 'AbortError') {
-                console.log('Request was aborted');
+                //replaced cons log
             } else {
                 toast.error("Erro inesperado");
             }
@@ -296,9 +296,9 @@ export function AddOportunity({atualizaEstadoModal, mostrarModal, isGestor = fal
     }
 
     const warnIfClientAlreadyHasOportunity = async (CardCode: string) => {
-        console.log(CardCode);
+        //replaced cons log
         const response = await ajax({method: "POST", endpoint: "/tasks/clientTasks", data: {CardCode: CardCode}})
-        console.log(response);
+        //replaced cons log
         if (response.status == "error") {
             setWarn(false);
             toast.error("Erro inesperado");
@@ -344,7 +344,7 @@ export function AddOportunity({atualizaEstadoModal, mostrarModal, isGestor = fal
                                 :
 
                                 clientes.map((e)  => {
-                                    console.log(clientes);
+                                    //replaced cons log
                                     return (
                                         <div onClick={() => handleClickFoundClient(e.codigo)} key={e.codigo} className={` cursor-pointer hover:bg-slate-100 bg-white py-1 px-2  flex items-center justify-center font-semibold transition-all duration-300 hover:bg-shadow-md `} >
                                             <p>{e.codigo} - {e.nome}</p>

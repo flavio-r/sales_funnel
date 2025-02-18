@@ -61,7 +61,7 @@ export function AutoLogin() {
 
     useEffect(() => {
         if (user) {
-            console.log("realizou o logout")
+            //replaced cons log
             logout();
         } else {
             logingAutomatico();

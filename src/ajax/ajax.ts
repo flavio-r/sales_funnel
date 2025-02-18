@@ -60,7 +60,6 @@ export async function ajax({ method, endpoint, data, signal }: Request) {
     } catch(err: any) {
         // Verificar se a falha ocorreu devido ao cancelamento da requisição
         if (err.name === 'AbortError') {
-            console.log('Requisição cancelada');
             return; // Retornar sem fazer nada se a requisição foi cancelada
         }
         return { status: "internal_error", message: err };

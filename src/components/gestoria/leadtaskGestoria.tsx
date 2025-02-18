@@ -28,7 +28,7 @@ export function LeadTaskGestoria({task, index}: taskProps) {
     const firstName = task.vendedor.split(" ")[0];
 
     const handleChangeLeadOwner = () => {
-        console.log("Uga duga")
+        //replaced cons log
         alterLeadModalState();
         alterSelectedLead(task.id_card);
     }

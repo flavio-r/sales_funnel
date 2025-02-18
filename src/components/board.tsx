@@ -230,10 +230,8 @@ export function Board() {
     const handleDragEnd = async (result: any) => {
         setShowWinLoss(false);
         const {destination, source, draggableId} = result;
-        console.log(source.droppableId  )
         if (source.droppableId == '-1' || destination.droppableId == '-1') {
             if (destination.droppableId == "7") {
-                console.log(result);
                 const id_card = result.draggableId;
                 const response = await ajax({method: "POST", endpoint: "/lead/desativar", data: {id_lead: id_card } })
                 if (!response) {
@@ -401,7 +399,7 @@ export function Board() {
 
     /*
    useEffect(() => {
-    console.log(isHoveringWinLoss)
+    //replaced cons log
    }, [isHoveringWinLoss])
    */
 

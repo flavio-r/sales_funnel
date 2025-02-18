@@ -34,7 +34,7 @@ export function Cotacoes({ task }: { task?: task }) {
         fetch(url)
         .then(response => response.json())
         .then(data => {
-            console.log(data);
+            //replaced cons log
             if (!data.success) {
                 toast.error("Erro ao criar proposta!");
             }
@@ -44,7 +44,7 @@ export function Cotacoes({ task }: { task?: task }) {
             window.open(redirectUrl, "_blank");
         })
         .catch((error) => {
-            console.log(error);
+            //replaced cons log
             toast.error("Erro ao criar proposta!");
         })
     }

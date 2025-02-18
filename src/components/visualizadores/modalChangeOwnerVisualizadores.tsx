@@ -44,7 +44,7 @@ export function ChangeOwnerVisualizadores({atualizaEstadoModal, mostrarModal, id
 
 
     useEffect(() => {
-        console.log("estado do modal: " + isOpen);
+        //replaced cons log
         if (isOpen) {
             document.body.style.overflow = 'hidden';
         } else {

@@ -18,15 +18,15 @@ interface Filters {
 }
 
 export interface filter_fields {
-    "dataInicio": string
-    "dataFim": string,
-    "valorMinimo": string,
-    "valorMaximo": string,
-    "regiao": string,
-    "municipio": string,
-    "interesse": string,
-    "apenasDestacados": boolean,
-    "apenasClientesComAtividadeMarcada": boolean
+        dataInicio: string,
+        dataFim: string,
+        valorMinimo: string,
+        valorMaximo: string,
+        regiao: string,
+        municipio: string,
+        interesse: string,
+        apenasDestacados: boolean,
+        apenasClientesComAtividadeMarcada: boolean
 }
 
 export interface regiao {
@@ -36,7 +36,23 @@ export interface regiao {
 
 
 export function Filter({ handleFilters, fecharFiltro, showFilters, baseFilters }: Filters) {
-    console.log(baseFilters.dataInicio);
+    //replaced cons log
+    const defaultFilters: filter_fields = {
+            dataInicio: "",
+            dataFim: "",
+            valorMinimo: "",
+            valorMaximo: "",
+            regiao: "",
+            municipio: "",
+            interesse: "",
+            apenasDestacados: false,
+            apenasClientesComAtividadeMarcada: false
+    };
+
+    if (!baseFilters) {
+        //replaced cons log
+        baseFilters = defaultFilters;
+    }
     const { register, handleSubmit, reset } = useForm<any>({});
     const [switchHandler, setSwitchHandler] = useState<boolean>(baseFilters.apenasDestacados);
     const [switch2Handler, setSwitch2Handler] = useState<boolean>(baseFilters.apenasClientesComAtividadeMarcada);
@@ -46,7 +62,7 @@ export function Filter({ handleFilters, fecharFiltro, showFilters, baseFilters }
     const onSubmit = (data: any) => {
         data.apenasDestacados = switchHandler;
         data.apenasClientesComAtividadeMarcada = switch2Handler;
-        console.log(data);
+        //replaced cons log
         handleFilters(data);
     }
 
@@ -158,7 +174,7 @@ export function Filter({ handleFilters, fecharFiltro, showFilters, baseFilters }
             
             <div className="horizontalRuleFilter" ></div>
             <div className="flex items-center justify-between" >
-                <button type="button" onClick={() => handleClearFilters()} className=" hover:scale-105 h-10 w-28 customRedBorder outline-none bg-white rounded-md font-semibold text-red-500 cursor-pointer hover:bg-red-500 hover:text-white transition-all duration-300 mt-4 ">Limpar Filtros</button>
+                    <button type="button" onClick={() => handleClearFilters()} className=" hover:scale-105 h-10 w-28 customRedBorder outline-none bg-white rounded-md font-semibold text-red-500 cursor-pointer hover:bg-red-500 hover:text-white transition-all duration-300 mt-4 ">Limpar Filtros</button>
                 <GrnBtn form="filterOp" nomeBtn="Aplicar Filtros" type="submit" icon={<IoFilterSharp />} customCss="w-48 self-end mt-4" />
             </div>
         </form>
