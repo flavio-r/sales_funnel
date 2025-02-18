@@ -29,15 +29,16 @@ const SearchContextGestoria = React.createContext({} as headerContextData);
 
 export default SearchContextGestoria;
 
-export function LayoutVisualizadores() {
+export function LayoutVisualizadores(): JSX.Element {
     const [search, setSearch] = useState<string>('');
     const [gerenciados, setGerenciados] = useState<gerenciado[]>([]);
     const [allGerenciados, setAllGerenciados] = useState<gerenciado[]>([]);
     const [indicadores, setIndicadores] = useState<any>({});
 
     const { user, loading, attAuthStatus } = useContext(AuthContext);
-    if (loading) return null;
-    if (!user) return attAuthStatus();
+    if (loading) return <></>;
+    
+    //if (!user) return attAuthStatus();
 
     const updateFilters = async (filtros: any) => {
         await ajax({method: "PATCH", endpoint: "/atualizarFiltro", data: { filtros }})

@@ -23,8 +23,7 @@ export function Layout() {
 
     const { user, loading, attAuthStatus } = useContext(AuthContext);
 
-    if (loading) return null;
-    if (!user) return attAuthStatus();
+    if (loading) return <></>;
 
     const updateFilters = async (filtros: any) => {
         await ajax({method: "PATCH", endpoint: "/atualizarFiltro", data: { filtros }})
