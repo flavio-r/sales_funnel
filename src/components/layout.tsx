@@ -23,9 +23,11 @@ export function Layout() {
 
     const { user, loading, attAuthStatus } = useContext(AuthContext);
 
-    if (loading) return <></>;
+    console.log(user);
     if (!user) attAuthStatus();
+    if (loading) return <></>;
 
+    
 
     const updateFilters = async (filtros: any) => {
         await ajax({method: "PATCH", endpoint: "/atualizarFiltro", data: { filtros }})
@@ -35,8 +37,8 @@ export function Layout() {
     
     return (
         <>
-            <SearchContext.Provider value={{searchValue: search, filters: user.filtros.filtros, isGestor: isGestor }}>
-                <Header Filters={user.filtros.filtros} setSearch={setSearch} setFilters={updateFilters} setGestor={setIsGestor} />
+            <SearchContext.Provider value={{searchValue: search, filters: user?.filtros?.filtros, isGestor: isGestor }}>
+                <Header Filters={user?.filtros?.filtros} setSearch={setSearch} setFilters={updateFilters} setGestor={setIsGestor} />
                 <Outlet/>
             </SearchContext.Provider>
         </>
