@@ -57,8 +57,8 @@ export function LayoutSuperGestoriaInterna() {
 
     return (
         <>
-        <SearchContextGestoria.Provider value={{searchValue: search, filters: user.filtros.filtros, gerenciados: user.supervisionados.supervisionados, allGerenciados: allGerenciados, indicadoresContext: indicadores, alteraIndicadores: setIndicadores}}>
-            <HeaderSuperGestoriaInterna Supervisionados={user.supervisionados.supervisionados} Filters={user.filtros.filtros} setSearch={setSearch} setFilters={updateFilters} setExternosContext={updateExternos} setAllExternosContext={setAllGerenciados} />
+        <SearchContextGestoria.Provider value={{searchValue: search, filters: user.filtros.filtros, gerenciados: user.supervisionados, allGerenciados: allGerenciados, indicadoresContext: indicadores, alteraIndicadores: setIndicadores}}>
+            <HeaderSuperGestoriaInterna Supervisionados={user.supervisionados} Filters={user.filtros.filtros} setSearch={setSearch} setFilters={updateFilters} setExternosContext={updateExternos} setAllExternosContext={setAllGerenciados} />
             <Outlet/>
         </SearchContextGestoria.Provider>
         </>

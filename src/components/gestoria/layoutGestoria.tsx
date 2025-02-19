@@ -62,8 +62,8 @@ export function LayoutGestoria() {
 
     return (
         <>
-        <SearchContextGestoria.Provider value={{searchValue: search, filters: user.filtros.filtros, gerenciados: user.gerenciados.gerenciados, allGerenciados: allGerenciados, indicadoresContext: indicadores, alteraIndicadores: setIndicadores}}>
-            <HeaderGestoria Gerenciados={user.gerenciados.gerenciados} Filters={user.filtros.filtros} setGerenciadosContext={updateGerenciados} setSearch={setSearch} setFilters={updateFilters} setAllGerenciadosContext={setAllGerenciados} />
+        <SearchContextGestoria.Provider value={{searchValue: search, filters: user.filtros.filtros, gerenciados: user.gerenciados, allGerenciados: allGerenciados, indicadoresContext: indicadores, alteraIndicadores: setIndicadores}}>
+            <HeaderGestoria Gerenciados={user.gerenciados} Filters={user.filtros.filtros} setGerenciadosContext={updateGerenciados} setSearch={setSearch} setFilters={updateFilters} setAllGerenciadosContext={setAllGerenciados} />
             <Outlet/>
         </SearchContextGestoria.Provider>
         </>

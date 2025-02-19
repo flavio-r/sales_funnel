@@ -68,8 +68,8 @@ export function LayoutGestoriaInterna() {
 
     return (
         <>
-        <SearchContextGestoria.Provider value={{searchValue: search, allVendors: allVendors, filters: user.filtros.filtros, gerenciados: user.externos.externos, allGerenciados: allGerenciados, indicadoresContext: indicadores, alteraIndicadores: setIndicadores}}>
-            <HeaderGestoriaInterna Externos={user.externos.externos} Filters={user.filtros.filtros} setSearch={setSearch} setFilters={updateFilters} setExternosContext={updateExternos} setAllGerenciadosContext={setAllGerenciados} setAllVendorsContext={setAllVendors} />
+        <SearchContextGestoria.Provider value={{searchValue: search, allVendors: allVendors, filters: user.filtros.filtros, gerenciados: user.externos, allGerenciados: allGerenciados, indicadoresContext: indicadores, alteraIndicadores: setIndicadores}}>
+            <HeaderGestoriaInterna Externos={user.externos} Filters={user.filtros.filtros} setSearch={setSearch} setFilters={updateFilters} setExternosContext={updateExternos} setAllGerenciadosContext={setAllGerenciados} setAllVendorsContext={setAllVendors} />
             <Outlet/>
         </SearchContextGestoria.Provider>
         </>
