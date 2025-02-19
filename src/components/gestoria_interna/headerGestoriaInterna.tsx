@@ -29,7 +29,7 @@ interface header {
     setAllGerenciadosContext: (gestores: externo[]) => void;
     setAllVendorsContext: (vendors: vendor[]) => void;
     Filters: filter_fields;
-    Externos: any[]
+    Externos: any[];
 }
 export interface externo {
     CodigoExterno: string;
@@ -94,16 +94,24 @@ export function HeaderGestoriaInterna({ setSearch, setFilters, setExternosContex
         }
     }
 
-    const adicionaSelecionadoGerenciados = async (data: externo[], Externos: any[]) => {
+    const adicionaSelecionadoGerenciados = (data: externo[], Externos: any[]) => {
         var gerenciadosComSelecionado = data;
-        gerenciadosComSelecionado.forEach((gerenciado) => {
-            Externos.forEach((externo) => {
-                if (gerenciado.CodigoExterno == externo.CodigoExterno) {
+            
+        if (Externos.length == 0) {
+            gerenciadosComSelecionado.forEach((gerenciado) => {
+                gerenciado.Selecionado = true;
+            })  
 
-                    gerenciado.Selecionado = true;
-                }
-            })
-        })
+        } else {
+            gerenciadosComSelecionado.forEach((gerenciado) => {
+                Externos.forEach((externo) => {
+                    if (gerenciado.CodigoExterno == externo.CodigoExterno) {
+    
+                        gerenciado.Selecionado = true;
+                    }
+                })
+            })    
+        }
 
         setExternos(gerenciadosComSelecionado);
     }
@@ -123,13 +131,12 @@ export function HeaderGestoriaInterna({ setSearch, setFilters, setExternosContex
     }
 
 
-    const atualizaGerenciadosContext = (firstRender: boolean = false) => {
+    const atualizaGerenciadosContext = () => {
         var gerenciadosFiltrados = externos.filter((externo) => externo.Selecionado == true);
         setExternosContext(gerenciadosFiltrados);
-        if (firstRender) {
-            setAllGerenciadosContext(externos);
-        }
+        setAllGerenciadosContext(externos);
     }
+
 
     const carregaAllVendors = async () => {
         const response = await ajax({ method: "GET", endpoint: "/vendedores/todos", data: null })
@@ -148,14 +155,9 @@ export function HeaderGestoriaInterna({ setSearch, setFilters, setExternosContex
     }, [])
 
     useEffect(() => {
-        if (externos.length > 0) {
-            //if (firstRender) {
-                // atualizaGerenciadosContext(true);
-                // setFirstRender(false);
-            //}
+        if (Externos.length === 0 && externos.length > 0) {
+            atualizaGerenciadosContext();        
         }
-
-
     }, [externos])
 
     useEffect(() => {

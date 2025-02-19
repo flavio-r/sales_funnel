@@ -97,15 +97,22 @@ export function HeaderGestoria({ setSearch, setFilters, setGerenciadosContext, s
     const adicionaSelecionadoGerenciados = async (data: gerenciado[], Gerenciados: any[]) => {
         console.log(data)
         var gerenciadosComSelecionado = data;
-        gerenciadosComSelecionado.forEach((gerenciado) => {
-            Gerenciados.forEach((externo) => {
-                if (gerenciado.CodigoVendedor == externo.CodigoVendedor) {
 
-                    gerenciado.Selecionado = true;
-                }
+        if (Gerenciados.length == 0) {
+            gerenciadosComSelecionado.forEach((gerenciado) => {
+                gerenciado.Selecionado = true;
             })
-        })
 
+        } else {
+            gerenciadosComSelecionado.forEach((gerenciado) => {
+                Gerenciados.forEach((externo) => {
+                    if (gerenciado.CodigoVendedor == externo.CodigoVendedor) {
+    
+                        gerenciado.Selecionado = true;
+                    }
+                })
+            })
+        }
         setGerenciados(gerenciadosComSelecionado);
     }
 
@@ -124,23 +131,17 @@ export function HeaderGestoria({ setSearch, setFilters, setGerenciadosContext, s
     }
 
 
-    const atualizaGerenciadosContext = (firstRender: boolean = false) => {
+    const atualizaGerenciadosContext = () => {
+        console.log("atualizou os estados")
         var gerenciadosFiltrados = gerenciados.filter((gerenciado) => gerenciado.Selecionado == true);
         setGerenciadosContext(gerenciadosFiltrados);
-        if (firstRender) {
-            setAllGerenciadosContext(gerenciados);
-        }
+        setAllGerenciadosContext(gerenciados);
     }
 
     useEffect(() => {
-        if (gerenciados.length > 0) {
-            //if (firstRender) {
-            //    atualizaGerenciadosContext(true);
-            //    setFirstRender(false);
-            //}
+        if (Gerenciados.length === 0 && gerenciados.length > 0) {
+            atualizaGerenciadosContext();
         }
-
-
     }, [gerenciados])
 
     useEffect(() => {

@@ -114,17 +114,27 @@ export function HeaderSuperGestoriaInterna({ setSearch, setFilters, setExternosC
 
     const formatSetExternosAndInternasAllSelectedByDefault = (supervisionados: supervisionado[], SupervisionadosSessao: externoSupervisionado[]): supervisionado[] => {
         const newSupervisionados: supervisionado[] = supervisionados;
-        newSupervisionados.map((interna) => {
-            interna.Selecionada = true;
-            interna.externos.map((externo: externoSupervisionado) => {
-                const externoSelecionado = SupervisionadosSessao.find((ext) => ext.CodigoExterno == externo.CodigoExterno);
-                if (externoSelecionado?.Selecionado) {
-                    externo.Selecionado = true;
-                } else {
-                    interna.Selecionada = false;
-                }
+        
+        if (SupervisionadosSessao.length === 0) {
+            newSupervisionados.map((interna) => {
+                interna.Selecionada = true;
+                interna.externos.map((externo: externoSupervisionado) => {
+                        externo.Selecionado = true;
+                })
             })
-        })
+        } else {
+            newSupervisionados.map((interna) => {
+                interna.Selecionada = true;
+                interna.externos.map((externo: externoSupervisionado) => {
+                    const externoSelecionado = SupervisionadosSessao.find((ext) => ext.CodigoExterno == externo.CodigoExterno);
+                    if (externoSelecionado?.Selecionado) {
+                        externo.Selecionado = true;
+                    } else {
+                        interna.Selecionada = false;
+                    }
+                })
+            })
+        }
         return newSupervisionados;
     }
 
@@ -213,11 +223,8 @@ export function HeaderSuperGestoriaInterna({ setSearch, setFilters, setExternosC
 
 
     useEffect(() => {
-        if (supervisionados.length > 0) {
-           // if (firstRender) {
-            //    atualizaExternosContext();
-            //    setFirstRender(false);
-            //}
+        if (Supervisionados.length === 0 && supervisionados.length > 0) {           
+            atualizaExternosContext();
         }
 
 

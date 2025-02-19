@@ -28,15 +28,17 @@ const SearchContextGestoria = React.createContext({} as headerContextData);
 export default SearchContextGestoria;
 
 export function LayoutGestoriaInterna() {
+    
     const [search, setSearch] = useState<string>('');
     const [allGerenciados, setAllGerenciados] = useState<externo[]>([]);
     const [indicadores, setIndicadores] = useState<any>({});
     const [allVendors, setAllVendors] = useState<vendor[]>([]);
 
     const { user, loading, attAuthStatus } = useContext(AuthContext);
-    
+
     if (loading) return null;
-    
+        
+    console.log(user);
     const updateFilters = async (filtros: any) => {
         await ajax({method: "PATCH", endpoint: "/atualizarFiltro", data: { filtros }})
         attAuthStatus();
@@ -44,9 +46,11 @@ export function LayoutGestoriaInterna() {
         console.log(filtros);
     }
 
-    
     const updateExternos = async (externos: any) => {
         try {
+            
+            console.log("Atualizou os externos na sessão e no estado de all");
+
             await ajax({method: "PATCH", endpoint: "/atualizarExternos", data: { externos }});
             
             // Update the state
@@ -60,6 +64,7 @@ export function LayoutGestoriaInterna() {
             console.error("Error updating externos:", err);
         }
     }
+
 
     return (
         <>
