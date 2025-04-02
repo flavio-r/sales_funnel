@@ -141,9 +141,6 @@ export function Task({ task, index }: taskProps) {
         <>
             <Draggable draggableId={task.Id.toString()} key={task.Id} index={index} >
                 {(provided: any, snapshot: any) => {
-                    if (task.ClienteAtivo != "Y") {
-                        return null;
-                    }
                     return (
                     <div data-tooltip-id={`${task.ClienteAtivo != "Y" ? "tooltip-1" : "" }`} data-tooltip-content="cliente inativo" className={`${task.ClienteAtivo != "Y" ? "opacity-40" : ""} z-40 hover:z-50 w-full relative h-auto px-2 scaleCustom py-2 rounded-md ${isInDrag ? "bg-slate-200" : "bg-white"} items-center flex flex-row border border-black shadow-custom-shadow`} {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef} isdragging={snapshot.isdragging}>
                             <div className='w-11/12'>
