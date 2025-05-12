@@ -133,7 +133,7 @@ export function Opportunity() {
         <div className="bg-slate-100">
             <Tooltip id="tooltip-2" />
             <div className=" w-full flex  flex-col pb-4 bg-white shadow-md ">
-                <h2 className="w-11/12 self-center">{loadingOp == false ? task?.OpportunityName : <Skeleton className="ml-6 mr-6" />}</h2>
+                <h2 className="w-11/12 self-center flex justify-between">{loadingOp == false ? task?.OpportunityName : <Skeleton className="ml-6 mr-6" />} <span className=" " > <span className="font-medium" > Número Oportunidade: </span> <span className="font-bold " > {task?.SequentialNo} </span></span></h2>
                 {formattingDays ? <Skeleton count={2} className="ml-6 mr-6"/> :
                 <div className="flex w-11/12 self-center justify-self-center gap-2 ">
                  <div data-tooltip-id="tooltip-2" data-tooltip-content="Qualificação" className="flex h-8 cursor-pointer w-full"><div className="triangle-right-title-white absolute" ></div><div className="w-full h-full bg-green-500 flex items-center justify-center text-white font-semibold"> {daysInSteps.lead ? daysInSteps.lead + " Dias" : "" }  </div><div className="triangle-right-title-green " ></div></div>
