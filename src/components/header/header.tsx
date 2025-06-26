@@ -45,6 +45,9 @@ export function Header({ setSearch, setFilters, setGestor, Filters }: header) {
 
     const searchParams = new URLSearchParams(location.search);
     const origem = searchParams.get('origem');
+    const openModal = searchParams.get('openModal');
+    const cardCode = searchParams.get("cardCode");
+    
 
 
     const handleSearch = (e: any) => {
@@ -146,9 +149,15 @@ export function Header({ setSearch, setFilters, setGestor, Filters }: header) {
     }, [signed])
 
 
+    useEffect(() => {
+        if (openModal == "newOp") {
+            setMostrarAdicionar(true);
+        }
+    }, [openModal])
+
     return (
         <>
-            <AddOportunity atualizaEstadoModal={() => setMostrarAdicionar(!mostrarAdicionar)} mostrarModal={mostrarAdicionar} />
+            <AddOportunity atualizaEstadoModal={() => setMostrarAdicionar(!mostrarAdicionar)} mostrarModal={mostrarAdicionar} cardCode={cardCode} />
             <div className="headerHeight flex shadow-md w-full items-center box-border relative justify-between">
                 <img src={logo} className=" w-14 h-14 ml-4 justify-self-start cursor-pointer " onClick={handleGoHome} alt="" />
                 <div className="flex w-auto gap-8 items-center relative self-center">
@@ -157,16 +166,13 @@ export function Header({ setSearch, setFilters, setGestor, Filters }: header) {
                     {localSearch == "" ? "" : <div className="absolute mr-4 right-52 mt-1" onClick={() => handleSearch("")}> <IoClose size={26} /> </div>}
 
                     {pathname.includes('/opportunity') || pathname.includes('/leads') ? <WhiteBtn nomeBtn="Quadro" icon={<FaHouseChimney />} onClick={() => handleGoHome()}></WhiteBtn> : <GrnBtn nomeBtn="Oportunidade" onClick={() => handleMostrarModal()} icon={<IoMdAddCircle size={18} />}></GrnBtn>}
-
                 </div>
 
 
                 <div className="justify-self-end flex items-center justify-center gap-8 mr-6 h-full">
-
                     {pathname.includes('/opportunity') ? null : <WhiteBtn onClick={() => handleFiltro()} nomeBtn="Filtros" icon={<FaFilter size={16} />}></WhiteBtn>}
                     <Filter baseFilters={Filters} showFilters={mostrarFiltro} handleFilters={HandleSetFilters} fecharFiltro={handleFiltro} />
-                    <div >
-
+                    <div>
                         <CgProfile size={33} onClick={() => handleProfile()} className="mr-8 mt-1.5 hover:scale-105 transition-all duration-500 cursor-pointer" />
                         {mostrarProfile ? <ModalProfile isGerente={isGerente} isInterno={isInterno} isSupervisor={isSupervisor} isVisualizador={isVisualizador} /> : null}
                     </div>

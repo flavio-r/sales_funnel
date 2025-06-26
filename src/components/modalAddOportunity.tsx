@@ -46,7 +46,7 @@ export interface colaborador {
 }
 
 
-export function AddOportunity({atualizaEstadoModal, mostrarModal, isGestor = false} : {atualizaEstadoModal: () => void, mostrarModal: boolean, isGestor?: boolean}) {
+export function AddOportunity({atualizaEstadoModal, mostrarModal, isGestor = false, cardCode} : {atualizaEstadoModal: () => void, mostrarModal: boolean, isGestor?: boolean, cardCode?: string | null}) {
     const [isOpen, setIsOpen] = useState(mostrarModal);
     const [addLoading, setAddLoading] = useState<boolean>(false);
     const [etapa, setEtapa] = useState<number>(1);
@@ -255,6 +255,17 @@ export function AddOportunity({atualizaEstadoModal, mostrarModal, isGestor = fal
     useEffect(() => {
         setIsOpen(mostrarModal);
     }, [mostrarModal])
+
+    useEffect(() => {
+        if (cardCode) {
+            const inputCodigoCliente = document.getElementById("codigoCliente") as HTMLInputElement;
+            if (inputCodigoCliente) {
+                inputCodigoCliente.value = cardCode;
+                inputCodigoCliente.innerHTML = cardCode;
+            }
+            warnIfClientAlreadyHasOportunity(cardCode);
+        }
+    }, [cardCode])
     
 
     useEffect(() => {
