@@ -40,7 +40,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
                     setLoadingAuth(false);
                     return;
                 }
-                if (response.status == "success") {
+                if (response.status == "success" && response.user) {
                     //replaced cons log
                     setUser(response.user);
                     localStorage.setItem('user', JSON.stringify(response.user));
@@ -54,6 +54,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
                 setLoadingAuth(false);
             }
             catch(err) {
+                console.error("Auth error:", err);
                 setUser(null);
                 localStorage.removeItem('user');
                 setLoadingAuth(false);

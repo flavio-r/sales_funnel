@@ -36,7 +36,12 @@ export function LayoutGestoriaInterna() {
 
     const { user, loading, attAuthStatus } = useContext(AuthContext);
 
-    if (loading) return null;
+    if (loading) return <div>Carregando...</div>;
+    
+    if (!user) {
+        attAuthStatus();
+        return <div>Verificando autenticação...</div>;
+    }
         
     console.log(user);
     const updateFilters = async (filtros: any) => {
@@ -68,8 +73,24 @@ export function LayoutGestoriaInterna() {
 
     return (
         <>
-        <SearchContextGestoria.Provider value={{searchValue: search, allVendors: allVendors, filters: user.filtros.filtros, gerenciados: user.externos, allGerenciados: allGerenciados, indicadoresContext: indicadores, alteraIndicadores: setIndicadores}}>
-            <HeaderGestoriaInterna Externos={user.externos} Filters={user.filtros.filtros} setSearch={setSearch} setFilters={updateFilters} setExternosContext={updateExternos} setAllGerenciadosContext={setAllGerenciados} setAllVendorsContext={setAllVendors} />
+        <SearchContextGestoria.Provider value={{
+            searchValue: search, 
+            allVendors: allVendors, 
+            filters: user?.filtros?.filtros || {}, 
+            gerenciados: user?.externos || [], 
+            allGerenciados: allGerenciados, 
+            indicadoresContext: indicadores, 
+            alteraIndicadores: setIndicadores
+        }}>
+            <HeaderGestoriaInterna 
+                Externos={user?.externos || []} 
+                Filters={user?.filtros?.filtros || {}} 
+                setSearch={setSearch} 
+                setFilters={updateFilters} 
+                setExternosContext={updateExternos} 
+                setAllGerenciadosContext={setAllGerenciados} 
+                setAllVendorsContext={setAllVendors} 
+            />
             <Outlet/>
         </SearchContextGestoria.Provider>
         </>
