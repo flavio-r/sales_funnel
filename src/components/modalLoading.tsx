@@ -1,23 +1,15 @@
-import Lottie from 'react-lottie';
-import loadingAnimation from '../../public/assets/lotties/loadingAnimation.json';
+import Lottie from "lottie-react";
+import loadingAnimation from "../assets/lotties/loadingAnimation.json";
 
 export function LoadingModal() {
-    const defaultOptions = {
-        loop: true,
-        autoplay: true,
-        animationData: loadingAnimation,
-        rendererSettings: {
-          preserveAspectRatio: "xMidYMid slice"
-        }
-      };
-  
-    return (
-        <div className='w-full h-full flex items-center justify-center' >
-        <Lottie 
-            options={defaultOptions}
-            height={400}
-            width={400}
-        />
-        </div>
-    );
+  return (
+    <div className="w-full h-full flex items-center justify-center">
+      <Lottie
+        animationData={loadingAnimation}
+        loop={true}
+        autoplay={true}
+        style={{ height: 400, width: 400 }}
+      />
+    </div>
+  );
 }

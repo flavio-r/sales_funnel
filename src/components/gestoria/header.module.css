@@ -1,29 +1,29 @@
 .search {
-    padding: 0.8rem 1rem;
-    padding-left: 3rem !important;
-    width: 30vw;
-    margin-left: 0.5rem;
-    border-radius: 22px;
-    border: 0.01px solid #d1d1d1;
-    box-shadow: 2px 3px 3px rgba(0, 0, 0, 0.253);
-    font-size: 16px;
-    color: black;
+  padding: 0.8rem 1rem;
+  padding-left: 3rem !important;
+  width: 30vw;
+  margin-left: 0.5rem;
+  border-radius: 22px;
+  border: 0.01px solid #d1d1d1;
+  box-shadow: 2px 3px 3px rgba(0, 0, 0, 0.253);
+  font-size: 16px;
+  color: black;
 }
 
 .search:focus {
-    border: 0.01px solid #d1d1d1;
-    outline: none;
+  border: 0.01px solid #d1d1d1;
+  outline: none;
 }
 
 .searchDesativado {
-    padding: 0.8rem 1rem;
-    padding-left: 3rem !important;
-    width: 30vw;
-    margin-left: 0.5rem;
-    border-radius: 30px;
-    border: 0.01px solid #d1d1d1;
-    box-shadow: 2px 3px 3px rgba(0, 0, 0, 0.253);
-    font-size: 16px;
-    color: black;
-    background-color: #F2F2F2;
+  padding: 0.8rem 1rem;
+  padding-left: 3rem !important;
+  width: 30vw;
+  margin-left: 0.5rem;
+  border-radius: 30px;
+  border: 0.01px solid #d1d1d1;
+  box-shadow: 2px 3px 3px rgba(0, 0, 0, 0.253);
+  font-size: 16px;
+  color: black;
+  background-color: #f2f2f2;
 }

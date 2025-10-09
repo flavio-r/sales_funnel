@@ -1,178 +1,194 @@
-import {task} from "../../pages/leads"
-import { useState } from "react"
+import { task } from "../../pages/leads";
+import { useState } from "react";
 import { FindCompany } from "../modalFindCompany";
 import { InputDados } from "../inputDados";
 //import { SelectDados } from "../selectDados";
 import { GrnBtn } from "../greenBtn";
 import { IoIosSave } from "react-icons/io";
-import {useForm} from 'react-hook-form';
+import { useForm } from "react-hook-form";
 import { ajax } from "../../ajax/ajax";
-import { useEffect } from 'react';
-import toast, {Toaster} from 'react-hot-toast';
+import { useEffect } from "react";
+import toast, { Toaster } from "react-hot-toast";
 import { useParams } from "react-router-dom";
-import { Tooltip } from 'react-tooltip'
+import { Tooltip } from "react-tooltip";
 import { municipio, estado } from "../../pages/leads";
 interface propsDadosClientes {
-    task?: task;
-    errorsRegister: any;
-    estados: estado[];
-    municipios: municipio[];
-    selecionaEstado: (CodEstado: string) => void;
+  task?: task;
+  errorsRegister: any;
+  estados: estado[];
+  municipios: municipio[];
+  selecionaEstado: (CodEstado: string) => void;
 }
 
-export function DadosCliente({task, errorsRegister, /*estados, municipios, selecionaEstado*/}: propsDadosClientes) {   
-    const [open, setOpen] = useState<boolean>(false);
-    const [selectedData, setSelectedData] = useState<any>({});
-    const [errors, setErrors] = useState<any>(errorsRegister);
-    const [clientType, setClientType] = useState<string>("cpf");
+export function DadosCliente({
+  task,
+  errorsRegister /*estados, municipios, selecionaEstado*/,
+}: propsDadosClientes) {
+  const [open, setOpen] = useState<boolean>(false);
+  const [selectedData, setSelectedData] = useState<any>({});
+  const [errors, setErrors] = useState<any>(errorsRegister);
+  const [clientType, setClientType] = useState<string>("cpf");
 
+  const { id } = useParams<{ id: string }>();
 
-    const { id } = useParams<{id: string}>();
+  const { register, handleSubmit, reset } = useForm({});
 
+  useEffect(() => {
+    reset({});
+  }, [selectedData, reset]);
 
-    const { register, handleSubmit, reset } = useForm({});
+  useEffect(() => {
+    handlePreValue();
+  }, []);
 
-    useEffect(() => {
-        reset({
-            
-        });
-    }, [selectedData, reset]);
+  function handleData(empresa: any) {
+    setSelectedData(empresa);
+  }
 
-    useEffect(() => {
-        handlePreValue();
-    }, []);
+  function onSubmit() {}
 
+  const onSubmitSavePotential = async (data: any) => {
+    setErrors({});
+    toast.dismiss();
+    toast.loading("Salvando potencial");
 
-    function handleData(empresa: any) {
-        setSelectedData(empresa);    
-    }
-
-    function onSubmit() {
-    }
-
-    const  onSubmitSavePotential = async (data: any) => {
-        setErrors({})
-        toast.dismiss()
-        toast.loading("Salvando potencial")
-
-
-        const CardCode = data.CardCode.toUpperCase();
-        const dataObj = {
-            CardCode: CardCode,
-            id_card: id
-        }
-
-        try {
-            response = await ajax({method: "PATCH", endpoint: "/leads/atualizar", data: dataObj});
-        } catch (error) {
-            toast.dismiss();
-            toast.error("Erro ao salvar potencial")
-            return;
-        }
-
-
-        if (!response) {
-            toast.dismiss();
-            toast.error("Erro ao salvar potencial");
-            return;
-        }
-
-        if (response.status == 'error') {
-            toast.dismiss();
-            toast.error("Erro ao salvar potencial");
-            return;
-        }
-       
-        if (response.status === 'success') {
-            toast.dismiss();
-            toast.success("Potencial salvo com sucesso");
-            setTimeout( () => {
-                window.location.reload();    
-            } , 500 ) 
-            return;
-        }
-
-        toast.dismiss();
-        toast.error("Erro Inesperado");
-
-
-        return;
-        var response;
-        data.id = id;
-        
-        if ( clientType == 'cpf' ) {
-            data.tipoCliente = 'cpf';    
-        }
-        if (clientType == 'cnpj') {
-            data.tipoCliente = 'cnpj';
-        }
-
-        try {
-            response = await ajax({method: "PATCH", endpoint: "/leads/atualizar", data: data});
-        } catch (error) {
-            toast.dismiss();
-            toast.error("Erro ao salvar potencial")
-            return;
-        }
-
-        if (!response) {
-            toast.dismiss();
-            toast.error("Erro ao salvar potencial");
-            return;
-        }
-
-        if (response.status == 'error') {
-            toast.dismiss();
-            toast.error("Erro ao salvar potencial");
-            return;
-        }
-        if (response.status === 'validation_error') {
-            toast.dismiss();
-            setErrors({...errors, [response.field]: response.message});
-            toast.error("Erro ao salvar potencial");
-            return;
-        }
-        if (response.status === 'success') {
-            toast.dismiss();
-            toast.success("Potencial salvo com sucesso");
-            setTimeout( () => {
-                window.location.reload();    
-            } , 500 ) 
-            return;
-        }
-
-        toast.dismiss();
-        toast.error("Erro Inesperado");
-
-
+    const CardCode = data.CardCode.toUpperCase();
+    const dataObj = {
+      CardCode: CardCode,
+      id_card: id,
     };
 
-    //const handleFieldChanged = (nome: string) => {
-    //    setClientType(nome)
-    //}
-
-
-    const handlePreValue = () => {
-        
-        if (task?.informacoes[0].tipoCliente == "cpf") {
-            setClientType("cpf");
-        }
-        if (task?.informacoes[0].tipoCliente == "cnpj") {
-            setClientType("cnpj");
-        }
+    try {
+      response = await ajax({
+        method: "PATCH",
+        endpoint: "/leads/atualizar",
+        data: dataObj,
+      });
+    } catch (error) {
+      toast.dismiss();
+      toast.error("Erro ao salvar potencial");
+      return;
     }
-    
-    return (
-        <>
-        <Toaster></Toaster>
-        {open ?  <FindCompany onSelectedData={handleData} onClose={() => setOpen(!open)}/> :  
-        <form id="addLead" action="" onSubmit={handleSubmit(onSubmit)}  >
-        <div className="m-0 w-full h-full p-4 box-border flex gap-12 items-center">
+
+    if (!response) {
+      toast.dismiss();
+      toast.error("Erro ao salvar potencial");
+      return;
+    }
+
+    if (response.status == "error") {
+      toast.dismiss();
+      toast.error("Erro ao salvar potencial");
+      return;
+    }
+
+    if (response.status === "success") {
+      toast.dismiss();
+      toast.success("Potencial salvo com sucesso");
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
+      return;
+    }
+
+    toast.dismiss();
+    toast.error("Erro Inesperado");
+
+    return;
+    var response;
+    data.id = id;
+
+    if (clientType == "cpf") {
+      data.tipoCliente = "cpf";
+    }
+    if (clientType == "cnpj") {
+      data.tipoCliente = "cnpj";
+    }
+
+    try {
+      response = await ajax({
+        method: "PATCH",
+        endpoint: "/leads/atualizar",
+        data: data,
+      });
+    } catch (error) {
+      toast.dismiss();
+      toast.error("Erro ao salvar potencial");
+      return;
+    }
+
+    if (!response) {
+      toast.dismiss();
+      toast.error("Erro ao salvar potencial");
+      return;
+    }
+
+    if (response.status == "error") {
+      toast.dismiss();
+      toast.error("Erro ao salvar potencial");
+      return;
+    }
+    if (response.status === "validation_error") {
+      toast.dismiss();
+      setErrors({ ...errors, [response.field]: response.message });
+      toast.error("Erro ao salvar potencial");
+      return;
+    }
+    if (response.status === "success") {
+      toast.dismiss();
+      toast.success("Potencial salvo com sucesso");
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
+      return;
+    }
+
+    toast.dismiss();
+    toast.error("Erro Inesperado");
+  };
+
+  //const handleFieldChanged = (nome: string) => {
+  //    setClientType(nome)
+  //}
+
+  const handlePreValue = () => {
+    if (task?.informacoes[0].tipoCliente == "cpf") {
+      setClientType("cpf");
+    }
+    if (task?.informacoes[0].tipoCliente == "cnpj") {
+      setClientType("cnpj");
+    }
+  };
+
+  return (
+    <>
+      <Toaster></Toaster>
+      {open ? (
+        <FindCompany
+          onSelectedData={handleData}
+          onClose={() => setOpen(!open)}
+        />
+      ) : (
+        <form id="addLead" action="" onSubmit={handleSubmit(onSubmit)}>
+          <div className="m-0 w-full h-full p-4 box-border flex gap-12 items-center">
             <div className="w-4/6 flex flex-col gap-2">
-                <div className="flex w-full gap-4">
-                    <div className="w-1/2" ><InputDados editable={true} register={register } preValue={  Object.keys(selectedData).length === 0 ? task?.informacoes[0].CardCode : selectedData.CardCode     }  name="CardCode" error={errors.CardCode}  placeholder="Código do cliente" /></div>
-                </div>  
-                {/*
+              <div className="flex w-full gap-4">
+                <div className="w-1/2">
+                  <InputDados
+                    editable={true}
+                    register={register}
+                    preValue={
+                      Object.keys(selectedData).length === 0
+                        ? task?.informacoes[0].CardCode
+                        : selectedData.CardCode
+                    }
+                    name="CardCode"
+                    error={errors.CardCode}
+                    placeholder="Código do cliente"
+                  />
+                </div>
+              </div>
+              {/*
                 <div className="flex w-full gap-4">
                     <div className="w-1/2" ><SelectDados preValue={task?.informacoes[0].municipio ? task?.informacoes[0].municipio : "" } register={register} name="municipio" error={ errors.municipio }  placeholder="Município" tipo="municipios" municipios={municipios} /></div>
                     <div className="w-1/2" ><InputDados editable={true} register={register} preValue={ Object.keys(selectedData).length === 0 ?    task?.informacoes[0].bairro : selectedData.Bairro} name="bairro" error={ errors.bairro }  placeholder="Bairro" /></div>
@@ -211,17 +227,34 @@ export function DadosCliente({task, errorsRegister, /*estados, municipios, selec
                 */}
             </div>
             <div className="w-1/2 ">
-                <div className="flex flex-col w-full items-center justify-center h-full">
-                    <div className="" ><GrnBtn form="addLead" type="submit" big={false} nomeBtn="Salvar Código do Cliente" icon={<IoIosSave size={30} />} onClick={handleSubmit(onSubmitSavePotential)}  /></div>
+              <div className="flex flex-col w-full items-center justify-center h-full">
+                <div className="">
+                  <GrnBtn
+                    form="addLead"
+                    type="submit"
+                    big={false}
+                    nomeBtn="Salvar Código do Cliente"
+                    icon={<IoIosSave size={30} />}
+                    onClick={handleSubmit(onSubmitSavePotential)}
+                  />
                 </div>
+              </div>
             </div>
-                    
-          { true ? "" : <button onClick={() => setOpen(!open)} className="py-2 px-4 rounded-md border-none bg-blue-500 text-white font-semibold cursor-pointer hover:shadow-lg transition-all duration-500">Buscar empresa</button>}     
-        </div>
-        <Tooltip id="tooltip-4" />
 
+            {true ? (
+              ""
+            ) : (
+              <button
+                onClick={() => setOpen(!open)}
+                className="py-2 px-4 rounded-md border-none bg-blue-500 text-white font-semibold cursor-pointer hover:shadow-lg transition-all duration-500"
+              >
+                Buscar empresa
+              </button>
+            )}
+          </div>
+          <Tooltip id="tooltip-4" />
         </form>
-        }
-        </>
-    )
+      )}
+    </>
+  );
 }

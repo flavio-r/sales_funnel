@@ -5,10 +5,10 @@
   "type": "module",
   "scripts": {
     "start:server": "nodemon src/requests/index.js",
-    "dev": "vite",
-    "build": "tsc && vite build",
+    "dev": "npx vite",
+    "build": "tsc && npx vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "npx vite preview"
   },
   "dependencies": {
     "@dotlottie/player-component": "^2.7.12",
@@ -27,6 +27,7 @@
     "date-fns": "^3.6.0",
     "dotenv": "^16.4.5",
     "font-awesome": "^4.7.0",
+    "lottie-react": "^2.4.1",
     "lottie-web": "^5.12.2",
     "mysql": "^2.18.1",
     "prop-types": "^15.8.1",
@@ -45,7 +46,6 @@
     "react-redux": "^9.1.2",
     "react-router-dom": "^6.22.3",
     "react-tooltip": "^5.26.3",
-    "react-trello": "github:rcdexta/react-trello",
     "sweetalert2": "^11.15.10",
     "toastr": "^2.1.4",
     "uuid": "^9.0.1",

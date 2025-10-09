@@ -1,13 +1,19 @@
 import { cotacao } from "./tabs/cotacoes";
 import { ActionButtons } from "./actionButtons";
 import { useState } from "react";
-import { Modal, Box, Typography } from '@mui/material';
-import Swal from 'sweetalert2';
+import { Modal, Box, Typography } from "@mui/material";
+import Swal from "sweetalert2";
 
 import toast from "react-hot-toast";
-export function Cotacao({ index, cotacao }: { index: number, cotacao: cotacao }) {  
+export function Cotacao({
+  index,
+  cotacao,
+}: {
+  index: number;
+  cotacao: cotacao;
+}) {
   const [open, setOpen] = useState(false);
-  const [modalContent, setModalContent] = useState('');
+  const [modalContent, setModalContent] = useState("");
 
   const handleOpen = (content: string) => {
     setModalContent(content);
@@ -18,25 +24,30 @@ export function Cotacao({ index, cotacao }: { index: number, cotacao: cotacao })
 
   const baseUrlProposta = `https://proposta.copapel.com.br`;
 
-  const BRL = new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL'
+  const BRL = new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
   });
 
   function getStatus(DocStatus: string) {
     const DocumentStatus =
-      DocStatus === 'O' ? 'Aberto' :
-        DocStatus === 'C' ? 'Fechado' :
-          DocStatus === 'W' ? 'Pendente' :
-            DocStatus === 'virou_pedido' ? 'Virou pedido' : 'Desconhecido'
+      DocStatus === "O"
+        ? "Aberto"
+        : DocStatus === "C"
+        ? "Fechado"
+        : DocStatus === "W"
+        ? "Pendente"
+        : DocStatus === "virou_pedido"
+        ? "Virou pedido"
+        : "Desconhecido";
 
-    return DocumentStatus
+    return DocumentStatus;
   }
   async function visualizarPDF(DocEntry: string) {
     try {
-      window.open(`${baseUrlProposta}/api/sap/getPDF/${DocEntry}`, '_blank');
+      window.open(`${baseUrlProposta}/api/sap/getPDF/${DocEntry}`, "_blank");
     } catch (error) {
-      toast.error('❌ Erro ao visualizar PDF:' + JSON.stringify(error));
+      toast.error("❌ Erro ao visualizar PDF:" + JSON.stringify(error));
     }
   }
   async function duplicarProposta(DocEntry: string) {
@@ -44,7 +55,6 @@ export function Cotacao({ index, cotacao }: { index: number, cotacao: cotacao })
       const url = `${baseUrlProposta}/api/proposta/createFromSAP/${DocEntry}`;
 
       const response = await fetch(url);
-
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -54,32 +64,34 @@ export function Cotacao({ index, cotacao }: { index: number, cotacao: cotacao })
       const { success, proposta } = data;
 
       if (!success) {
-        throw new Error('Erro ao duplicar Proposta!');
+        throw new Error("Erro ao duplicar Proposta!");
       }
 
       const { redirectUrl } = proposta;
 
       // Set cookie if needed
       if (!redirectUrl) {
-        throw new Error('Erro ao duplicar Proposta!');
+        throw new Error("Erro ao duplicar Proposta!");
       }
 
-      window.open(redirectUrl, '_blank');
-
+      window.open(redirectUrl, "_blank");
     } catch (error) {
-      console.error('Erro:', error);
-      toast.error('Erro ao duplicar Proposta!');
+      console.error("Erro:", error);
+      toast.error("Erro ao duplicar Proposta!");
     }
   }
   async function visualizarDadosSAP(DocEntry: string) {
     //closeAllTippyMenus();
     try {
       //const docNum = DocNum;
-      const response = await fetch(`${baseUrlProposta}/api/sap/getQuotationDetails/${DocEntry}`, { method: "get" });
+      const response = await fetch(
+        `${baseUrlProposta}/api/sap/getQuotationDetails/${DocEntry}`,
+        { method: "get" }
+      );
       let data = await response.json();
 
       if (!data.success) {
-        throw new Error(data.error || 'Erro ao buscar dados da cotação');
+        throw new Error(data.error || "Erro ao buscar dados da cotação");
       }
       data = data["0"];
 
@@ -105,11 +117,21 @@ export function Cotacao({ index, cotacao }: { index: number, cotacao: cotacao })
                         👤 Informações do Cliente
                       </h3>
                       <div class="space-y-2">
-                        <p class="flex items-center gap-2">🆔 <span class="font-semibold">Código:</span> ${quotation.CardCode}</p>
-                        <p class="flex items-center gap-2">🏢 <span class="font-semibold">Nome:</span> ${quotation.CardName}</p>
-                        <p class="flex items-center gap-2">✉️ <span class="font-semibold">Email:</span> ${quotation.E_Mail || 'Não informado'}</p>
-                        <p class="flex items-center gap-2">📞 <span class="font-semibold">Telefone:</span> ${quotation.Phone1 || 'Não informado'}</p>
-                        <p class="flex items-center gap-2">👔 <span class="font-semibold">Contato:</span> ${quotation.CntctPrsn || 'Não informado'}</p>
+                        <p class="flex items-center gap-2">🆔 <span class="font-semibold">Código:</span> ${
+                          quotation.CardCode
+                        }</p>
+                        <p class="flex items-center gap-2">🏢 <span class="font-semibold">Nome:</span> ${
+                          quotation.CardName
+                        }</p>
+                        <p class="flex items-center gap-2">✉️ <span class="font-semibold">Email:</span> ${
+                          quotation.E_Mail || "Não informado"
+                        }</p>
+                        <p class="flex items-center gap-2">📞 <span class="font-semibold">Telefone:</span> ${
+                          quotation.Phone1 || "Não informado"
+                        }</p>
+                        <p class="flex items-center gap-2">👔 <span class="font-semibold">Contato:</span> ${
+                          quotation.CntctPrsn || "Não informado"
+                        }</p>
                       </div>
                     </div>
                   </div>
@@ -120,13 +142,29 @@ export function Cotacao({ index, cotacao }: { index: number, cotacao: cotacao })
                         ℹ️ Informações da Cotação
                       </h3>
                       <div class="space-y-2">
-                        <p class="flex items-center gap-2">📅 <span class="font-semibold">Data de Criação:</span> ${new Date(quotation.DocDate).toLocaleDateString()}</p>
-                        <p class="flex items-center gap-2">📅 <span class="font-semibold">Data de Validade:</span> ${new Date(quotation.DocDueDate).toLocaleDateString()}</p>
-                        <p class="flex items-center gap-2">📈 <span class="font-semibold">Status:</span> ${quotation.DocumentStatus === 'O' ? 'Aberto' :
-          quotation.DocumentStatus === 'C' ? 'Fechado' :
-            quotation.DocumentStatus === 'W' ? 'Virou Pedido' : 'Em Análise'}</p>
-                        <p class="flex items-center gap-2">🏢 <span class="font-semibold">Unidade:</span> ${quotation.BPLName}</p>
-                        <p class="flex items-center gap-2">💵 <span class="font-semibold">Valor Total:</span> R$ ${parseFloat(quotation.DocTotal).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
+                        <p class="flex items-center gap-2">📅 <span class="font-semibold">Data de Criação:</span> ${new Date(
+                          quotation.DocDate
+                        ).toLocaleDateString()}</p>
+                        <p class="flex items-center gap-2">📅 <span class="font-semibold">Data de Validade:</span> ${new Date(
+                          quotation.DocDueDate
+                        ).toLocaleDateString()}</p>
+                        <p class="flex items-center gap-2">📈 <span class="font-semibold">Status:</span> ${
+                          quotation.DocumentStatus === "O"
+                            ? "Aberto"
+                            : quotation.DocumentStatus === "C"
+                            ? "Fechado"
+                            : quotation.DocumentStatus === "W"
+                            ? "Virou Pedido"
+                            : "Em Análise"
+                        }</p>
+                        <p class="flex items-center gap-2">🏢 <span class="font-semibold">Unidade:</span> ${
+                          quotation.BPLName
+                        }</p>
+                        <p class="flex items-center gap-2">💵 <span class="font-semibold">Valor Total:</span> R$ ${parseFloat(
+                          quotation.DocTotal
+                        ).toLocaleString("pt-BR", {
+                          minimumFractionDigits: 2,
+                        })}</p>
                       </div>
                     </div>
                   </div>
@@ -149,11 +187,15 @@ export function Cotacao({ index, cotacao }: { index: number, cotacao: cotacao })
                         </tr>
                       </thead>
                       <tbody class="divide-y">
-                        ${items.map((item: any) => `
+                        ${items
+                          .map(
+                            (item: any) => `
                           <tr class="hover:bg-gray-50">
                             <td class="px-4 py-2">
                               <img 
-                                src="https://click.copapel.com.br/images/produtos/${item.ItemCode}.jpg" 
+                                src="https://click.copapel.com.br/images/produtos/${
+                                  item.ItemCode
+                                }.jpg" 
                                 alt="Imagem não encontrada"
                                 onerror="this.onerror=null; this.src='../assets/landscape-placeholder-svgrepo-com.svg';"
                                 class="w-14 h-14 object-contain"
@@ -162,10 +204,20 @@ export function Cotacao({ index, cotacao }: { index: number, cotacao: cotacao })
                             <td class="px-4 py-2">${item.ItemCode}</td>
                             <td class="px-4 py-2">${item.Dscription}</td>
                             <td class="px-4 py-2">${item.Quantity}</td>
-                            <td class="px-4 py-2">R$ ${parseFloat(item.Price).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
-                            <td class="px-4 py-2">R$ ${(item.Quantity * item.Price).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
+                            <td class="px-4 py-2">R$ ${parseFloat(
+                              item.Price
+                            ).toLocaleString("pt-BR", {
+                              minimumFractionDigits: 2,
+                            })}</td>
+                            <td class="px-4 py-2">R$ ${(
+                              item.Quantity * item.Price
+                            ).toLocaleString("pt-BR", {
+                              minimumFractionDigits: 2,
+                            })}</td>
                           </tr>
-                        `).join('')}
+                        `
+                          )
+                          .join("")}
                       </tbody>
                     </table>
                   </div>
@@ -191,16 +243,16 @@ export function Cotacao({ index, cotacao }: { index: number, cotacao: cotacao })
 
       // Mostrar o modal
 
-      handleOpen(modalContent)
+      handleOpen(modalContent);
     } catch (error) {
-      console.error('Erro ao visualizar dados:', error);
-      toast.error('Não foi possível carregar os dados da cotação');
+      console.error("Erro ao visualizar dados:", error);
+      toast.error("Não foi possível carregar os dados da cotação");
     }
   }
   async function atualizarValidade(docEntry: string, docNum: string) {
     try {
       const { value: dias } = await Swal.fire({
-        title: 'Atualizar Validade',
+        title: "Atualizar Validade",
         html: ` 
                 <style>
                 .input-validade {
@@ -261,88 +313,103 @@ export function Cotacao({ index, cotacao }: { index: number, cotacao: cotacao })
                 </div>
               `,
         didOpen: () => {
-          const input = document.getElementById('diasValidade');
-          const preview = document.getElementById('previewData');
-          const validationMessage = document.getElementById('validationMessage');
+          const input = document.getElementById("diasValidade");
+          const preview = document.getElementById("previewData");
+          const validationMessage =
+            document.getElementById("validationMessage");
 
           const atualizarPreview = () => {
             const dias = parseInt((input as HTMLInputElement).value) || 0;
             const novaData = new Date();
             novaData.setDate(novaData.getDate() + dias);
-            preview!.textContent = `Nova data de validade: ${novaData.toLocaleDateString('pt-BR')}`;
+            preview!.textContent = `Nova data de validade: ${novaData.toLocaleDateString(
+              "pt-BR"
+            )}`;
 
             // Validação dos 60 dias
             if (dias > 60) {
-              preview!.style.color = '#dc3545';
-              validationMessage!.style.display = 'block';
+              preview!.style.color = "#dc3545";
+              validationMessage!.style.display = "block";
             } else {
-              preview!.style.color = '';
-              validationMessage!.style.display = 'none';
+              preview!.style.color = "";
+              validationMessage!.style.display = "none";
             }
           };
 
-          input!.addEventListener('input', atualizarPreview);
+          input!.addEventListener("input", atualizarPreview);
           atualizarPreview();
         },
         showCancelButton: true,
-        confirmButtonText: 'Confirmar',
-        cancelButtonText: 'Cancelar',
-        confirmButtonColor: '#4f9291',
-        cancelButtonColor: '#d33',
+        confirmButtonText: "Confirmar",
+        cancelButtonText: "Cancelar",
+        confirmButtonColor: "#4f9291",
+        cancelButtonColor: "#d33",
         preConfirm: () => {
-          const dias = parseInt((document.getElementById('diasValidade') as HTMLInputElement).value);
+          const dias = parseInt(
+            (document.getElementById("diasValidade") as HTMLInputElement).value
+          );
           if (!dias || dias < 1) {
-            Swal.showValidationMessage('Por favor, insira um número válido de dias');
+            Swal.showValidationMessage(
+              "Por favor, insira um número válido de dias"
+            );
             return false;
           }
           if (dias > 60) {
-            Swal.showValidationMessage('O prazo não pode ser superior a 60 dias');
+            Swal.showValidationMessage(
+              "O prazo não pode ser superior a 60 dias"
+            );
             return false;
           }
           return dias;
-        }
+        },
       });
 
       if (dias) {
-        // Criar toast de loading          
-        const loadingToast = toast.loading('Atualizando validade...');
+        // Criar toast de loading
+        const loadingToast = toast.loading("Atualizando validade...");
 
         try {
-          
           if (dias) {
-            const response = await fetch(`${baseUrlProposta}/api/sap/atualizarValidade/${docEntry}`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                dias,
-              })
-            });
-        
+            const response = await fetch(
+              `${baseUrlProposta}/api/sap/atualizarValidade/${docEntry}`,
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  dias,
+                }),
+              }
+            );
+
             if (!response.ok) {
               const errorData = await response.json();
-              throw new Error(errorData.details || 'Erro ao atualizar validade');
+              throw new Error(
+                errorData.details || "Erro ao atualizar validade"
+              );
             }
-        
+
             const data = await response.json();
-            
+
             // Remove loading toast
             toast.dismiss(loadingToast);
-            
+
             // Show success message only after confirmed success
-            toast.success(`Validade da cotação ${docNum} atualizada com sucesso`);
-            
+            toast.success(
+              `Validade da cotação ${docNum} atualizada com sucesso`
+            );
+
             // Return data if needed
             return data;
           }
         } catch (error: any) {
           // Remove loading toast
           toast.dismiss(loadingToast);
-          
+
           // Show error message
           toast.error(`Erro ao atualizar validade: ${error.message}`);
-          
+
           // Re-throw error if needed
           throw error;
         }
@@ -350,32 +417,30 @@ export function Cotacao({ index, cotacao }: { index: number, cotacao: cotacao })
         //toggleActionButtons(docEntry, false);
       }
     } catch (error) {
-      console.error('Erro:', error);
+      console.error("Erro:", error);
     }
   }
   async function encerrarCotacaoSAP(docEntry: string) {
     try {
+      let motivos = null;
+      const response = await fetch(`${baseUrlProposta}/api/sap/getMotivos`)
+        .then((data) => {
+          const response = data.json();
+          return response;
+        })
+        .catch((err: any) => {
+          throw new Error(`Erro ao buscar motivos ${err.message}`);
+        });
+      motivos = response;
 
-        let motivos = null;
-        const response = await fetch(`${baseUrlProposta}/api/sap/getMotivos`)
-            .then((data) => {
-                const response = data.json();
-                return response;
-            })
-            .catch((err: any) => {
-                throw new Error(`Erro ao buscar motivos ${err.message}`);
-            });
-          motivos = response;
+      //replaced cons log
+      const motivosOrdenados = motivos!
+        .filter((motivo: any) => motivo.FldValue !== "0")
+        .sort((a: any, b: any) => parseInt(a.FldValue) - parseInt(b.FldValue));
 
-
-            //replaced cons log
-        const motivosOrdenados = motivos!
-            .filter((motivo: any) => motivo.FldValue !== "0")
-            .sort((a: any, b: any) => parseInt(a.FldValue) - parseInt(b.FldValue));
-
-        const { value: formValues } = await Swal.fire({
-            title: 'Fechar Cotação',
-            html: `
+      const { value: formValues } = await Swal.fire({
+        title: "Fechar Cotação",
+        html: `
             <style>
             .form-encerra {
   width: 100%;
@@ -437,106 +502,124 @@ export function Cotacao({ index, cotacao }: { index: number, cotacao: cotacao })
             <label for="motivoEncerramento" class="form-label">Selecione o motivo do encerramento:</label>
             <select class="form-encerra" id="motivoEncerramento">
               <option value="" selected disabled>Selecione um motivo...</option>
-              ${motivosOrdenados.map((motivo: any) =>
-                `<option value="${motivo.FldValue}">${motivo.Descr}</option>`
-            ).join('')}
+              ${motivosOrdenados
+                .map(
+                  (motivo: any) =>
+                    `<option value="${motivo.FldValue}">${motivo.Descr}</option>`
+                )
+                .join("")}
               <option value="divider" disabled>─────────────────────────────────────</option>
               <option value="cancelar">Cancelar cotação no SAP</option>
             </select>
           </div>
         `,
+        showCancelButton: true,
+        cancelButtonText: "Cancelar",
+        confirmButtonText: "Confirmar",
+        confirmButtonColor: "#4f9291",
+        cancelButtonColor: "#d33",
+        preConfirm: () => {
+          const motivo = (
+            document.getElementById("motivoEncerramento") as HTMLSelectElement
+          ).value;
+
+          if (!motivo) {
+            Swal.showValidationMessage("Por favor, selecione um motivo");
+            return false;
+          }
+
+          // Se for cancelamento, não enviamos motivo
+          if (motivo === "cancelar") {
+            return { motivo: null, cancelar: true };
+          }
+
+          return { motivo, cancelar: false };
+        },
+      });
+
+      if (formValues) {
+        if (formValues.cancelar) {
+          const { isConfirmed } = await Swal.fire({
+            title: "Confirmar Cancelamento",
+            text: "Tem certeza que deseja CANCELAR esta cotação? Esta ação não pode ser desfeita.",
+            icon: "warning",
             showCancelButton: true,
-            cancelButtonText: 'Cancelar',
-            confirmButtonText: 'Confirmar',
-            confirmButtonColor: '#4f9291',
-            cancelButtonColor: '#d33',
-            preConfirm: () => {
-                const motivo = (document.getElementById('motivoEncerramento') as HTMLSelectElement).value;
+            cancelButtonText: "Não",
+            confirmButtonText: "Sim",
+            confirmButtonColor: "#4f9291",
+            cancelButtonColor: "#d33",
+          });
 
-                if (!motivo) {
-                    Swal.showValidationMessage('Por favor, selecione um motivo');
-                    return false;
-                }
-
-                // Se for cancelamento, não enviamos motivo
-                if (motivo === 'cancelar') {
-                    return { motivo: null, cancelar: true };
-                }
-
-                return { motivo, cancelar: false };
-            }
-        });
-
-        if (formValues) {
-            if (formValues.cancelar) {
-                const { isConfirmed } = await Swal.fire({
-                    title: 'Confirmar Cancelamento',
-                    text: 'Tem certeza que deseja CANCELAR esta cotação? Esta ação não pode ser desfeita.',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    cancelButtonText: 'Não',
-                    confirmButtonText: 'Sim',
-                    confirmButtonColor: '#4f9291',
-                    cancelButtonColor: '#d33'
-                });
-
-                if (!isConfirmed) return;
-            }
-
-            // Criar toast de loading
-            const loadingToast = toast.loading(`${formValues.cancelar ? 'Cancelando' : 'Fechando'} cotação...`);
-            try {            
-              const response = await fetch(`${baseUrlProposta}/api/sap/encerrarCotacao/${docEntry}`, {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                  motivo: formValues.motivo,
-                  cancelar: formValues.cancelar,
-                })
-              });
-            
-              if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.details || 'Erro ao encerrar cotação');
-              }
-            
-              const data = await response.json();
-            
-              // Remove loading toast
-              toast.dismiss(loadingToast);
-              
-              // Show success message
-              toast.success(`Cotação ${formValues.cancelar ? 'cancelada' : 'fechada'} com sucesso`);
-            
-              return data;
-            
-            } catch (error: any) {
-              // Remove loading toast
-              toast.dismiss(loadingToast);
-              
-              // Show error message
-              toast.error(`Erro ao ${formValues.cancelar ? 'cancelar' : 'fechar'} cotação: ${error.message}`);
-              
-              throw error;
-            } finally {
-                //toggleActionButtons(docEntry, false);
-            }
-        } else {
-            //toggleActionButtons(docEntry, false);
+          if (!isConfirmed) return;
         }
-    } catch (error) {
-        console.error('Erro:', error);
-        //toggleActionButtons(docEntry, false);
-    }
 
+        // Criar toast de loading
+        const loadingToast = toast.loading(
+          `${formValues.cancelar ? "Cancelando" : "Fechando"} cotação...`
+        );
+        try {
+          const response = await fetch(
+            `${baseUrlProposta}/api/sap/encerrarCotacao/${docEntry}`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                motivo: formValues.motivo,
+                cancelar: formValues.cancelar,
+              }),
+            }
+          );
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.details || "Erro ao encerrar cotação");
+          }
+
+          const data = await response.json();
+
+          // Remove loading toast
+          toast.dismiss(loadingToast);
+
+          // Show success message
+          toast.success(
+            `Cotação ${
+              formValues.cancelar ? "cancelada" : "fechada"
+            } com sucesso`
+          );
+
+          return data;
+        } catch (error: any) {
+          // Remove loading toast
+          toast.dismiss(loadingToast);
+
+          // Show error message
+          toast.error(
+            `Erro ao ${formValues.cancelar ? "cancelar" : "fechar"} cotação: ${
+              error.message
+            }`
+          );
+
+          throw error;
+        } finally {
+          //toggleActionButtons(docEntry, false);
+        }
+      } else {
+        //toggleActionButtons(docEntry, false);
+      }
+    } catch (error) {
+      console.error("Erro:", error);
+      //toggleActionButtons(docEntry, false);
+    }
   }
 
   //Funcoes compartilhar cotacao
   async function getShareLink(docEntry: string): Promise<string> {
     try {
-      const quotationDetails = await fetch(`${baseUrlProposta}/api/sap/getQuotationDetails/${docEntry}`);
+      const quotationDetails = await fetch(
+        `${baseUrlProposta}/api/sap/getQuotationDetails/${docEntry}`
+      );
       const quotationDetailsData = await quotationDetails.json();
 
       const cardCode = quotationDetailsData[0].CardCode;
@@ -545,7 +628,7 @@ export function Cotacao({ index, cotacao }: { index: number, cotacao: cotacao })
       const shareLink = `https://meuspedidos.copapel.com.br/cotacao/${cardCode}/${docNum}`;
       return shareLink;
     } catch (error) {
-      console.error('Erro ao gerar link de compartilhamento:', error);
+      console.error("Erro ao gerar link de compartilhamento:", error);
       return "";
     }
   }
@@ -555,11 +638,13 @@ export function Cotacao({ index, cotacao }: { index: number, cotacao: cotacao })
 
     const copiarLink = async () => {
       try {
-        const shareLink = document.getElementById("shareLink")! as HTMLInputElement;
+        const shareLink = document.getElementById(
+          "shareLink"
+        )! as HTMLInputElement;
         await navigator.clipboard.writeText(shareLink.value);
         toast.success("Link copiado para a área de transferência");
       } catch (error) {
-        console.error('Erro ao copiar link:', error);
+        console.error("Erro ao copiar link:", error);
         toast.error("Erro ao copiar link");
       }
     };
@@ -581,13 +666,15 @@ export function Cotacao({ index, cotacao }: { index: number, cotacao: cotacao })
           showConfirmButton: false,
         });
 
-        const response = await fetch(`${baseUrlProposta}/api/sap/getPDF/${docEntry}`);
+        const response = await fetch(
+          `${baseUrlProposta}/api/sap/getPDF/${docEntry}`
+        );
 
         const blob = await response.blob();
 
         const url = window.URL.createObjectURL(blob);
 
-        const link = document.createElement('a');
+        const link = document.createElement("a");
 
         link.href = url;
         link.download = `Proposta_${docEntry}.pdf`;
@@ -601,7 +688,7 @@ export function Cotacao({ index, cotacao }: { index: number, cotacao: cotacao })
 
         return;
       } catch (error) {
-        console.error('Erro ao gerar PDF:', error);
+        console.error("Erro ao gerar PDF:", error);
 
         Swal.close();
 
@@ -616,23 +703,25 @@ export function Cotacao({ index, cotacao }: { index: number, cotacao: cotacao })
 
     const getPropostaPDF = async (docEntry: string) => {
       try {
-        const loadingToast = toast.loading('Gerando PDF...');
+        const loadingToast = toast.loading("Gerando PDF...");
 
-        const response = await fetch(`${baseUrlProposta}/api/pdf/getQuotationDocument/proposta/${docEntry}`);
+        const response = await fetch(
+          `${baseUrlProposta}/api/pdf/getQuotationDocument/proposta/${docEntry}`
+        );
         const pdfBuffer = await response.arrayBuffer();
-        const pdfBlob = new Blob([pdfBuffer], { type: 'application/pdf' });
+        const pdfBlob = new Blob([pdfBuffer], { type: "application/pdf" });
         const pdfUrl = URL.createObjectURL(pdfBlob);
 
         toast.dismiss(loadingToast);
 
         // Tenta abrir em nova janela primeiro
-        const newWindow = window.open(pdfUrl, '_blank');
+        const newWindow = window.open(pdfUrl, "_blank");
 
         // Se o popup foi bloqueado
         if (newWindow === null) {
           const { isConfirmed } = await Swal.fire({
-            icon: 'warning',
-            title: 'Popup Bloqueado',
+            icon: "warning",
+            title: "Popup Bloqueado",
             html: `
                     <div class="text-start">
                       <p>Não foi possível abrir o PDF em uma nova janela porque os popups estão bloqueados.</p>
@@ -651,28 +740,27 @@ export function Cotacao({ index, cotacao }: { index: number, cotacao: cotacao })
                     </div>
                   `,
             showCancelButton: true,
-            confirmButtonText: 'Baixar PDF',
-            cancelButtonText: 'Cancelar',
-            confirmButtonColor: '#4f9291',
-            reverseButtons: true
+            confirmButtonText: "Baixar PDF",
+            cancelButtonText: "Cancelar",
+            confirmButtonColor: "#4f9291",
+            reverseButtons: true,
           });
 
           if (isConfirmed) {
             // Cria um link temporário para download
-            const downloadLink = document.createElement('a');
+            const downloadLink = document.createElement("a");
             downloadLink.href = pdfUrl;
             downloadLink.download = `proposta_${docEntry}.pdf`;
             document.body.appendChild(downloadLink);
             downloadLink.click();
             document.body.removeChild(downloadLink);
 
-            toast.success('Download do PDF iniciado');
+            toast.success("Download do PDF iniciado");
           }
         }
 
         // Limpa a URL do objeto após um tempo
         setTimeout(() => URL.revokeObjectURL(pdfUrl), 60000);
-
       } catch (error: any) {
         console.error("Erro ao visualizar PDF:", error);
         Swal.fire({
@@ -703,13 +791,10 @@ export function Cotacao({ index, cotacao }: { index: number, cotacao: cotacao })
                   </ul>
                 </div>
               `,
-          confirmButtonColor: "#4f9291"
+          confirmButtonColor: "#4f9291",
         });
       }
-
     };
-
-
 
     try {
       const modalContent = `
@@ -1036,18 +1121,23 @@ export function Cotacao({ index, cotacao }: { index: number, cotacao: cotacao })
         html: styles + modalContent,
         showConfirmButton: false,
         showCloseButton: true,
-        width: '550px',
+        width: "550px",
         didOpen: () => {
           // Aqui você adiciona os event listeners aos botões
-          document.querySelector('.btn-copy')?.addEventListener('click', copiarLink);
-          document.querySelector('.btn-cotacao-pdf')?.addEventListener('click', () => getCotacaoPDF(DocEntry));
-          document.querySelector('.btn-proposta-pdf')?.addEventListener('click', () => getPropostaPDF(DocEntry));
+          document
+            .querySelector(".btn-copy")
+            ?.addEventListener("click", copiarLink);
+          document
+            .querySelector(".btn-cotacao-pdf")
+            ?.addEventListener("click", () => getCotacaoPDF(DocEntry));
+          document
+            .querySelector(".btn-proposta-pdf")
+            ?.addEventListener("click", () => getPropostaPDF(DocEntry));
         },
         customClass: {
-          container: 'share-modal-container'
-        }
+          container: "share-modal-container",
+        },
       });
-
     } catch (error) {
       console.error("Erro ao compartilhar cotação:", error);
       toast.error("Erro ao compartilhar cotação");
@@ -1055,53 +1145,84 @@ export function Cotacao({ index, cotacao }: { index: number, cotacao: cotacao })
   }
   // - fim compartilhar
 
-
-
-  const handleActionClick = (action: string, docEntry: string, docNum: string) => {
+  const handleActionClick = (
+    action: string,
+    docEntry: string,
+    docNum: string
+  ) => {
     //replaced cons log
     switch (action) {
-      case 'visualizarPDF':
+      case "visualizarPDF":
         visualizarPDF(docEntry);
         break;
-      case 'duplicarProposta':
+      case "duplicarProposta":
         duplicarProposta(docEntry);
         break;
-      case 'visualizarDadosSAP':
+      case "visualizarDadosSAP":
         visualizarDadosSAP(docEntry);
         break;
-      case 'compartilharCotacao':
+      case "compartilharCotacao":
         compartilharCotacao(docEntry);
         break;
-      case 'atualizarValidade':
+      case "atualizarValidade":
         atualizarValidade(docEntry, docNum);
         break;
-      case 'encerrarCotacaoSAP':
-        encerrarCotacaoSAP(docEntry)
+      case "encerrarCotacaoSAP":
+        encerrarCotacaoSAP(docEntry);
         break;
       default:
-        toast.error("Ação ainda não implementada!")
+        toast.error("Ação ainda não implementada!");
     }
   };
 
   const btColor = index % 2 == 0 ? "white" : "gray-100";
   return (
-    <div key={index} className={`flex w-full gap-2  box-border bg-${btColor}  rounded-md customBorder transition-all duration-500 `} >
-      <p className="w-1/6 ml-4 flex items-center gap-4 m-0 p-0" >  {cotacao.DocNum}  </p>
-      <p className="w-1/6 flex items-center"> {BRL.format(cotacao.DocTotal)} </p>
-      <p className="w-1/6 flex items-center">{new Date(cotacao.DocDate).toLocaleDateString('pt-BR')} </p>
-      <p className="w-2/6 flex items-center">{new Date(cotacao.DocDueDate).toLocaleDateString('pt-BR')}</p>
+    <div
+      key={index}
+      className={`flex w-full gap-2  box-border bg-${btColor}  rounded-md customBorder transition-all duration-500 `}
+    >
+      <p className="w-1/6 ml-4 flex items-center gap-4 m-0 p-0">
+        {" "}
+        {cotacao.DocNum}{" "}
+      </p>
+      <p className="w-1/6 flex items-center">
+        {" "}
+        {BRL.format(cotacao.DocTotal)}{" "}
+      </p>
+      <p className="w-1/6 flex items-center">
+        {new Date(cotacao.DocDate).toLocaleDateString("pt-BR")}{" "}
+      </p>
+      <p className="w-2/6 flex items-center">
+        {new Date(cotacao.DocDueDate).toLocaleDateString("pt-BR")}
+      </p>
       <p className="w-1/6 flex items-center">{getStatus(cotacao.DOCSTATUS)}</p>
-      {<p className="w-1/6 flex items-center"><ActionButtons status={getStatus(cotacao.DOCSTATUS)} docNum={cotacao.DocNum} docEntry={cotacao.DocEntry} onActionClick={handleActionClick} /> </p>}
+      {
+        <p className="w-1/6 flex items-center">
+          <ActionButtons
+            status={getStatus(cotacao.DOCSTATUS)}
+            docNum={cotacao.DocNum}
+            docEntry={cotacao.DocEntry}
+            onActionClick={handleActionClick}
+          />{" "}
+        </p>
+      }
       <Modal open={open} onClose={handleClose}>
-        <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', bgcolor: 'background.paper', boxShadow: 24, rounded: 3 }}>
-          <Typography >
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            bgcolor: "background.paper",
+            boxShadow: 24,
+            rounded: 3,
+          }}
+        >
+          <Typography>
             <div dangerouslySetInnerHTML={{ __html: modalContent }} />
           </Typography>
         </Box>
       </Modal>
-
     </div>
-  )
-
-
+  );
 }
