@@ -9,81 +9,24 @@ export const formatDate = (data: Date) => {
   return dia + "/" + mes + "/" + ano;
 };
 
-export const achaNumAssunto = (assunto: any, tipo: any) => {
-  if (tipo == "Comunicação") {
-    switch (assunto) {
-      case "Visita":
-        assunto = 80;
-        break;
-      case "Pedido":
-        assunto = 81;
-        break;
-      case "Orçamento":
-        assunto = 82;
-        break;
-      case "O.S.":
-        assunto = 83;
-        break;
-      case "Demonstração":
-        assunto = 84;
-        break;
-      case "Dúvida":
-        assunto = 85;
-        break;
-      case "Financeiro":
-        assunto = 86;
-        break;
-      case "Entrega":
-        assunto = 87;
-        break;
-      case "Reclamação":
-        assunto = 97;
-        break;
-      case "Retorno":
-        assunto = 99;
-        break;
-      default:
-        assunto = false;
-        break;
-    }
-    return assunto;
+export const categorizarAssuntos = (assuntos: any[]) => {
+  const sucesso = [102, 94, 90, 93, 108, 95, 105, 104, 91, 89, 106, 103, 96];
+  const insucesso = [107, 98, 100];
+
+  const assuntosCategorizados = {
+    sucesso: assuntos.filter((assunto) => sucesso.includes(assunto.Code)),
+    insucesso: assuntos.filter((assunto) => insucesso.includes(assunto.Code)),
+  };
+
+  return assuntosCategorizados;
+};
+
+export const achaNumAssunto = (assunto: any) => {
+  // Retorna diretamente o código numérico da API
+  if (typeof assunto === "number" || !isNaN(Number(assunto))) {
+    return Number(assunto);
   }
-  if (tipo == "Lembrete") {
-    switch (assunto) {
-      case "Visita":
-        assunto = 88;
-        break;
-      case "Pedido":
-        assunto = 89;
-        break;
-      case "Orçamento":
-        assunto = 90;
-        break;
-      case "O.S.":
-        assunto = 91;
-        break;
-      case "Demonstração":
-        assunto = 92;
-        break;
-      case "Dúvida":
-        assunto = 93;
-        break;
-      case "Financeiro":
-        assunto = 94;
-        break;
-      case "Entrega":
-        assunto = 95;
-        break;
-      case "Reclamação":
-        assunto = 96;
-        break;
-      case "Retorno":
-        assunto = 98;
-        break;
-      default:
-        assunto = false;
-        break;
-    }
-    return assunto;
-  }
+
+  // Se não for um número válido, retorna false
+  return false;
 };

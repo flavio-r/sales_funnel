@@ -22,14 +22,24 @@ export function ModalNovoTicket({ onClose, CardCode }: novoTicketProps) {
   const [isFocused, setIsFocused] = useState(false);
   const [renderToast, setRenderToast] = useState(false);
   const [atribuidos, setAtribuidos] = useState<any>([]);
-  const [tipo, setTipo] = useState("Lembrete");
+  const [assuntos, setAssuntos] = useState<any>([]);
   const { user } = useContext(AuthContext);
 
-  const dataAtual = new Date();
-  const horas = String(dataAtual.getHours()).padStart(2, "0");
-  const minutos = String(dataAtual.getMinutes()).padStart(2, "0");
-  const horarioAtual = `${horas}:${minutos}`;
+  // Função para obter o ID do usuário do localStorage
+  const getUserIdFromStorage = () => {
+    const userFromStorage = localStorage.getItem("user");
+    if (userFromStorage) {
+      try {
+        const userData = JSON.parse(userFromStorage);
+        return userData.id_sap;
+      } catch (error) {
+        console.error("Erro ao parsear usuário do localStorage:", error);
+      }
+    }
+    return user?.id_sap || "";
+  };
 
+  const dataAtual = new Date();
   const ano = dataAtual.getFullYear();
   const mes = String(dataAtual.getMonth() + 1).padStart(2, "0"); // Adiciona zero à esquerda se for menor que 10
   const dia = String(dataAtual.getDate()).padStart(2, "0"); // Adiciona zero à esquerda se for menor que 10
@@ -41,15 +51,19 @@ export function ModalNovoTicket({ onClose, CardCode }: novoTicketProps) {
     toast.loading("Enviando Ticket");
     data.cardcode = CardCode;
 
-    if (tipo == "Lembrete") {
-      data.tipo = "10";
-    } else if (tipo == "Comunicação") {
-      data.tipo = "11";
-    }
+    // Sempre usar tipo "Lembrete" (código 10)
+    data.tipo = "10";
     data.tipoRealizado = "10";
 
-    const assunto = achaNumAssunto(data.assunto, tipo);
+    const assunto = achaNumAssunto(data.assunto);
+
     data.assunto = assunto;
+
+    // Definir horário padrão se não preenchido
+    if (!data.horario || data.horario === "") {
+      data.horario = "00:01";
+    }
+
     const atribuicao: any = document.getElementById("testeAtribuicao");
     if (atribuicao) {
       data.atribuicao = atribuicao.value;
@@ -101,12 +115,19 @@ export function ModalNovoTicket({ onClose, CardCode }: novoTicketProps) {
     }
   };
 
-  const handleTipo = (e: any) => {
-    const valorSelecionado = e.target.value;
-    if (valorSelecionado == user.id_sap) {
-      setTipo("Lembrete");
-    } else {
-      setTipo("Comunicação");
+  const carregaAssuntos = async () => {
+    const response = await ajax({
+      method: "GET",
+      endpoint: "/atividades/assuntos",
+      data: null,
+    });
+    if (response.status == "error") {
+      toast.error("Erro ao carregar assuntos");
+      return;
+    }
+
+    if (response.status == "success") {
+      setAssuntos(response.data);
     }
   };
 
@@ -126,8 +147,22 @@ export function ModalNovoTicket({ onClose, CardCode }: novoTicketProps) {
 
   useEffect(() => {
     carregaAtribuidos();
+    carregaAssuntos();
     //replaced cons log
   }, []);
+
+  // useEffect para definir o valor selecionado após carregar os dados
+  useEffect(() => {
+    if (atribuidos.length > 0) {
+      const userId = getUserIdFromStorage();
+      const selectElement = document.getElementById(
+        "testeAtribuicao"
+      ) as HTMLSelectElement;
+      if (selectElement && userId) {
+        selectElement.value = userId.toString();
+      }
+    }
+  }, [atribuidos]);
 
   return (
     <form
@@ -137,10 +172,10 @@ export function ModalNovoTicket({ onClose, CardCode }: novoTicketProps) {
       className=" gap-12 modalAdd fixed top-0 left-0 w-full h-full bg-opacity-50 bg-black overflow-auto z-50 flex items-center justify-center box-border"
     >
       <div
-        className={`bg-white w-5/12 h-4/6 rounded-md flex flex-col box-border shadow-lg p-2`}
+        className={`bg-white w-5/12 h-auto rounded-md flex flex-col box-border shadow-lg p-4`}
       >
-        <div className="flex justify-between px-4 items-center mt-2">
-          <p className="m-0  text-xl font-semibold ">Novo Atendimento</p>
+        <div className="flex justify-between items-center mb-4">
+          <p className="m-0 text-xl font-semibold">Novo Atendimento</p>
           <WhiteBtn
             nomeBtn="Fechar"
             type="button"
@@ -148,32 +183,23 @@ export function ModalNovoTicket({ onClose, CardCode }: novoTicketProps) {
             icon={<IoIosCloseCircle />}
           />
         </div>
-        <div className="horizontalRule"></div>
-        <div className="flex w-full px-4 gap-4 box-border ">
-          <div className=" flex flex-col w-1/2">
+
+        <div className="flex w-full gap-4 mb-4">
+          <div className="flex flex-col w-1/2">
             <SelectDados
-              funcaoAoMudar={handleTipo}
               itens={atribuidos}
               id="testeAtribuicao"
               requiredDefault={true}
-              preValue={user.id_sap}
+              preValue={getUserIdFromStorage()}
               tipo="atribuidos"
               placeholder="Atribuição"
               insidePlaceholder="Atribuir"
               name="atribuicao"
               register={register}
             />
-            <SelectDados
-              requiredDefault={true}
-              preValue="Visita"
-              tipo="assunto"
-              placeholder="Assunto"
-              name="assunto"
-              register={register}
-            />
           </div>
           <div className="w-1/2">
-            <div className="flex justify-between w-full gap-2 ">
+            <div className="flex gap-4">
               <div className="w-1/2">
                 <InputDados
                   editable={true}
@@ -189,8 +215,7 @@ export function ModalNovoTicket({ onClose, CardCode }: novoTicketProps) {
               <div className="w-1/2">
                 <InputDados
                   editable={true}
-                  requiredDefault={true}
-                  preValue={horarioAtual}
+                  requiredDefault={false}
                   placeholder="Horário"
                   insidePlaceholder="13:29"
                   name="horario"
@@ -199,31 +224,28 @@ export function ModalNovoTicket({ onClose, CardCode }: novoTicketProps) {
                 />
               </div>
             </div>
-            <div className="flex justify-between w-full gap-2 ">
-              <div className="w-full">
-                {" "}
-                <SelectDados
-                  requiredDefault={true}
-                  preValue={tipo}
-                  disabled={true}
-                  tipo="tipo"
-                  placeholder="Tipo"
-                  name="tipo"
-                  register={register}
-                />
-              </div>
-            </div>
           </div>
         </div>
 
-        <div className=" w-full px-4  mt-4 h-full box-border relative mb-4 ">
+        <div className="w-full mb-4">
+          <SelectDados
+            requiredDefault={true}
+            tipo="assunto"
+            placeholder="Assunto"
+            name="assunto"
+            register={register}
+            itens={assuntos}
+          />
+        </div>
+
+        <div className="w-full mb-4 h-32 relative">
           <textarea
             required={true}
             {...register("conteudo")}
             name="conteudo"
             id="conteudo"
             placeholder=" "
-            className={`font-sans outline-none p-4 w-full h-full  rounded-md customBorder box-border text-md focus:border-blue-500 ${
+            className={`font-sans outline-none p-4 w-full h-full rounded-md customBorder box-border text-md focus:border-blue-500 resize-none ${
               isFocused ? "pt-6" : ""
             }`}
             onFocus={() => setIsFocused(true)}
@@ -235,16 +257,15 @@ export function ModalNovoTicket({ onClose, CardCode }: novoTicketProps) {
           ></textarea>
           <label
             htmlFor="conteudo"
-            className={`absolute  pl-4 left-4 transition-all duration-300 ${
+            className={`absolute pl-4 left-4 transition-all duration-300 ${
               isFocused ? "top-1 text-gray-600 text-sm" : "top-4 text-md"
             }`}
           >
             Conteúdo
           </label>
         </div>
-        <div className="horizontalRule"></div>
-        <div className="w-full px-4 mt-4 box-border flex justify-between mb-2">
-          <div className="flex items-center gap-2"></div>
+
+        <div className="w-full flex justify-end">
           <GrnBtn
             form="formNovoTicket"
             icon={<IoIosSave size={20} />}

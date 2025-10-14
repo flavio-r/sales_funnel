@@ -2,6 +2,7 @@ import { RegisterOptions, UseFormRegister } from "react-hook-form";
 import { colaborador } from "./modalAddOportunity";
 import { estado, municipio } from "../pages/leads";
 import { regiao } from "./modalFilter";
+import { categorizarAssuntos } from "../utils/helpers";
 interface input {
   placeholder: string;
   name: string;
@@ -67,38 +68,36 @@ export function SelectDados({
           } focus:outline-none focus:border-2`}
         >
           {tipo == "assunto" ? (
-            <>
-              <option key="visita" value="Visita">
-                Visita
+            itens && itens.length > 0 ? (
+              <>
+                <option value="">Selecione um assunto</option>
+                {(() => {
+                  const categorizados = categorizarAssuntos(itens);
+                  return (
+                    <>
+                      <optgroup label="Sucesso">
+                        {categorizados.sucesso.map((assunto: any) => (
+                          <option key={assunto.Code} value={assunto.Code}>
+                            {assunto.Name}
+                          </option>
+                        ))}
+                      </optgroup>
+                      <optgroup label="Insucesso">
+                        {categorizados.insucesso.map((assunto: any) => (
+                          <option key={assunto.Code} value={assunto.Code}>
+                            {assunto.Name}
+                          </option>
+                        ))}
+                      </optgroup>
+                    </>
+                  );
+                })()}
+              </>
+            ) : (
+              <option value="" disabled>
+                Carregando assuntos...
               </option>
-              <option key="pedido" value="Pedido">
-                Pedido
-              </option>
-              <option key="orcamento" value="Orçamento">
-                Orçamento
-              </option>
-              <option key="os" value="O.S.">
-                O.S.
-              </option>
-              <option key="demonstracao" value="Demonstração">
-                Demonstração
-              </option>
-              <option key="duvida" value="Dúvida">
-                Dúvida
-              </option>
-              <option key="financeiro" value="Financeiro">
-                Financeiro
-              </option>
-              <option key="entrega" value="Entrega">
-                Entrega
-              </option>
-              <option key="reclamacao" value="Reclamação">
-                Reclamação
-              </option>
-              <option key="retorno" value="Retorno">
-                Retorno
-              </option>
-            </>
+            )
           ) : (
             ""
           )}

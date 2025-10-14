@@ -143,6 +143,7 @@ export function Atividades({ task }: { task?: task }) {
     if (filter.length == 0) {
       toast.loading("Carregando atividades...");
     }
+
     const response = await ajax({
       method: "POST",
       endpoint: "/atividades",
@@ -198,7 +199,7 @@ export function Atividades({ task }: { task?: task }) {
   }, []);
 
   useEffect(() => {
-    if (filter.length >= 2 || filter.length == 0) {
+    if (filter.length >= 2) {
       carregaAtividades(filter);
     }
   }, [filter]);
@@ -292,7 +293,9 @@ export function Atividades({ task }: { task?: task }) {
             />
             <div className="w-4/12">
               <Input
-                valueHandler={(e) => setFilter(e.target.value)}
+                valueHandler={(e) => {
+                  setFilter(e.target.value);
+                }}
                 placeholder="Pesquise por atividades / tickets"
                 name="filter"
                 icon={<CiSearch size={20} />}
@@ -329,6 +332,7 @@ export function Atividades({ task }: { task?: task }) {
                 const nomeAtribuidor = ativ.firstName + " " + ativ.lastName;
                 return (
                   <Atividade
+                    key={ativ.ClgCode}
                     finalizarTicket={() =>
                       finalizarTicket({
                         id_ticket: ativ.ClgCode,

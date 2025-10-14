@@ -23,9 +23,23 @@ export function ModalNovoTicket({ onClose, CardCode }: novoTicketProps) {
   const [isFocusedRealizado, setIsFocusedRealizado] = useState(false);
   const [renderToast, setRenderToast] = useState(false);
   const [atribuidos, setAtribuidos] = useState<any>([]);
-  const [tipo, setTipo] = useState("Lembrete");
+  const [assuntos, setAssuntos] = useState<any>([]);
   const [criaProximo, setCriaProximo] = useState(true);
   const { user } = useContext(AuthContext);
+
+  // Função para obter o ID do usuário do localStorage
+  const getUserIdFromStorage = () => {
+    const userFromStorage = localStorage.getItem("user");
+    if (userFromStorage) {
+      try {
+        const userData = JSON.parse(userFromStorage);
+        return userData.id_sap;
+      } catch (error) {
+        console.error("Erro ao parsear usuário do localStorage:", error);
+      }
+    }
+    return user?.id_sap || "";
+  };
 
   const dataAtual = new Date();
   const horas = String(dataAtual.getHours()).padStart(2, "0");
@@ -43,15 +57,12 @@ export function ModalNovoTicket({ onClose, CardCode }: novoTicketProps) {
     toast.loading("Enviando Ticket");
     data.cardcode = CardCode;
 
-    if (tipo == "Lembrete") {
-      data.tipo = "10";
-    } else if (tipo == "Comunicação") {
-      data.tipo = "11";
-    }
+    // Sempre usar tipo "Lembrete" (código 10)
+    data.tipo = "10";
     data.tipoRealizado = "10";
 
-    const assuntoRealizado = achaNumAssunto(data.assuntoRealizado, "Lembrete");
-    const assunto = achaNumAssunto(data.assunto, tipo);
+    const assuntoRealizado = achaNumAssunto(data.assuntoRealizado);
+    const assunto = achaNumAssunto(data.assunto);
     data.assunto = assunto;
     data.assuntoRealizado = assuntoRealizado;
     const atribuicao: any = document.getElementById("testeAtribuicao");
@@ -86,6 +97,22 @@ export function ModalNovoTicket({ onClose, CardCode }: novoTicketProps) {
     toast.error("Erro ao enviar ticket");
   };
 
+  const carregaAssuntos = async () => {
+    const response = await ajax({
+      method: "GET",
+      endpoint: "/atividades/assuntos",
+      data: null,
+    });
+    if (response.status == "error") {
+      toast.error("Erro ao carregar assuntos");
+      return;
+    }
+
+    if (response.status == "success") {
+      setAssuntos(response.data);
+    }
+  };
+
   const carregaAtribuidos = async () => {
     const response = await ajax({
       method: "GET",
@@ -106,15 +133,6 @@ export function ModalNovoTicket({ onClose, CardCode }: novoTicketProps) {
     }
   };
 
-  const handleTipo = (e: any) => {
-    const valorSelecionado = e.target.value;
-    if (valorSelecionado == user.id_sap) {
-      setTipo("Lembrete");
-    } else {
-      setTipo("Comunicação");
-    }
-  };
-
   //configs do funcionamento do modal
   if (isOpen) {
     document.body.style.overflow = "hidden";
@@ -131,8 +149,22 @@ export function ModalNovoTicket({ onClose, CardCode }: novoTicketProps) {
 
   useEffect(() => {
     carregaAtribuidos();
+    carregaAssuntos();
     //replaced cons log
   }, []);
+
+  // useEffect para definir o valor selecionado após carregar os dados
+  useEffect(() => {
+    if (atribuidos.length > 0) {
+      const userId = getUserIdFromStorage();
+      const selectElement = document.getElementById(
+        "testeAtribuicao"
+      ) as HTMLSelectElement;
+      if (selectElement && userId) {
+        selectElement.value = userId.toString();
+      }
+    }
+  }, [atribuidos]);
 
   return (
     <form
@@ -141,8 +173,8 @@ export function ModalNovoTicket({ onClose, CardCode }: novoTicketProps) {
       onSubmit={handleSubmit(onSubmit)}
       className=" gap-12 modalAdd fixed top-0 left-0 w-full h-full bg-opacity-50 bg-black overflow-auto z-50 flex items-center justify-center box-border"
     >
-      <div className="bg-white w-5/12 h-4/6    rounded-md flex flex-col box-border shadow-lg p-2">
-        <div className="flex justify-between px-4 items-center mt-2">
+      <div className="bg-white w-5/12 h-auto rounded-md flex flex-col box-border shadow-lg p-4">
+        <div className="flex justify-between items-center mb-4">
           <p className="m-0  text-xl font-semibold ">Atendimento Realizado</p>
           <WhiteBtn
             nomeBtn="Fechar"
@@ -150,16 +182,15 @@ export function ModalNovoTicket({ onClose, CardCode }: novoTicketProps) {
             icon={<IoIosCloseCircle />}
           />
         </div>
-        <div className="horizontalRule"></div>
-        <div className="flex w-full px-4 gap-4 box-border ">
+        <div className="flex w-full gap-4 mb-4">
           <div className=" flex flex-col w-1/2">
             <SelectDados
               requiredDefault={true}
-              preValue="Visita"
               tipo="assunto"
               placeholder="Assunto"
               name="assuntoRealizado"
               register={register}
+              itens={assuntos}
             />
           </div>
           <div className="w-1/2">
@@ -180,14 +211,14 @@ export function ModalNovoTicket({ onClose, CardCode }: novoTicketProps) {
           </div>
         </div>
 
-        <div className=" w-full px-4  mt-4 h-full box-border relative">
+        <div className="w-full mb-4 h-32 relative">
           <textarea
             required={true}
             {...register("conteudoRealizado")}
             name="conteudoRealizado"
             id="conteudoRealizado"
             placeholder=" "
-            className={`font-sans outline-none p-4 w-full h-full rounded-md customBorder box-border text-md focus:border-blue-500 ${
+            className={`font-sans outline-none p-4 w-full h-full rounded-md customBorder box-border text-md focus:border-blue-500 resize-none ${
               isFocusedRealizado ? "pt-6" : ""
             }`}
             onFocus={() => setIsFocusedRealizado(true)}
@@ -208,8 +239,7 @@ export function ModalNovoTicket({ onClose, CardCode }: novoTicketProps) {
             Conteúdo
           </label>
         </div>
-        <div className="horizontalRule"></div>
-        <div className="w-full px-4 mt-4 box-border flex justify-between mb-2">
+        <div className="w-full flex justify-between items-center">
           <div className="flex items-center gap-2">
             <label className="switch">
               <input
@@ -246,23 +276,14 @@ export function ModalNovoTicket({ onClose, CardCode }: novoTicketProps) {
         <div className="flex w-full px-4 gap-4 box-border ">
           <div className=" flex flex-col w-1/2">
             <SelectDados
-              funcaoAoMudar={handleTipo}
               itens={atribuidos}
               id="testeAtribuicao"
               requiredDefault={true}
-              preValue={user.id_sap}
+              preValue={getUserIdFromStorage()}
               tipo="atribuidos"
               placeholder="Atribuição"
               insidePlaceholder="Atribuir"
               name="atribuicao"
-              register={register}
-            />
-            <SelectDados
-              requiredDefault={true}
-              preValue="Visita"
-              tipo="assunto"
-              placeholder="Assunto"
-              name="assunto"
               register={register}
             />
           </div>
@@ -293,21 +314,18 @@ export function ModalNovoTicket({ onClose, CardCode }: novoTicketProps) {
                 />
               </div>
             </div>
-            <div className="flex justify-between w-full gap-2 ">
-              <div className="w-full">
-                {" "}
-                <SelectDados
-                  requiredDefault={true}
-                  preValue={tipo}
-                  disabled={true}
-                  tipo="tipo"
-                  placeholder="Tipo"
-                  name="tipo"
-                  register={register}
-                />
-              </div>
-            </div>
           </div>
+        </div>
+
+        <div className="w-full px-4 mt-4">
+          <SelectDados
+            requiredDefault={true}
+            tipo="assunto"
+            placeholder="Assunto"
+            name="assunto"
+            register={register}
+            itens={assuntos}
+          />
         </div>
 
         <div className=" w-full px-4  mt-4 h-full box-border relative mb-4 ">
