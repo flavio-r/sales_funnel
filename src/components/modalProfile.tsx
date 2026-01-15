@@ -6,6 +6,7 @@ import { CiUser } from "react-icons/ci";
 import { ajax } from "../ajax/ajax";
 import { IoEnter } from "react-icons/io5";
 import { useLocation } from "react-router-dom";
+import { getHubUrl } from "../utils/helpers";
 export function ModalProfile({
   isGerente,
   isInterno,
@@ -49,7 +50,7 @@ export function ModalProfile({
   async function handleLogOut() {
     await deslogaUsuario();
 
-    window.location.href = "https://hub.copapel.com.br/";
+    window.location.href = getHubUrl();
   }
 
   return (
