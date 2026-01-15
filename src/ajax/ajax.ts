@@ -13,7 +13,7 @@ const deleteAllCookies = () => {
   for (let i = 0; i < cookies.length; i++) {
     const cookie = cookies[i];
     const eqPos = cookie.indexOf("=");
-    const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+    const name = eqPos > -1 ? cookie.substring(0, eqPos) : cookie;
     document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
   }
 };
@@ -23,9 +23,9 @@ export async function ajax({ method, endpoint, data, signal }: Request) {
   if (env == "dev") {
     url = "http://localhost:8006/requests" + endpoint;
   } else if (env == "prd") {
-    url = "https://funil.copapel.com.br/requests" + endpoint;
+    url = "https://funil.copapel.com.br/api/requests" + endpoint;
   } else {
-    url = "https://funil.copapel.com.br/requests" + endpoint;
+    url = "https://funil.copapel.com.br/api/requests" + endpoint;
   }
 
   try {
