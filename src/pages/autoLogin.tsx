@@ -44,13 +44,10 @@ export function AutoLogin() {
       const errorMessage =
         response.message || "Erro ao realizar login automático";
       console.error("Erro no login automático:", response);
-
-      if (isDevelopment()) {
-        setError(errorMessage);
-        toast.error(errorMessage);
-      } else {
-        window.location.href = getHubUrl();
-      }
+      
+      // Temporariamente removido redirecionamento - apenas exibe erro
+      setError(errorMessage);
+      toast.error(errorMessage);
       return;
     }
 

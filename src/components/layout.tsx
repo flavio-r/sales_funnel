@@ -41,12 +41,9 @@ export function Layout() {
         const errorMessage = response.message || "Erro ao realizar login automático";
         console.error("Erro no login automático:", response);
         
-        if (isDevelopment()) {
-          setError(errorMessage);
-          toast.error(errorMessage);
-        } else {
-          window.location.href = getHubUrl();
-        }
+        // Temporariamente removido redirecionamento - apenas exibe erro
+        setError(errorMessage);
+        toast.error(errorMessage);
         return;
       }
 
@@ -64,12 +61,9 @@ export function Layout() {
       const errorMessage = error?.message || "Erro inesperado no login automático";
       console.error("Erro no login automático:", error);
       
-      if (isDevelopment()) {
-        setError(errorMessage);
-        toast.error(errorMessage);
-      } else {
-        window.location.href = getHubUrl();
-      }
+      // Temporariamente removido redirecionamento - apenas exibe erro
+      setError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setIsAutoLogging(false);
     }
@@ -104,7 +98,7 @@ export function Layout() {
     attAuthStatus();
   };
 
-  if (error && isDevelopment()) {
+  if (error) {
     return (
       <div className="h-full w-full flex flex-col items-center justify-center p-8">
         <div className="flex flex-col items-center gap-4 p-8 bg-red-50 border border-red-200 rounded-md max-w-md">

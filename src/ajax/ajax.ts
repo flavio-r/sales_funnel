@@ -65,21 +65,17 @@ export async function ajax({ method, endpoint, data, signal }: Request) {
       localStorage.clear();
       sessionStorage.clear();
 
-      // Em desenvolvimento, apenas loga o erro no console, em produção redireciona
-      if (isDevelopment()) {
-        console.error("Erro de autenticação (Unauthorized):", {
-          endpoint,
-          message: responseJson.message,
-          response: responseJson,
-        });
-        // Retorna o erro para que o componente possa tratá-lo
-        return {
-          status: "error",
-          message: "Não autorizado. Verifique suas credenciais.",
-        };
-      } else {
-        return (window.location.href = "https://hub.copapel.com.br/");
-      }
+      // Temporariamente removido redirecionamento - apenas loga o erro
+      console.error("Erro de autenticação (Unauthorized):", {
+        endpoint,
+        message: responseJson.message,
+        response: responseJson,
+      });
+      // Retorna o erro para que o componente possa tratá-lo
+      return {
+        status: "error",
+        message: "Não autorizado. Verifique suas credenciais.",
+      };
     }
     return responseJson;
   } catch (err: any) {

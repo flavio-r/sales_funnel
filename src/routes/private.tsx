@@ -32,12 +32,9 @@ export function Private({ children }: PrivateProps): any {
         const errorMessage = response.message || "Erro ao realizar login automático";
         console.error("Erro no login automático:", response);
         
-        if (isDevelopment()) {
-          setError(errorMessage);
-          toast.error(errorMessage);
-        } else {
-          window.location.href = getHubUrl();
-        }
+        // Temporariamente removido redirecionamento - apenas exibe erro
+        setError(errorMessage);
+        toast.error(errorMessage);
         return;
       }
 
@@ -55,12 +52,9 @@ export function Private({ children }: PrivateProps): any {
       const errorMessage = error?.message || "Erro inesperado no login automático";
       console.error("Erro no login automático:", error);
       
-      if (isDevelopment()) {
-        setError(errorMessage);
-        toast.error(errorMessage);
-      } else {
-        window.location.href = getHubUrl();
-      }
+      // Temporariamente removido redirecionamento - apenas exibe erro
+      setError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setIsAutoLogging(false);
     }
@@ -92,7 +86,7 @@ export function Private({ children }: PrivateProps): any {
     );
   }
   
-  if (error && isDevelopment()) {
+  if (error) {
     return (
       <div className="h-full w-full flex flex-col items-center justify-center p-8">
         <div className="flex flex-col items-center gap-4 p-8 bg-red-50 border border-red-200 rounded-md max-w-md">
@@ -107,22 +101,20 @@ export function Private({ children }: PrivateProps): any {
   
   if (!loading && !signed) {
     //replaced cons log
-    if (isDevelopment()) {
-      const errorMessage = "Usuário não autenticado";
-      console.error(errorMessage);
-      toast.error(errorMessage);
-      return (
-        <div className="h-full w-full flex flex-col items-center justify-center p-8">
-          <div className="flex flex-col items-center gap-4 p-8 bg-red-50 border border-red-200 rounded-md max-w-md">
-            <h1 className="text-red-600 font-semibold text-xl">Erro de Autenticação</h1>
-            <p className="text-red-800">{errorMessage}</p>
-            <p className="text-sm text-gray-600">Verifique o console do navegador para mais detalhes.</p>
-          </div>
-          <Toaster />
+    // Temporariamente removido redirecionamento - apenas exibe erro
+    const errorMessage = "Usuário não autenticado";
+    console.error(errorMessage);
+    toast.error(errorMessage);
+    return (
+      <div className="h-full w-full flex flex-col items-center justify-center p-8">
+        <div className="flex flex-col items-center gap-4 p-8 bg-red-50 border border-red-200 rounded-md max-w-md">
+          <h1 className="text-red-600 font-semibold text-xl">Erro de Autenticação</h1>
+          <p className="text-red-800">{errorMessage}</p>
+          <p className="text-sm text-gray-600">Verifique o console do navegador para mais detalhes.</p>
         </div>
-      );
-    }
-    return (window.location.href = getHubUrl());
+        <Toaster />
+      </div>
+    );
   }
 
   return (
