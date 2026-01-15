@@ -4,7 +4,6 @@ import { ajax } from "../ajax/ajax";
 import { LoadingModal } from "../components/modalLoading";
 import { AuthContext } from "../context/authProvider";
 import { useContext } from "react";
-import { getHubUrl, isDevelopment } from "../utils/helpers";
 import toast, { Toaster } from "react-hot-toast";
 export function AutoLogin() {
   const { user } = useContext(AuthContext);

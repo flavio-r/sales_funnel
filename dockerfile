@@ -1,5 +1,5 @@
 # Stage 1: Build the Vite application
-FROM node:21 as build
+FROM node:21 AS build
 
 RUN mkdir /funil_vendas
 

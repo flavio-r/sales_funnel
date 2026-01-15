@@ -6,7 +6,6 @@ import { AuthContext } from "../context/authProvider";
 import { useContext } from "react";
 import { filter_fields } from "./modalFilter";
 import { ajax } from "../ajax/ajax";
-import { getHubUrl, isDevelopment } from "../utils/helpers";
 import toast, { Toaster } from "react-hot-toast";
 
 interface headerContextData {

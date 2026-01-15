@@ -5,7 +5,6 @@ import { useState } from "react";
 import { LoadingModal } from "../components/modalLoading";
 import { useLocation } from "react-router-dom";
 import { ajax } from "../ajax/ajax";
-import { getHubUrl, isDevelopment } from "../utils/helpers";
 import toast, { Toaster } from "react-hot-toast";
 
 interface PrivateProps {
