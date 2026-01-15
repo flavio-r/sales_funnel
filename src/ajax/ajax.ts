@@ -23,9 +23,9 @@ export async function ajax({ method, endpoint, data, signal }: Request) {
   if (env == "dev") {
     url = "http://localhost:8006/requests" + endpoint;
   } else if (env == "prd") {
-    url = "https://funilapi.copapel.com.br/requests" + endpoint;
+    url = "https://funil.copapel.com.br/requests" + endpoint;
   } else {
-    url = "https://funilapi.copapel.com.br/requests" + endpoint;
+    url = "https://funil.copapel.com.br/requests" + endpoint;
   }
 
   try {
