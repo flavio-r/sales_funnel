@@ -1,13 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ajax } from "../ajax/ajax";
 import { LoadingModal } from "../components/modalLoading";
 import { AuthContext } from "../context/authProvider";
 import { useContext } from "react";
-import toast, { Toaster } from "react-hot-toast";
 export function AutoLogin() {
   const { user } = useContext(AuthContext);
-  const [error, setError] = useState<string | null>(null);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -40,13 +38,7 @@ export function AutoLogin() {
     });
 
     if (response.status == "error") {
-      const errorMessage =
-        response.message || "Erro ao realizar login automático";
-      console.error("Erro no login automático:", response);
-      
-      // Temporariamente removido redirecionamento - apenas exibe erro
-      setError(errorMessage);
-      toast.error(errorMessage);
+      window.location.href = "https://hub.copapel.com.br/";
       return;
     }
 
@@ -74,24 +66,9 @@ export function AutoLogin() {
   }, []);
 
   return (
-    <div className="h-full w-full flex flex-col items-center justify-center">
-      {error ? (
-        <div className="flex flex-col items-center gap-4 p-8 bg-red-50 border border-red-200 rounded-md">
-          <h1 className="text-red-600 font-semibold text-xl">
-            Erro no Login Automático
-          </h1>
-          <p className="text-red-800">{error}</p>
-          <p className="text-sm text-gray-600">
-            Verifique o console do navegador para mais detalhes.
-          </p>
-        </div>
-      ) : (
-        <>
-          <h1>Realizando login automático</h1>
-          <LoadingModal />
-        </>
-      )}
-      <Toaster />
+    <div className="h-full w-full flex flex-col items-center">
+      <h1>Realizando login automático</h1>
+      <LoadingModal />
     </div>
   );
 }

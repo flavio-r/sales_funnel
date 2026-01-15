@@ -1,14 +1,3 @@
-export const isDevelopment = () => {
-  return (
-    window.location.hostname === "localhost" ||
-    window.location.hostname === "127.0.0.1"
-  );
-};
-
-export const getHubUrl = () => {
-  return isDevelopment() ? "/login" : "https://hub.copapel.com.br/";
-};
-
 export const formatDate = (data: Date) => {
   var dia: string | number = data.getDate();
   var mes: string | number = data.getMonth() + 1;

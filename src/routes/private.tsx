@@ -5,7 +5,6 @@ import { useState } from "react";
 import { LoadingModal } from "../components/modalLoading";
 import { useLocation } from "react-router-dom";
 import { ajax } from "../ajax/ajax";
-import toast, { Toaster } from "react-hot-toast";
 
 interface PrivateProps {
   children: ReactNode;
@@ -15,7 +14,6 @@ export function Private({ children }: PrivateProps): any {
   const { user, signed, loading, attAuthStatus } = useContext(AuthContext);
   const [authStatusChecked, setAuthStatusChecked] = useState(false);
   const [isAutoLogging, setIsAutoLogging] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const location = useLocation();
 
   const loginWithSessionId = async (sessionId: string) => {
@@ -28,12 +26,7 @@ export function Private({ children }: PrivateProps): any {
       });
 
       if (response.status === "error") {
-        const errorMessage = response.message || "Erro ao realizar login automático";
-        console.error("Erro no login automático:", response);
-        
-        // Temporariamente removido redirecionamento - apenas exibe erro
-        setError(errorMessage);
-        toast.error(errorMessage);
+        window.location.href = "https://hub.copapel.com.br/";
         return;
       }
 
@@ -47,13 +40,9 @@ export function Private({ children }: PrivateProps): any {
         window.location.reload();
         return;
       }
-    } catch (error: any) {
-      const errorMessage = error?.message || "Erro inesperado no login automático";
+    } catch (error) {
       console.error("Erro no login automático:", error);
-      
-      // Temporariamente removido redirecionamento - apenas exibe erro
-      setError(errorMessage);
-      toast.error(errorMessage);
+      window.location.href = "https://hub.copapel.com.br/";
     } finally {
       setIsAutoLogging(false);
     }
@@ -77,49 +66,12 @@ export function Private({ children }: PrivateProps): any {
   }, [location.search, signed, user]);
 
   if (loading || !authStatusChecked || isAutoLogging) {
-    return (
-      <>
-        <LoadingModal />
-        <Toaster />
-      </>
-    );
+    return <LoadingModal />;
   }
-  
-  if (error) {
-    return (
-      <div className="h-full w-full flex flex-col items-center justify-center p-8">
-        <div className="flex flex-col items-center gap-4 p-8 bg-red-50 border border-red-200 rounded-md max-w-md">
-          <h1 className="text-red-600 font-semibold text-xl">Erro de Autenticação</h1>
-          <p className="text-red-800">{error}</p>
-          <p className="text-sm text-gray-600">Verifique o console do navegador para mais detalhes.</p>
-        </div>
-        <Toaster />
-      </div>
-    );
-  }
-  
   if (!loading && !signed) {
     //replaced cons log
-    // Temporariamente removido redirecionamento - apenas exibe erro
-    const errorMessage = "Usuário não autenticado";
-    console.error(errorMessage);
-    toast.error(errorMessage);
-    return (
-      <div className="h-full w-full flex flex-col items-center justify-center p-8">
-        <div className="flex flex-col items-center gap-4 p-8 bg-red-50 border border-red-200 rounded-md max-w-md">
-          <h1 className="text-red-600 font-semibold text-xl">Erro de Autenticação</h1>
-          <p className="text-red-800">{errorMessage}</p>
-          <p className="text-sm text-gray-600">Verifique o console do navegador para mais detalhes.</p>
-        </div>
-        <Toaster />
-      </div>
-    );
+    return (window.location.href = "https://hub.copapel.com.br/");
   }
 
-  return (
-    <>
-      {children}
-      <Toaster />
-    </>
-  );
+  return children;
 }

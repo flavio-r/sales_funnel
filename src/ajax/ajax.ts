@@ -1,13 +1,5 @@
 const env = import.meta.env.VITE_ENV_NAME;
 
-// Detecta automaticamente se está em desenvolvimento local
-const isDevelopment = () => {
-  return (
-    window.location.hostname === "localhost" ||
-    window.location.hostname === "127.0.0.1"
-  );
-};
-
 interface Request {
   method: string;
   endpoint: string;
@@ -28,15 +20,12 @@ const deleteAllCookies = () => {
 
 export async function ajax({ method, endpoint, data, signal }: Request) {
   var url;
-  // Prioriza detecção automática de localhost, depois usa variável de ambiente
-  if (isDevelopment() || env == "dev") {
-    // Em desenvolvimento local, usa /requests diretamente (sem proxy)
+  if (env == "dev") {
     url = "http://localhost:8006/requests" + endpoint;
   } else if (env == "prd") {
-    // Em produção, usa /api/requests (através do proxy reverso)
-    url = "/api/requests" + endpoint;
+    url = "https://funilapi.copapel.com.br/requests" + endpoint;
   } else {
-    url = "/api/requests" + endpoint;
+    url = "https://funilapi.copapel.com.br/requests" + endpoint;
   }
 
   try {
@@ -65,17 +54,7 @@ export async function ajax({ method, endpoint, data, signal }: Request) {
       localStorage.clear();
       sessionStorage.clear();
 
-      // Temporariamente removido redirecionamento - apenas loga o erro
-      console.error("Erro de autenticação (Unauthorized):", {
-        endpoint,
-        message: responseJson.message,
-        response: responseJson,
-      });
-      // Retorna o erro para que o componente possa tratá-lo
-      return {
-        status: "error",
-        message: "Não autorizado. Verifique suas credenciais.",
-      };
+      return (window.location.href = "https://hub.copapel.com.br/");
     }
     return responseJson;
   } catch (err: any) {

@@ -6,7 +6,6 @@ import { AuthContext } from "../context/authProvider";
 import { useContext } from "react";
 import { filter_fields } from "./modalFilter";
 import { ajax } from "../ajax/ajax";
-import toast, { Toaster } from "react-hot-toast";
 
 interface headerContextData {
   searchValue: string;
@@ -22,7 +21,6 @@ export function Layout() {
   const [search, setSearch] = useState<string>("");
   const [isGestor, setIsGestor] = useState<boolean>(false);
   const [isAutoLogging, setIsAutoLogging] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const location = useLocation();
 
   const { user, loading, attAuthStatus } = useContext(AuthContext);
@@ -37,12 +35,7 @@ export function Layout() {
       });
 
       if (response.status === "error") {
-        const errorMessage = response.message || "Erro ao realizar login automático";
-        console.error("Erro no login automático:", response);
-        
-        // Temporariamente removido redirecionamento - apenas exibe erro
-        setError(errorMessage);
-        toast.error(errorMessage);
+        window.location.href = "https://hub.copapel.com.br/";
         return;
       }
 
@@ -56,13 +49,9 @@ export function Layout() {
         window.location.reload();
         return;
       }
-    } catch (error: any) {
-      const errorMessage = error?.message || "Erro inesperado no login automático";
+    } catch (error) {
       console.error("Erro no login automático:", error);
-      
-      // Temporariamente removido redirecionamento - apenas exibe erro
-      setError(errorMessage);
-      toast.error(errorMessage);
+      window.location.href = "https://hub.copapel.com.br/";
     } finally {
       setIsAutoLogging(false);
     }
@@ -97,19 +86,6 @@ export function Layout() {
     attAuthStatus();
   };
 
-  if (error) {
-    return (
-      <div className="h-full w-full flex flex-col items-center justify-center p-8">
-        <div className="flex flex-col items-center gap-4 p-8 bg-red-50 border border-red-200 rounded-md max-w-md">
-          <h1 className="text-red-600 font-semibold text-xl">Erro de Autenticação</h1>
-          <p className="text-red-800">{error}</p>
-          <p className="text-sm text-gray-600">Verifique o console do navegador para mais detalhes.</p>
-        </div>
-        <Toaster />
-      </div>
-    );
-  }
-
   return (
     <>
       <SearchContext.Provider
@@ -127,7 +103,6 @@ export function Layout() {
         />
         <Outlet />
       </SearchContext.Provider>
-      <Toaster />
     </>
   );
 }
