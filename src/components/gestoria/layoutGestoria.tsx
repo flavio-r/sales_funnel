@@ -82,7 +82,9 @@ export function LayoutGestoria() {
           setFilters={updateFilters}
           setAllGerenciadosContext={setAllGerenciados}
         />
-        <Outlet />
+        <div className="pt-[8vh]">
+          <Outlet />
+        </div>
       </SearchContextGestoria.Provider>
     </>
   );

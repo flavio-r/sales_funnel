@@ -178,7 +178,7 @@ export function HeaderVisualizadores({
         mostrarModal={mostrarAdicionar}
         isGestor={true}
       />
-      <div className="headerHeight flex shadow-md w-full items-center box-border relative justify-between">
+      <div className="headerHeight flex shadow-md w-full items-center box-border justify-between fixed top-0 left-0 right-0 z-50 bg-white">
         <img
           src={logo}
           className=" w-14 h-14 ml-4 justify-self-start cursor-pointer "
@@ -277,9 +277,9 @@ export function HeaderVisualizadores({
           <div
             className={` ${
               showVendors ? "" : "hidden"
-            } customBorder mt-14  customListWidth rounded-md box-border absolute z-50 bg-white flex flex-col `}
+            } customBorder mt-14 customListWidth rounded-md box-border absolute z-50 bg-white flex flex-col shadow-lg max-h-[85vh] flex-nowrap `}
           >
-            <div className="w-full flex gap-4 py-2 items-center justify-center ">
+            <div className="w-full flex gap-4 py-2 items-center justify-center border-b border-black/10 shrink-0">
               <GrnBtn
                 onClick={() => selectAll()}
                 nomeBtn="Selecionar todos"
@@ -293,37 +293,43 @@ export function HeaderVisualizadores({
               />
             </div>
 
-            {gerenciados &&
-              gerenciados?.map(
-                (gerenciado: {
-                  VendedorExterno: string;
-                  CodigoVendedor: string;
-                  Selecionado: boolean;
-                  SlpName: string;
-                }) => {
-                  return (
-                    <label
-                      onClick={(e) => e.stopPropagation()}
-                      className=" flex px-4 py-3 w-full box-border justify-between transition-all duration-300 hover:bg-black hover:bg-opacity-10 cursor-pointer "
-                    >
-                      {gerenciado.SlpName}
-                      <input
-                        checked={gerenciado.Selecionado}
-                        onClick={() => handleGerenciados(gerenciado)}
-                        type="checkbox"
-                        className=" w-8 transition-all duration-300 hover:scale-105 "
-                      />
-                    </label>
-                  );
-                }
-              )}
-            <GrnBtn
-              onClick={() => atualizaGerenciadosContext()}
-              customCss="mt-2 mb-2 w-11/12 self-center"
-              nomeBtn="Aplicar Gerenciados"
-              type="submit"
-              icon={<IoFilterSharp />}
-            />
+            <div className="vendorListScroll overflow-y-auto overflow-x-hidden max-h-[50vh] min-h-0 overscroll-contain">
+              {gerenciados &&
+                gerenciados?.map(
+                  (gerenciado: {
+                    VendedorExterno: string;
+                    CodigoVendedor: string;
+                    Selecionado: boolean;
+                    SlpName: string;
+                  }) => {
+                    return (
+                      <label
+                        key={gerenciado.CodigoVendedor}
+                        onClick={(e) => e.stopPropagation()}
+                        className="flex px-4 py-3 w-full box-border justify-between transition-all duration-300 hover:bg-black/10 cursor-pointer border-b border-black/5 last:border-b-0"
+                      >
+                        <span className="truncate pr-2">{gerenciado.SlpName}</span>
+                        <input
+                          checked={gerenciado.Selecionado}
+                          onClick={() => handleGerenciados(gerenciado)}
+                          type="checkbox"
+                          className="w-5 h-5 shrink-0 transition-all duration-300 hover:scale-105 cursor-pointer"
+                        />
+                      </label>
+                    );
+                  }
+                )}
+            </div>
+
+            <div className="w-full pt-2 pb-2 px-3 border-t border-black/10 shrink-0 flex justify-center">
+              <GrnBtn
+                onClick={() => atualizaGerenciadosContext()}
+                customCss="min-w-[200px] max-w-[280px]"
+                nomeBtn="Aplicar Gerenciados"
+                type="submit"
+                icon={<IoFilterSharp />}
+              />
+            </div>
           </div>
         </div>
 

@@ -181,7 +181,7 @@ export function Header({ setSearch, setFilters, setGestor, Filters }: header) {
         mostrarModal={mostrarAdicionar}
         cardCode={cardCode}
       />
-      <div className="headerHeight flex shadow-md w-full items-center box-border relative justify-between">
+      <div className="headerHeight flex shadow-md w-full items-center box-border justify-between fixed top-0 left-0 right-0 z-50 bg-white">
         <img
           src={logo}
           className=" w-14 h-14 ml-4 justify-self-start cursor-pointer "

@@ -66,7 +66,9 @@ export function LayoutVisualizadores(): JSX.Element {
           setGerenciadosContext={setGerenciados}
           setAllGerenciadosContext={setAllGerenciados}
         />
-        <Outlet />
+        <div className="pt-[8vh]">
+          <Outlet />
+        </div>
       </SearchContextGestoria.Provider>
     </>
   );

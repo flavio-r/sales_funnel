@@ -101,7 +101,9 @@ export function Layout() {
           setFilters={updateFilters}
           setGestor={setIsGestor}
         />
-        <Outlet />
+        <div className="pt-[8vh]">
+          <Outlet />
+        </div>
       </SearchContext.Provider>
     </>
   );

@@ -106,7 +106,7 @@ export function HeaderGestoria({
 
   const adicionaSelecionadoGerenciados = async (
     data: gerenciado[],
-    Gerenciados: any[]
+    Gerenciados: any[],
   ) => {
     var gerenciadosComSelecionado = data;
 
@@ -128,7 +128,7 @@ export function HeaderGestoria({
 
   const handleGerenciados = (gerenciado: gerenciado) => {
     const index = gerenciados.findIndex(
-      (item) => item.CodigoVendedor == gerenciado.CodigoVendedor
+      (item) => item.CodigoVendedor == gerenciado.CodigoVendedor,
     );
     if (gerenciados[index].Selecionado) {
       gerenciados[index].Selecionado = false;
@@ -144,7 +144,7 @@ export function HeaderGestoria({
 
   const atualizaGerenciadosContext = () => {
     var gerenciadosFiltrados = gerenciados.filter(
-      (gerenciado) => gerenciado.Selecionado == true
+      (gerenciado) => gerenciado.Selecionado == true,
     );
     setGerenciadosContext(gerenciadosFiltrados);
     setAllGerenciadosContext(gerenciados);
@@ -173,7 +173,7 @@ export function HeaderGestoria({
         mostrarModal={mostrarAdicionar}
         isGestor={true}
       />
-      <div className="headerHeight flex shadow-md w-full items-center box-border relative justify-between">
+      <div className="headerHeight flex shadow-md w-full items-center box-border justify-between fixed top-0 left-0 right-0 z-50 bg-white">
         <img
           src={logo}
           className=" w-14 h-14 ml-4 justify-self-start cursor-pointer "
@@ -299,7 +299,7 @@ export function HeaderGestoria({
                     />
                   </label>
                 );
-              }
+              },
             )}
             <GrnBtn
               onClick={() => atualizaGerenciadosContext()}

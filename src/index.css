@@ -315,6 +315,25 @@ input.corPlaceholder::placeholder {
   width: 20vw;
 }
 
+/* Scrollbar discreta para listas (ex.: filtro de vendedores) */
+.vendorListScroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.25) transparent;
+}
+.vendorListScroll::-webkit-scrollbar {
+  width: 6px;
+}
+.vendorListScroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.vendorListScroll::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 3px;
+}
+.vendorListScroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.4);
+}
+
 .modal-wrapper-visu {
   width: 60vw;
 }
