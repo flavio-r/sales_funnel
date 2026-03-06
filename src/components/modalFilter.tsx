@@ -4,7 +4,7 @@ import { GrnBtn } from "./greenBtn";
 import { IoFilterSharp } from "react-icons/io5";
 import { WhiteBtn } from "./whiteBtn";
 import { IoIosCloseCircle } from "react-icons/io";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useLayoutEffect, useRef } from "react";
 import { SelectDados } from "./selectDados";
 import { ajax } from "../ajax/ajax";
 import toast from "react-hot-toast";
@@ -39,7 +39,6 @@ export function Filter({
   showFilters,
   baseFilters,
 }: Filters) {
-  //replaced cons log
   const defaultFilters: filter_fields = {
     dataInicio: "",
     dataFim: "",
@@ -53,23 +52,63 @@ export function Filter({
   };
 
   if (!baseFilters) {
-    //replaced cons log
     baseFilters = defaultFilters;
   }
   const { register, handleSubmit, reset } = useForm<any>({});
   const [switchHandler, setSwitchHandler] = useState<boolean>(
-    baseFilters.apenasDestacados
+    baseFilters.apenasDestacados,
   );
   const [switch2Handler, setSwitch2Handler] = useState<boolean>(
-    baseFilters.apenasClientesComAtividadeMarcada
+    baseFilters.apenasClientesComAtividadeMarcada,
   );
   const [municipios, setMunicipios] = useState<municipio[]>([]);
   const [regioes, setRegioes] = useState<regiao[]>([]);
+  const dropdownRef = useRef<HTMLFormElement>(null);
+  const [horizontalOffset, setHorizontalOffset] = useState(0);
+
+  useLayoutEffect(() => {
+    if (!showFilters) {
+      setHorizontalOffset(0);
+      return;
+    }
+    const el = dropdownRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const margin = 8;
+    let offset = 0;
+    if (rect.left < margin) offset = margin - rect.left;
+    else if (rect.right > window.innerWidth - margin)
+      offset = window.innerWidth - margin - rect.right;
+    setHorizontalOffset(offset);
+  }, [showFilters]);
+
+  useEffect(() => {
+    if (!showFilters) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node)
+      ) {
+        fecharFiltro();
+      }
+    };
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") fecharFiltro();
+    };
+    const timer = setTimeout(() => {
+      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("keydown", handleEsc);
+    }, 0);
+    return () => {
+      clearTimeout(timer);
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleEsc);
+    };
+  }, [showFilters, fecharFiltro]);
 
   const onSubmit = (data: any) => {
     data.apenasDestacados = switchHandler;
     data.apenasClientesComAtividadeMarcada = switch2Handler;
-    //replaced cons log
     handleFilters(data);
   };
 
@@ -114,18 +153,22 @@ export function Filter({
     loadMunicipiosForFilter();
   }, []);
 
-  //const dataAtual = new Date().toLocaleDateString();
-  //const data1mesAtras = new Date(new Date().setMonth(new Date().getMonth() - 1)).toLocaleDateString();
   return (
     <form
+      ref={dropdownRef}
       action=""
       id="filterOp"
       onSubmit={handleSubmit(onSubmit)}
+      style={
+        horizontalOffset
+          ? { transform: `translateX(${horizontalOffset}px)` }
+          : undefined
+      }
       className={` ${
         showFilters ? "absolute" : "hidden"
-      }  flex p-4 bg-white rounded-md shadow-lg z-50 top-full right-40 flex-col w-auto transition-all duration-500 `}
+      }  flex p-4 bg-white rounded-md shadow-lg z-50 top-full right-40 flex-col w-auto transition-all duration-500 max-h-[min(85vh,32rem)] overflow-y-auto overflow-x-hidden`}
     >
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center flex-shrink-0">
         <div>
           <p className="m-0 font-semibold text-lg">Filtros</p>
         </div>

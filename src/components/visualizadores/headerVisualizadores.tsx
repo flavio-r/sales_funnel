@@ -4,7 +4,13 @@ import { IoMdAddCircle } from "react-icons/io";
 import { FaFilter } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
 import { CiSearch } from "react-icons/ci";
-import { useEffect, useState, useContext } from "react";
+import {
+  useEffect,
+  useLayoutEffect,
+  useState,
+  useContext,
+  useRef,
+} from "react";
 import { ModalProfile } from "../modalProfile";
 import { useLocation } from "react-router-dom";
 import { FaHouseChimney } from "react-icons/fa6";
@@ -52,8 +58,51 @@ export function HeaderVisualizadores({
   const [gerenciados, setGerenciados] = useState<gerenciado[]>([]);
   const [firstRender, setFirstRender] = useState<boolean>(true);
   const [indicadores, setIndicadores] = useState<any>({});
+  const vendorsDropdownRef = useRef<HTMLDivElement>(null);
+  const vendorsListRef = useRef<HTMLDivElement>(null);
+  const [vendorsListOffset, setVendorsListOffset] = useState(0);
 
   const { indicadoresContext } = useContext(SearchContextGestoria);
+
+  useLayoutEffect(() => {
+    if (!showVendors) {
+      setVendorsListOffset(0);
+      return;
+    }
+    const el = vendorsListRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const margin = 8;
+    let offset = 0;
+    if (rect.left < margin) offset = margin - rect.left;
+    else if (rect.right > window.innerWidth - margin)
+      offset = window.innerWidth - margin - rect.right;
+    setVendorsListOffset(offset);
+  }, [showVendors]);
+
+  useEffect(() => {
+    if (!showVendors) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        vendorsDropdownRef.current &&
+        !vendorsDropdownRef.current.contains(e.target as Node)
+      ) {
+        setShowVendors(false);
+      }
+    };
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setShowVendors(false);
+    };
+    const timer = setTimeout(() => {
+      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("keydown", handleEsc);
+    }, 0);
+    return () => {
+      clearTimeout(timer);
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleEsc);
+    };
+  }, [showVendors]);
 
   const navigate = useNavigate();
 
@@ -85,7 +134,6 @@ export function HeaderVisualizadores({
   };
 
   const carregaGerenciados = async () => {
-    //replaced cons log
     const response = await ajax({
       method: "GET",
       endpoint: "/visualizadores/gerenciados",
@@ -114,7 +162,7 @@ export function HeaderVisualizadores({
 
   const handleGerenciados = (gerenciado: gerenciado) => {
     const index = gerenciados.findIndex(
-      (item) => item.CodigoVendedor == gerenciado.CodigoVendedor
+      (item) => item.CodigoVendedor == gerenciado.CodigoVendedor,
     );
     if (gerenciados[index].Selecionado) {
       gerenciados[index].Selecionado = false;
@@ -130,7 +178,7 @@ export function HeaderVisualizadores({
 
   const atualizaGerenciadosContext = (firstRender: boolean = false) => {
     var gerenciadosFiltrados = gerenciados.filter(
-      (gerenciado) => gerenciado.Selecionado == true
+      (gerenciado) => gerenciado.Selecionado == true,
     );
     setGerenciadosContext(gerenciadosFiltrados);
     if (firstRender) {
@@ -268,16 +316,25 @@ export function HeaderVisualizadores({
           </div>
         </div>
 
-        <div className=" relative flex justify-center mr-2 ">
+        <div
+          className=" relative flex justify-center mr-2 "
+          ref={vendorsDropdownRef}
+        >
           <WhiteBtn
             nomeBtn="Vendedores"
             icon={<FcBusinessman />}
             onClick={() => setShowVendors(!showVendors)}
           />
           <div
+            ref={vendorsListRef}
+            style={
+              vendorsListOffset
+                ? { transform: `translateX(${vendorsListOffset}px)` }
+                : undefined
+            }
             className={` ${
               showVendors ? "" : "hidden"
-            } customBorder mt-14 customListWidth rounded-md box-border absolute z-50 bg-white flex flex-col shadow-lg max-h-[85vh] flex-nowrap `}
+            } customBorder mt-14 customListWidth rounded-md box-border absolute z-50 bg-white flex flex-col shadow-lg max-h-[85vh] flex-nowrap overflow-hidden`}
           >
             <div className="w-full flex gap-4 py-2 items-center justify-center border-b border-black/10 shrink-0">
               <GrnBtn
@@ -308,7 +365,9 @@ export function HeaderVisualizadores({
                         onClick={(e) => e.stopPropagation()}
                         className="flex px-4 py-3 w-full box-border justify-between transition-all duration-300 hover:bg-black/10 cursor-pointer border-b border-black/5 last:border-b-0"
                       >
-                        <span className="truncate pr-2">{gerenciado.SlpName}</span>
+                        <span className="truncate pr-2">
+                          {gerenciado.SlpName}
+                        </span>
                         <input
                           checked={gerenciado.Selecionado}
                           onClick={() => handleGerenciados(gerenciado)}
@@ -317,7 +376,7 @@ export function HeaderVisualizadores({
                         />
                       </label>
                     );
-                  }
+                  },
                 )}
             </div>
 
