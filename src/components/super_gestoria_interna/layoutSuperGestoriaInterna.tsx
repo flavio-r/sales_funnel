@@ -48,7 +48,6 @@ export function LayoutSuperGestoriaInterna() {
         data: { supervisionados },
       });
 
-      // Update the state
       setAllGerenciados(supervisionados);
 
       attAuthStatus();

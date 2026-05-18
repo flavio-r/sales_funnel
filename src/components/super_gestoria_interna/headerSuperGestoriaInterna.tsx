@@ -98,13 +98,12 @@ export function HeaderSuperGestoriaInterna({
   };
 
   const carregaSupervisionados = async () => {
-    //replaced cons log
     const response = await ajax({
       method: "GET",
       endpoint: "/superGestoriaInterna/supervisionados",
       data: null,
     });
-    //replaced cons log
+
     if (response.status == "error") {
       toast.error(response.message);
       setTimeout(() => {
@@ -116,17 +115,19 @@ export function HeaderSuperGestoriaInterna({
       const data: supervisionado[] = response.data;
       const supervisio = formatSetExternosAndInternasAllSelectedByDefault(
         data,
-        Supervisionados
+        Supervisionados,
       );
+
       setSupervisionados(supervisio);
       const allExternos = getExternosFromSupervisionados(data);
+
       setAllExternosContext(allExternos);
     }
   };
 
   const formatSetExternosAndInternasAllSelectedByDefault = (
     supervisionados: supervisionado[],
-    SupervisionadosSessao: externoSupervisionado[]
+    SupervisionadosSessao: externoSupervisionado[],
   ): supervisionado[] => {
     const newSupervisionados: supervisionado[] = supervisionados;
 
@@ -142,7 +143,7 @@ export function HeaderSuperGestoriaInterna({
         interna.Selecionada = true;
         interna.externos.map((externo: externoSupervisionado) => {
           const externoSelecionado = SupervisionadosSessao.find(
-            (ext) => ext.CodigoExterno == externo.CodigoExterno
+            (ext) => ext.CodigoExterno == externo.CodigoExterno,
           );
           if (externoSelecionado?.Selecionado) {
             externo.Selecionado = true;
@@ -156,7 +157,7 @@ export function HeaderSuperGestoriaInterna({
   };
 
   const getExternosFromSupervisionados = (
-    supervisionados: supervisionado[]
+    supervisionados: supervisionado[],
   ): externoSupervisionado[] => {
     const externos: externoSupervisionado[] = [];
     supervisionados.map((interna) => {
@@ -174,9 +175,9 @@ export function HeaderSuperGestoriaInterna({
         externos: interna.externos.map((ext) =>
           ext === externoEscolhido
             ? { ...ext, Selecionado: !ext.Selecionado }
-            : ext
+            : ext,
         ),
-      }))
+      })),
     );
   };
 
@@ -195,7 +196,7 @@ export function HeaderSuperGestoriaInterna({
           };
         }
         return interna;
-      })
+      }),
     );
   };
 
@@ -230,7 +231,7 @@ export function HeaderSuperGestoriaInterna({
           ...ext,
           Selecionado: true,
         })),
-      }))
+      })),
     );
   };
 
@@ -244,7 +245,7 @@ export function HeaderSuperGestoriaInterna({
           ...ext,
           Selecionado: false,
         })),
-      }))
+      })),
     );
   };
 
@@ -268,7 +269,7 @@ export function HeaderSuperGestoriaInterna({
     setOpenedDropdowns(
       openedDropdowns.includes(index)
         ? openedDropdowns.filter((item) => item !== index)
-        : [...openedDropdowns, index]
+        : [...openedDropdowns, index],
     );
   };
 
@@ -433,7 +434,7 @@ export function HeaderSuperGestoriaInterna({
                                   className=" w-8 transition-all duration-300 hover:scale-105 "
                                 />
                               </label>
-                            )
+                            ),
                           )
                         ) : (
                           <p>Carregando...</p>

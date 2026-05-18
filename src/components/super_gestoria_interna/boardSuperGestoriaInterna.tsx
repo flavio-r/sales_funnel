@@ -78,7 +78,7 @@ export function BoardSuperGestoriaInterna() {
   function reorderTasksInSameColumn(
     columnId: string,
     sourceIndex: number,
-    destinationIndex: number
+    destinationIndex: number,
   ) {
     // Find the correct column
     let columnTasks;
@@ -136,7 +136,7 @@ export function BoardSuperGestoriaInterna() {
       setContato(newTasks);
     } else if (sourceId == "3") {
       const newTasks = diagnostico.filter(
-        (task) => task.Id.toString() != taskId
+        (task) => task.Id.toString() != taskId,
       );
       setDiagnostico(newTasks);
     } else if (sourceId == "4") {
@@ -144,7 +144,7 @@ export function BoardSuperGestoriaInterna() {
       setTeste(newTasks);
     } else if (sourceId == "5") {
       const newTasks = negociacao.filter(
-        (task) => task.Id.toString() != taskId
+        (task) => task.Id.toString() != taskId,
       );
       setNegociacao(newTasks);
     }
@@ -153,7 +153,7 @@ export function BoardSuperGestoriaInterna() {
   async function addTaskToDestination(
     destinationId: string,
     taskId: string,
-    index: number
+    index: number,
   ) {
     if (destinationId == "7" || destinationId == "6") {
       toast.dismiss();
@@ -283,7 +283,7 @@ export function BoardSuperGestoriaInterna() {
       reorderTasksInSameColumn(
         source.droppableId,
         source.index,
-        destination.index
+        destination.index,
       );
       return;
     }
@@ -296,7 +296,7 @@ export function BoardSuperGestoriaInterna() {
     await addTaskToDestination(
       destination.droppableId,
       draggableId,
-      destination.index
+      destination.index,
     );
   };
 
@@ -330,7 +330,7 @@ export function BoardSuperGestoriaInterna() {
       leadTasks,
       diagnosticoTasks,
       testeTasks,
-      negociacaoTasks
+      negociacaoTasks,
     );
 
     setLead(leadTasks);
@@ -345,7 +345,7 @@ export function BoardSuperGestoriaInterna() {
   const carregaLeads = async (filter: string = "") => {
     const response = await ajax({
       method: "POST",
-      endpoint: "/gestoriaInterna/leads",
+      endpoint: "/superGestoriaInterna/leads",
       data: { filter: filter, filtros: filters, externos: gerenciados },
     });
     if (!response) {
