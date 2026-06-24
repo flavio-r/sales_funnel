@@ -1,4 +1,5 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useCallback } from "react";
+import type { ChangeEvent, MouseEvent } from "react";
 import { Input } from "./input";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -17,7 +18,7 @@ import "react-quill/dist/quill.snow.css"; // Importe o estilo do editor
 import { SelectDados } from "./selectDados";
 import { useContext } from "react";
 import { AuthContext } from "../context/authProvider";
-const isAfterToday = (value: any) => {
+const isAfterToday = (value: string) => {
   const today = new Date();
   const selectedDate = new Date(value);
   return selectedDate >= today;
@@ -37,6 +38,12 @@ const schema = z.object({
 });
 
 type FormData = z.infer<typeof schema>;
+
+type AjaxResponse = {
+  status?: string;
+  message?: string | Array<{ msg?: unknown }>;
+  data?: unknown;
+};
 
 interface cliente {
   nome: string;
@@ -77,6 +84,7 @@ export function AddOportunity({
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -105,46 +113,43 @@ export function AddOportunity({
     toast.loading("Salvando...");
     const etapaSap = acertaEtapaSap(etapa);
 
-    const codigoCliente: any = document.getElementById("codigoCliente");
-    var dataObj;
-    if (codigoCliente) {
-      dataObj = {
-        titulo: data.titulo,
-        codCliente: codigoCliente.value,
-        valorEstimado: data.valorEstimado,
-        dataPrevista: data.dataPrevista,
-        notas: quillValue,
-        etapa: etapaSap,
-        atribuido: data.atribuido,
-      };
-    }
+    const codigoCliente = document.getElementById(
+      "codigoCliente",
+    ) as HTMLInputElement | null;
+
     if (!codigoCliente) {
       toast.error("Erro ao adicionar oportunidade!");
       return;
     }
 
-    var response: any;
+    const dataObj = {
+      titulo: data.titulo,
+      codCliente: codigoCliente.value,
+      valorEstimado: data.valorEstimado,
+      dataPrevista: data.dataPrevista,
+      notas: quillValue,
+      etapa: etapaSap,
+      atribuido: data.atribuido,
+    };
 
     const valueFormattedBrazilianStyle = data.valorEstimado
       .replace(".", "")
       .replace(",", ".");
-    if (!dataObj) {
-      return;
-    }
+
     dataObj.valorEstimado = valueFormattedBrazilianStyle;
 
-    response = await ajax({
+    const response = (await ajax({
       method: "POST",
       endpoint: "/task/add",
       data: dataObj,
-    });
+    })) as AjaxResponse;
 
     if (response.status == "error") {
       setAddLoading(false);
       toast.dismiss();
       if (Array.isArray(response.message)) {
         const errorMsgs = response.message;
-        errorMsgs.forEach((msg: any) => {
+        errorMsgs.forEach((msg) => {
           if (typeof msg.msg == "string") {
             toast.error(msg.msg);
           }
@@ -208,7 +213,7 @@ export function AddOportunity({
     }
   };
 
-  const handleCodigoCliente = async (e: any) => {
+  const handleCodigoCliente = async (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     if (value.length < 3) {
       setClientes([]);
@@ -264,13 +269,13 @@ export function AddOportunity({
           (e: { CardName: string; CardCode: string }) => ({
             nome: e.CardName,
             codigo: e.CardCode,
-          })
+          }),
         );
         setClientes(newArray);
         return;
       }
-    } catch (error: any) {
-      if (error.name === "AbortError") {
+    } catch (error: unknown) {
+      if (error instanceof DOMException && error.name === "AbortError") {
         //replaced cons log
       } else {
         toast.error("Erro inesperado");
@@ -284,22 +289,35 @@ export function AddOportunity({
     atualizaEstadoModal();
   };
 
+  const setClientCode = useCallback(
+    (CardCode: string) => {
+      const inputCodigoCliente = document.getElementById(
+        "codigoCliente",
+      ) as HTMLInputElement;
+
+      if (inputCodigoCliente) {
+        inputCodigoCliente.value = CardCode;
+        inputCodigoCliente.innerHTML = CardCode;
+      }
+
+      setValue("codCliente", CardCode, {
+        shouldDirty: true,
+        shouldValidate: true,
+      });
+    },
+    [setValue],
+  );
+
   useEffect(() => {
     setIsOpen(mostrarModal);
   }, [mostrarModal]);
 
   useEffect(() => {
     if (cardCode) {
-      const inputCodigoCliente = document.getElementById(
-        "codigoCliente"
-      ) as HTMLInputElement;
-      if (inputCodigoCliente) {
-        inputCodigoCliente.value = cardCode;
-        inputCodigoCliente.innerHTML = cardCode;
-      }
+      setClientCode(cardCode);
       warnIfClientAlreadyHasOportunity(cardCode);
     }
-  }, [cardCode]);
+  }, [cardCode, setClientCode]);
 
   useEffect(() => {
     if (isOpen) {
@@ -314,9 +332,9 @@ export function AddOportunity({
     return () => {
       document.body.style.overflow = "unset";
     };
-  }, [isOpen]);
+  }, [isOpen, isGestor]);
 
-  const handleDebouncedClick = (e: any) => {
+  const handleDebouncedClick = (e: MouseEvent<HTMLButtonElement>) => {
     if (isWaiting) {
       e.preventDefault();
       return;
@@ -328,13 +346,7 @@ export function AddOportunity({
   };
 
   const handleClickFoundClient = (CardCode: string) => {
-    const inputCodigoCliente = document.getElementById(
-      "codigoCliente"
-    ) as HTMLInputElement;
-    if (inputCodigoCliente) {
-      inputCodigoCliente.value = CardCode;
-      inputCodigoCliente.innerHTML = CardCode;
-    }
+    setClientCode(CardCode);
     warnIfClientAlreadyHasOportunity(CardCode);
     setClientes([]);
   };
